@@ -1,0 +1,41 @@
+{
+    "name": "zioracms/visits",
+    "description": "",
+    "authors": [
+        {
+            "name": "Gabs Tech",
+            "email": "contact@fusigabs.com"
+        }
+    ],
+    "extra": {
+        "laravel": {
+            "providers": [
+                
+            ],
+            "aliases": {
+                "Visitor": "Modules\\Visits\\Facade\\Visitor"
+            }
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Modules\\Visits\\": "app/",
+            "Modules\\Visits\\Database\\Factories\\": "database/factories/",
+            "Modules\\Visits\\Database\\Seeders\\": "database/seeders/"
+        },
+        "files": [
+            "app/helpers.php"
+        ]
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Modules\\Visits\\Tests\\": "tests/"
+        }
+    },
+    "require": {
+        "ua-parser/uap-php": "^3.9",
+        "mobiledetect/mobiledetectlib": "^4.8",
+        "jaybizzle/crawler-detect": "^1.3",
+        "stevebauman/location": "^7.5"
+    }
+}

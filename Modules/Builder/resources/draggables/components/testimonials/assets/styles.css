@@ -1,0 +1,57 @@
+.testimonial-image-enter-active {
+    transition: all 700ms cubic-bezier(0.68, -0.3, 0.32, 1);
+}
+
+.testimonial-image-leave-active {
+    transition: all 700ms cubic-bezier(0.68, -0.3, 0.32, 1);
+}
+
+.testimonial-image-enter-from {
+    opacity: 0;
+    transform: rotate(-60deg);
+}
+
+.testimonial-image-enter-to {
+    opacity: 1;
+    transform: rotate(0deg);
+}
+
+.testimonial-image-leave-from {
+    opacity: 1;
+    transform: rotate(0deg);
+}
+
+.testimonial-image-leave-to {
+    opacity: 0;
+    transform: rotate(60deg);
+}
+
+/* Testimonial text transitions */
+.testimonial-text-enter-active {
+    transition: all 500ms ease-in-out 200ms;
+}
+
+.testimonial-text-leave-active {
+    transition: all 300ms ease-out 300ms;
+    position: absolute;
+}
+
+.testimonial-text-enter-from {
+    opacity: 0;
+    transform: translateX(-1rem);
+}
+
+.testimonial-text-enter-to {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.testimonial-text-leave-from {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.testimonial-text-leave-to {
+    opacity: 0;
+    transform: translateX(1rem);
+}

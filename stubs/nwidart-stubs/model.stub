@@ -1,0 +1,12 @@
+<?php
+
+namespace $NAMESPACE$;
+
+use App\Models\BaseModel;
+// use $MODULE_NAMESPACE$\$MODULE$\Database\Factories\$NAME$Factory;
+
+class $CLASS$ extends BaseModel
+{
+
+    
+}

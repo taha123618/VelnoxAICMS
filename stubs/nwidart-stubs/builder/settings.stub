@@ -1,0 +1,11 @@
+import ElementInfoSettings from '@modules/Builder/resources/components/settings/element-info-settings.vue';
+import $STUDLY_NAME$ from '@modules/Builder/resources/draggables/$CATEGORY$/$NAME$/$NAME$.vue';
+import Render from '@modules/Builder/resources/draggables/$CATEGORY$/$NAME$/render.vue';
+
+export default {
+    component: $STUDLY_NAME$,
+    renderable: Render,
+    settings: [
+        { name: 'Info', component: ElementInfoSettings },
+    ],
+};

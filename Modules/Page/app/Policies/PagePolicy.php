@@ -1,0 +1,44 @@
+<?php
+
+namespace Modules\Page\Policies;
+
+use Modules\Auth\Models\User;
+use Modules\Page\Models\Page;
+use Illuminate\Auth\Access\HandlesAuthorization;
+
+class PagePolicy
+{
+    use HandlesAuthorization;
+
+    public function create_post(User $user)
+    {
+        return $user->can('create_posts');
+    }
+
+    public function update_post(User $user, Page $post)
+    {
+        return $user->can('edit_posts');
+    }
+
+    public function delete_post(User $user, Page $post): bool
+    {
+        return $user->can('delete_posts')
+            && $post->menu_items()->doesntExist();
+    }
+
+    public function create_page(User $user)
+    {
+        return $user->can('create_pages');
+    }
+
+    public function update_page(User $user, Page $post)
+    {
+        return $user->can('edit_pages');
+    }
+
+    public function delete_page(User $user, Page $post): bool
+    {
+        return $user->can('delete_pages')
+            && $post->menu_items()->doesntExist();;
+    }
+}

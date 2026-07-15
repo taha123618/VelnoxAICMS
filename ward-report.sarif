@@ -1,0 +1,412 @@
+{
+  "$schema": "https://raw.githubusercontent.com/oasis-tcs/sarif-spec/main/sarif-2.1/schema/sarif-schema-2.1.0.json",
+  "version": "2.1.0",
+  "runs": [
+    {
+      "tool": {
+        "driver": {
+          "name": "Ward",
+          "informationUri": "https://github.com/Eljakani/ward",
+          "version": "v0.4.0",
+          "semanticVersion": "v0.4.0",
+          "rules": [
+            {
+              "id": "ENV-002",
+              "name": "APP_DEBUG is enabled",
+              "shortDescription": {
+                "text": "APP_DEBUG is enabled"
+              },
+              "fullDescription": {
+                "text": "APP_DEBUG is set to true. In production, this exposes detailed error messages including stack traces, database queries, and environment variables to end users."
+              },
+              "defaultConfiguration": {
+                "level": "error"
+              },
+              "help": {
+                "text": "Set APP_DEBUG=false in your production .env file. Use Laravel's logging system for error tracking instead."
+              },
+              "properties": {
+                "tags": [
+                  "Configuration"
+                ],
+                "security-severity": "high"
+              }
+            },
+            {
+              "id": "ENV-005",
+              "name": "APP_ENV is set to 'local'",
+              "shortDescription": {
+                "text": "APP_ENV is set to 'local'"
+              },
+              "fullDescription": {
+                "text": "The application environment suggests a non-production configuration. If this is a production server, this may cause debug features to be enabled and performance optimizations to be skipped."
+              },
+              "defaultConfiguration": {
+                "level": "warning"
+              },
+              "help": {
+                "text": "Set APP_ENV=production on production servers."
+              },
+              "properties": {
+                "tags": [
+                  "Configuration"
+                ],
+                "security-severity": "medium"
+              }
+            },
+            {
+              "id": "AUTH-001",
+              "name": "Route without middleware",
+              "shortDescription": {
+                "text": "Route without middleware"
+              },
+              "fullDescription": {
+                "text": "A route is defined without any middleware. Depending on the route, this may expose endpoints without authentication or rate limiting. Sensitive routes should always have auth or throttle middleware.\n"
+              },
+              "defaultConfiguration": {
+                "level": "note"
+              },
+              "help": {
+                "text": "Apply middleware to routes:\n  Route::get('/dashboard', [DashboardController::class, 'index'])\n      -\u003emiddleware(['auth', 'verified']);\nOr group routes:\n  Route::middleware(['auth'])-\u003egroup(function () { ... });\n"
+              },
+              "properties": {
+                "tags": [
+                  "Authentication"
+                ],
+                "security-severity": "low"
+              }
+            },
+            {
+              "id": "CRYPTO-002",
+              "name": "sha1() used for security purposes",
+              "shortDescription": {
+                "text": "sha1() used for security purposes"
+              },
+              "fullDescription": {
+                "text": "SHA-1 is considered weak — practical collision attacks exist. While less broken than MD5, it should not be used for security-sensitive operations like password hashing or token generation.\n"
+              },
+              "defaultConfiguration": {
+                "level": "warning"
+              },
+              "help": {
+                "text": "Use SHA-256 or stronger:\n  hash('sha256', $data)\nFor passwords, always use Hash::make().\n"
+              },
+              "properties": {
+                "tags": [
+                  "Cryptography"
+                ],
+                "security-severity": "medium"
+              }
+            },
+            {
+              "id": "DEBUG-005",
+              "name": "Debug bar or Clockwork left enabled",
+              "shortDescription": {
+                "text": "Debug bar or Clockwork left enabled"
+              },
+              "fullDescription": {
+                "text": "Debug toolbar packages (Laravel Debugbar, Clockwork) are useful in development but expose query logs, route information, session data, and request details in production.\n"
+              },
+              "defaultConfiguration": {
+                "level": "warning"
+              },
+              "help": {
+                "text": "Ensure debug tools are environment-gated:\n  'enabled' =\u003e env('DEBUGBAR_ENABLED', false),\nAnd never set DEBUGBAR_ENABLED=true in production .env.\n"
+              },
+              "properties": {
+                "tags": [
+                  "Debug"
+                ],
+                "security-severity": "medium"
+              }
+            },
+            {
+              "id": "INJECT-001",
+              "name": "DB::raw() with variable interpolation",
+              "shortDescription": {
+                "text": "DB::raw() with variable interpolation"
+              },
+              "fullDescription": {
+                "text": "DB::raw() is called with a PHP variable, which may lead to SQL injection if the variable contains unsanitized user input. Laravel's query builder automatically escapes parameters — use bindings instead of raw SQL.\n"
+              },
+              "defaultConfiguration": {
+                "level": "error"
+              },
+              "help": {
+                "text": "Use parameter bindings:\n  DB::raw('COUNT(*) as count')           // safe — no variables\n  DB::select('SELECT * FROM users WHERE id = ?', [$id])  // safe — bound\nAvoid:\n  DB::raw(\"WHERE name = '$name'\")        // vulnerable\n"
+              },
+              "properties": {
+                "tags": [
+                  "Injection"
+                ],
+                "security-severity": "high"
+              }
+            }
+          ]
+        }
+      },
+      "results": [
+        {
+          "ruleId": "ENV-002",
+          "ruleIndex": 0,
+          "level": "error",
+          "message": {
+            "text": "APP_DEBUG is enabled"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": ".env"
+                },
+                "region": {
+                  "startLine": 4,
+                  "snippet": {
+                    "text": "APP_DEBUG=true"
+                  }
+                }
+              }
+            }
+          ],
+          "partialFingerprints": {
+            "primaryLocationLineHash/v1": "a632d7b0a74be5030d2231e8"
+          }
+        },
+        {
+          "ruleId": "ENV-005",
+          "ruleIndex": 1,
+          "level": "warning",
+          "message": {
+            "text": "APP_ENV is set to 'local'"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": ".env"
+                },
+                "region": {
+                  "startLine": 2,
+                  "snippet": {
+                    "text": "APP_ENV=local"
+                  }
+                }
+              }
+            }
+          ],
+          "partialFingerprints": {
+            "primaryLocationLineHash/v1": "9937ae27cae3313ca35ddb47"
+          }
+        },
+        {
+          "ruleId": "AUTH-001",
+          "ruleIndex": 2,
+          "level": "note",
+          "message": {
+            "text": "Route without middleware"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "routes/web.php"
+                },
+                "region": {
+                  "startLine": 9,
+                  "snippet": {
+                    "text": "Route::get('/', [PageController::class, 'index'])-\u003ename('home');"
+                  }
+                }
+              }
+            }
+          ],
+          "partialFingerprints": {
+            "primaryLocationLineHash/v1": "cb057a7c09592a8c60fb4b63"
+          }
+        },
+        {
+          "ruleId": "CRYPTO-002",
+          "ruleIndex": 3,
+          "level": "warning",
+          "message": {
+            "text": "sha1() used for security purposes"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "Modules/Auth/tests/Feature/Auth/EmailVerificationTest.php"
+                },
+                "region": {
+                  "startLine": 27,
+                  "snippet": {
+                    "text": "['id' =\u003e $user-\u003eid, 'hash' =\u003e sha1($user-\u003eemail)]"
+                  }
+                }
+              }
+            }
+          ],
+          "partialFingerprints": {
+            "primaryLocationLineHash/v1": "2d4274423976c6ee6c8dd0a4"
+          }
+        },
+        {
+          "ruleId": "CRYPTO-002",
+          "ruleIndex": 3,
+          "level": "warning",
+          "message": {
+            "text": "sha1() used for security purposes"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "Modules/Auth/tests/Feature/Auth/EmailVerificationTest.php"
+                },
+                "region": {
+                  "startLine": 43,
+                  "snippet": {
+                    "text": "['id' =\u003e $user-\u003eid, 'hash' =\u003e sha1('wrong-email')]"
+                  }
+                }
+              }
+            }
+          ],
+          "partialFingerprints": {
+            "primaryLocationLineHash/v1": "4a929e4a3dd93a6c454df0b1"
+          }
+        },
+        {
+          "ruleId": "DEBUG-005",
+          "ruleIndex": 4,
+          "level": "warning",
+          "message": {
+            "text": "Debug bar or Clockwork left enabled"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "config/data.php"
+                },
+                "region": {
+                  "startLine": 108,
+                  "snippet": {
+                    "text": "'enabled' =\u003e true,"
+                  }
+                }
+              }
+            }
+          ],
+          "partialFingerprints": {
+            "primaryLocationLineHash/v1": "787fc496b03df436cce68846"
+          }
+        },
+        {
+          "ruleId": "DEBUG-005",
+          "ruleIndex": 4,
+          "level": "warning",
+          "message": {
+            "text": "Debug bar or Clockwork left enabled"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "config/data.php"
+                },
+                "region": {
+                  "startLine": 116,
+                  "snippet": {
+                    "text": "'enabled' =\u003e true,"
+                  }
+                }
+              }
+            }
+          ],
+          "partialFingerprints": {
+            "primaryLocationLineHash/v1": "0236cf4ed86c339bb07050f3"
+          }
+        },
+        {
+          "ruleId": "DEBUG-005",
+          "ruleIndex": 4,
+          "level": "warning",
+          "message": {
+            "text": "Debug bar or Clockwork left enabled"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "config/location.php"
+                },
+                "region": {
+                  "startLine": 79,
+                  "snippet": {
+                    "text": "'enabled' =\u003e env('LOCATION_TESTING', true),"
+                  }
+                }
+              }
+            }
+          ],
+          "partialFingerprints": {
+            "primaryLocationLineHash/v1": "95d88de852f5761de411632d"
+          }
+        },
+        {
+          "ruleId": "DEBUG-005",
+          "ruleIndex": 4,
+          "level": "warning",
+          "message": {
+            "text": "Debug bar or Clockwork left enabled"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "config/modules.php"
+                },
+                "region": {
+                  "startLine": 29,
+                  "snippet": {
+                    "text": "'enabled' =\u003e true,"
+                  }
+                }
+              }
+            }
+          ],
+          "partialFingerprints": {
+            "primaryLocationLineHash/v1": "4754add679c15a1d0affca8d"
+          }
+        },
+        {
+          "ruleId": "INJECT-001",
+          "ruleIndex": 5,
+          "level": "error",
+          "message": {
+            "text": "DB::raw() with variable interpolation"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "Modules/Dashboard/app/Actions/GetVisitsGroupedByDimensionAction.php"
+                },
+                "region": {
+                  "startLine": 12,
+                  "snippet": {
+                    "text": "-\u003eselect(DB::raw(\"count(*) as total, {$dimension}\"))"
+                  }
+                }
+              }
+            }
+          ],
+          "partialFingerprints": {
+            "primaryLocationLineHash/v1": "0a1beb0c3de7f24a6aaa54d1"
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,161 @@
+{
+  "project": {
+    "name": "fusigabs/zioracms",
+    "path": "/var/www/html/Laravel/zioracms",
+    "laravel_version": "^12.0",
+    "php_version": "^8.2"
+  },
+  "summary": {
+    "total_findings": 10,
+    "by_severity": {
+      "High": 2,
+      "Low": 1,
+      "Medium": 7
+    },
+    "duration": "2.145826201s",
+    "scanners_run": [
+      "env-scanner",
+      "config-scanner",
+      "dependency-scanner",
+      "rules-scanner"
+    ]
+  },
+  "findings": [
+    {
+      "id": "ENV-002",
+      "title": "APP_DEBUG is enabled",
+      "description": "APP_DEBUG is set to true. In production, this exposes detailed error messages including stack traces, database queries, and environment variables to end users.",
+      "severity": "High",
+      "category": "Configuration",
+      "scanner": "env-scanner",
+      "file": ".env",
+      "line": 4,
+      "code_snippet": "APP_DEBUG=true",
+      "remediation": "Set APP_DEBUG=false in your production .env file. Use Laravel's logging system for error tracking instead.",
+      "references": [
+        "https://owasp.org/Top10/A05_2021-Security_Misconfiguration/"
+      ]
+    },
+    {
+      "id": "ENV-005",
+      "title": "APP_ENV is set to 'local'",
+      "description": "The application environment suggests a non-production configuration. If this is a production server, this may cause debug features to be enabled and performance optimizations to be skipped.",
+      "severity": "Medium",
+      "category": "Configuration",
+      "scanner": "env-scanner",
+      "file": ".env",
+      "line": 2,
+      "code_snippet": "APP_ENV=local",
+      "remediation": "Set APP_ENV=production on production servers."
+    },
+    {
+      "id": "AUTH-001",
+      "title": "Route without middleware",
+      "description": "A route is defined without any middleware. Depending on the route, this may expose endpoints without authentication or rate limiting. Sensitive routes should always have auth or throttle middleware.\n",
+      "severity": "Low",
+      "category": "Authentication",
+      "scanner": "rules-scanner",
+      "file": "routes/web.php",
+      "line": 9,
+      "code_snippet": "Route::get('/', [PageController::class, 'index'])-\u003ename('home');",
+      "remediation": "Apply middleware to routes:\n  Route::get('/dashboard', [DashboardController::class, 'index'])\n      -\u003emiddleware(['auth', 'verified']);\nOr group routes:\n  Route::middleware(['auth'])-\u003egroup(function () { ... });\n",
+      "references": [
+        "https://cwe.mitre.org/data/definitions/306.html"
+      ]
+    },
+    {
+      "id": "CRYPTO-002",
+      "title": "sha1() used for security purposes",
+      "description": "SHA-1 is considered weak — practical collision attacks exist. While less broken than MD5, it should not be used for security-sensitive operations like password hashing or token generation.\n",
+      "severity": "Medium",
+      "category": "Cryptography",
+      "scanner": "rules-scanner",
+      "file": "Modules/Auth/tests/Feature/Auth/EmailVerificationTest.php",
+      "line": 27,
+      "code_snippet": "['id' =\u003e $user-\u003eid, 'hash' =\u003e sha1($user-\u003eemail)]",
+      "remediation": "Use SHA-256 or stronger:\n  hash('sha256', $data)\nFor passwords, always use Hash::make().\n",
+      "references": [
+        "https://cwe.mitre.org/data/definitions/328.html"
+      ]
+    },
+    {
+      "id": "CRYPTO-002",
+      "title": "sha1() used for security purposes",
+      "description": "SHA-1 is considered weak — practical collision attacks exist. While less broken than MD5, it should not be used for security-sensitive operations like password hashing or token generation.\n",
+      "severity": "Medium",
+      "category": "Cryptography",
+      "scanner": "rules-scanner",
+      "file": "Modules/Auth/tests/Feature/Auth/EmailVerificationTest.php",
+      "line": 43,
+      "code_snippet": "['id' =\u003e $user-\u003eid, 'hash' =\u003e sha1('wrong-email')]",
+      "remediation": "Use SHA-256 or stronger:\n  hash('sha256', $data)\nFor passwords, always use Hash::make().\n",
+      "references": [
+        "https://cwe.mitre.org/data/definitions/328.html"
+      ]
+    },
+    {
+      "id": "DEBUG-005",
+      "title": "Debug bar or Clockwork left enabled",
+      "description": "Debug toolbar packages (Laravel Debugbar, Clockwork) are useful in development but expose query logs, route information, session data, and request details in production.\n",
+      "severity": "Medium",
+      "category": "Debug",
+      "scanner": "rules-scanner",
+      "file": "config/data.php",
+      "line": 108,
+      "code_snippet": "'enabled' =\u003e true,",
+      "remediation": "Ensure debug tools are environment-gated:\n  'enabled' =\u003e env('DEBUGBAR_ENABLED', false),\nAnd never set DEBUGBAR_ENABLED=true in production .env.\n"
+    },
+    {
+      "id": "DEBUG-005",
+      "title": "Debug bar or Clockwork left enabled",
+      "description": "Debug toolbar packages (Laravel Debugbar, Clockwork) are useful in development but expose query logs, route information, session data, and request details in production.\n",
+      "severity": "Medium",
+      "category": "Debug",
+      "scanner": "rules-scanner",
+      "file": "config/data.php",
+      "line": 116,
+      "code_snippet": "'enabled' =\u003e true,",
+      "remediation": "Ensure debug tools are environment-gated:\n  'enabled' =\u003e env('DEBUGBAR_ENABLED', false),\nAnd never set DEBUGBAR_ENABLED=true in production .env.\n"
+    },
+    {
+      "id": "DEBUG-005",
+      "title": "Debug bar or Clockwork left enabled",
+      "description": "Debug toolbar packages (Laravel Debugbar, Clockwork) are useful in development but expose query logs, route information, session data, and request details in production.\n",
+      "severity": "Medium",
+      "category": "Debug",
+      "scanner": "rules-scanner",
+      "file": "config/location.php",
+      "line": 79,
+      "code_snippet": "'enabled' =\u003e env('LOCATION_TESTING', true),",
+      "remediation": "Ensure debug tools are environment-gated:\n  'enabled' =\u003e env('DEBUGBAR_ENABLED', false),\nAnd never set DEBUGBAR_ENABLED=true in production .env.\n"
+    },
+    {
+      "id": "DEBUG-005",
+      "title": "Debug bar or Clockwork left enabled",
+      "description": "Debug toolbar packages (Laravel Debugbar, Clockwork) are useful in development but expose query logs, route information, session data, and request details in production.\n",
+      "severity": "Medium",
+      "category": "Debug",
+      "scanner": "rules-scanner",
+      "file": "config/modules.php",
+      "line": 29,
+      "code_snippet": "'enabled' =\u003e true,",
+      "remediation": "Ensure debug tools are environment-gated:\n  'enabled' =\u003e env('DEBUGBAR_ENABLED', false),\nAnd never set DEBUGBAR_ENABLED=true in production .env.\n"
+    },
+    {
+      "id": "INJECT-001",
+      "title": "DB::raw() with variable interpolation",
+      "description": "DB::raw() is called with a PHP variable, which may lead to SQL injection if the variable contains unsanitized user input. Laravel's query builder automatically escapes parameters — use bindings instead of raw SQL.\n",
+      "severity": "High",
+      "category": "Injection",
+      "scanner": "rules-scanner",
+      "file": "Modules/Dashboard/app/Actions/GetVisitsGroupedByDimensionAction.php",
+      "line": 12,
+      "code_snippet": "-\u003eselect(DB::raw(\"count(*) as total, {$dimension}\"))",
+      "remediation": "Use parameter bindings:\n  DB::raw('COUNT(*) as count')           // safe — no variables\n  DB::select('SELECT * FROM users WHERE id = ?', [$id])  // safe — bound\nAvoid:\n  DB::raw(\"WHERE name = '$name'\")        // vulnerable\n",
+      "references": [
+        "https://owasp.org/Top10/A03_2021-Injection/",
+        "https://cwe.mitre.org/data/definitions/89.html"
+      ]
+    }
+  ]
+}

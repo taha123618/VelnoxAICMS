@@ -1,0 +1,13 @@
+{
+    "Auth": true,
+    "Builder": true,
+    "Dashboard": true,
+    "Page": true,
+    "Layout": true,
+    "Category": true,
+    "Media": true,
+    "Menu": true,
+    "Testimonial": true,
+    "Contacts": true,
+    "Visits": true
+}

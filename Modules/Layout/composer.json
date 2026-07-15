@@ -1,0 +1,30 @@
+{
+    "name": "zioracms/layout",
+    "description": "",
+    "authors": [
+        {
+            "name": "Gabs Tech",
+            "email": "contact@fusigabs.com"
+        }
+    ],
+    "extra": {
+        "laravel": {
+            "providers": [],
+            "aliases": {
+
+            }
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Modules\\Layout\\": "app/",
+            "Modules\\Layout\\Database\\Factories\\": "database/factories/",
+            "Modules\\Layout\\Database\\Seeders\\": "database/seeders/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Modules\\Layout\\Tests\\": "tests/"
+        }
+    }
+}
