@@ -1,17 +1,15 @@
 {
-    "name": "zioracms/visits",
+    "name": "velnoxaicms/visits",
     "description": "",
     "authors": [
         {
-            "name": "Gabs Tech",
-            "email": "contact@fusigabs.com"
+            "name": "Taha Ahmed",
+            "email": "tahaahmedanees2@gmail.com"
         }
     ],
     "extra": {
         "laravel": {
-            "providers": [
-                
-            ],
+            "providers": [],
             "aliases": {
                 "Visitor": "Modules\\Visits\\Facade\\Visitor"
             }

@@ -1,18 +1,16 @@
 {
-    "name": "zioracms/contacts",
+    "name": "velnoxaicms/contacts",
     "description": "",
     "authors": [
         {
-            "name": "Gabs Tech",
-            "email": "contact@fusigabs.com"
+            "name": "Taha Ahmed",
+            "email": "tahaahmedanees2@gmail.com"
         }
     ],
     "extra": {
         "laravel": {
             "providers": [],
-            "aliases": {
-
-            }
+            "aliases": {}
         }
     },
     "autoload": {

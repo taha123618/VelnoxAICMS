@@ -3,7 +3,7 @@ import { Head, Link } from '@inertiajs/vue3';
 </script>
 
 <template>
-    <Head title="Welcome to ZioraCMS">
+    <Head title="Welcome to VelnoxAICMS">
         <link
             rel="preconnect"
             href="https://rsms.me/" />
@@ -24,7 +24,7 @@ import { Head, Link } from '@inertiajs/vue3';
                     }">
                     <h1
                         class="animate-in slide-in-from-top mb-1 text-lg font-medium">
-                        Welcome to ZioraCMS
+                        Welcome to VelnoxAICMS
                     </h1>
                     <p class="mb-2 text-neutral-500 dark:text-neutral-400">
                         This site is still under construction.<br />
@@ -42,7 +42,7 @@ import { Head, Link } from '@inertiajs/vue3';
                             color="secondary"
                             variant="subtle"
                             label="Go to documentation"
-                            href="https://zioracms.com" />
+                            href="https://velnoxaicms.com" />
                     </div>
                 </UCard>
 

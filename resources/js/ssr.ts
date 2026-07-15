@@ -10,7 +10,7 @@ import { route as ziggyRoute } from 'ziggy-js';
 import '../css/app.css';
 import '../css/fonts.css';
 
-const appName = import.meta.env.VITE_APP_NAME || 'ZioraCMS';
+const appName = import.meta.env.VITE_APP_NAME || 'VelnoxAICMS';
 
 createServer((page) =>
     createInertiaApp({

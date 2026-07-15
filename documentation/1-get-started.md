@@ -3,11 +3,11 @@ As this is a Laravel-based application, your server must meet the minimum requir
 
 ## Set up
 > [!IMPORTANT] 
-> ZioraCMS cannot be installed in > an existing application. It should be used to create a brand new application.
+> VelnoxAICMS cannot be installed in > an existing application. It should be used to create a brand new application.
 
 * Clone the repository
 ```bash:no-line-numbers 
-git clone https://github.com/fusigabs/zioracms.git
+git clone https://github.com/fusigabs/velnoxaicms.git
 ```
 * Set your database credentials in `.env`
 
@@ -42,7 +42,7 @@ This command will seed the database roles and permissions, and provide an intera
 ```bash:no-line-numbers 
 php artisan storage:link
 ```
-In this version of ZioraCMS, files are stored in a local disk, but as this is just a laravel application, you can configure other file storage as necessary. See [Laravel's official documentation](https://laravel.com/docs/12.x/filesystem#main-content) on how to configure file storage.
+In this version of VelnoxAICMS, files are stored in a local disk, but as this is just a laravel application, you can configure other file storage as necessary. See [Laravel's official documentation](https://laravel.com/docs/12.x/filesystem#main-content) on how to configure file storage.
 
 * Run the development server
 ```bash:no-line-numbers 

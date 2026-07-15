@@ -265,10 +265,10 @@ return [
     |
     */
     'composer' => [
-        'vendor' => env('MODULE_VENDOR', 'zioracms'),
+        'vendor' => env('MODULE_VENDOR', 'velnoxaicms'),
         'author' => [
-            'name' => env('MODULE_AUTHOR_NAME', 'Gabs Tech'),
-            'email' => env('MODULE_AUTHOR_EMAIL', 'contact@fusigabs.com'),
+            'name' => env('MODULE_AUTHOR_NAME', 'Taha Ahmed'),
+            'email' => env('MODULE_AUTHOR_EMAIL', 'tahaahmedanees2@gmail.com'),
         ],
         'composer-output' => false,
     ],

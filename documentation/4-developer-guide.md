@@ -1,6 +1,6 @@
 # Developer Guide
 
-This guide helps new developers get the project running quickly and understand the main development workflow for ZioraCMS.
+This guide helps new developers get the project running quickly and understand the main development workflow for VelnoxAICMS.
 
 ## 1. Requirements
 
@@ -16,7 +16,7 @@ Make sure the following are installed locally:
 
 ```bash
 git clone <repository-url>
-cd zioracms
+cd velnoxaicms
 composer install
 npm install
 cp .env.example .env
@@ -29,7 +29,7 @@ Update your `.env` file with your local database credentials:
 DB_CONNECTION=mysql
 DB_HOST=127.0.0.1
 DB_PORT=3306
-DB_DATABASE=zioracms
+DB_DATABASE=velnoxaicms
 DB_USERNAME=root
 DB_PASSWORD=your_password
 ```

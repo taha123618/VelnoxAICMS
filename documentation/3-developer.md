@@ -2,7 +2,7 @@
 
 ## Modular design
 
-ZioraCMS uses the popular [Laravel Modules](https://github.com/nWidart/laravel-modules) package which provides a flexible architecture. All modules are locates in the `Modules` directory. Our recommendation is that if you plan to make changes to the app, create your own modules so that future updates will be seamless and will not conflict with changes you have made to the core modules. Consult the [Laravel Modules](https://laravelmodules.com/) documentation on the commands to use to generate and manage modules.
+VelnoxAICMS uses the popular [Laravel Modules](https://github.com/nWidart/laravel-modules) package which provides a flexible architecture. All modules are locates in the `Modules` directory. Our recommendation is that if you plan to make changes to the app, create your own modules so that future updates will be seamless and will not conflict with changes you have made to the core modules. Consult the [Laravel Modules](https://laravelmodules.com/) documentation on the commands to use to generate and manage modules.
 
 We have also customized Inertia JS to look for view files in modules, so all views that relate to a particular module should be places inside the `resources/views` folder.
 
@@ -21,11 +21,11 @@ public function index()
 
 The above will look for the file `resources/views/index.vue` inside the module named `MyModule`.
 
-However, you are still free to place Inertia page views inside `resources/js/pages` directory just like in any other Inertia.js app. In fact, ZioraCMS uses this directory to serve frontend pages.
+However, you are still free to place Inertia page views inside `resources/js/pages` directory just like in any other Inertia.js app. In fact, VelnoxAICMS uses this directory to serve frontend pages.
 
 ## Data Transfer Objects
 
-ZioraCMS uses Data Transfer Objects to serve data to the frontend. You can generate a new Data Transfer Object inside a module (eg Pages) using the following command:
+VelnoxAICMS uses Data Transfer Objects to serve data to the frontend. You can generate a new Data Transfer Object inside a module (eg Pages) using the following command:
 
 ```bash:no-line-numbers
 php artisan builder:make-data PageData Page
@@ -98,7 +98,7 @@ defineProps<{
 ```
 
 ## Actions
-ZioraCMS makes heavy use of Actions. The intention is to keep controller as light as possible and extract database interaction to Actions. This also has the benefit that Actions can be called from different classes and even across modules, so we do not have to repeat the same query in different places.
+VelnoxAICMS makes heavy use of Actions. The intention is to keep controller as light as possible and extract database interaction to Actions. This also has the benefit that Actions can be called from different classes and even across modules, so we do not have to repeat the same query in different places.
 
 `Laravel Modules` package comes with a generator for actions which can be called as follows:
 ```bash:no-line-numbers
@@ -120,9 +120,9 @@ public function index()
 ```
 
 ## Create new Builder components
-ZioraCMS comes with some pre-defined, draggable components. However, you are not limited to this set of components. You can build your own components by just looking at how the core components are designed. That is the beauty of OpenSource.
+VelnoxAICMS comes with some pre-defined, draggable components. However, you are not limited to this set of components. You can build your own components by just looking at how the core components are designed. That is the beauty of OpenSource.
 
-ZioraCMS makes it easy to generate a new Builder component through a single command:
+VelnoxAICMS makes it easy to generate a new Builder component through a single command:
 
 ```bash:no-line-numbers
 php artisan builder:make

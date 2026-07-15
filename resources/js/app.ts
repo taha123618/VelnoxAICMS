@@ -26,7 +26,7 @@ declare module 'vite/client' {
     }
 }
 
-const appName = import.meta.env.VITE_APP_NAME || 'ZioraCMS';
+const appName = import.meta.env.VITE_APP_NAME || 'VelnoxAICMS';
 const pinia = createPinia();
 
 createInertiaApp({

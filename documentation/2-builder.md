@@ -43,13 +43,13 @@ Start by building your layouts before moving on to pages and posts.
 
 ## Versioning pages and posts
 
-ZioraCMS allows you to edit versions of the page without publishing them to the front end. When a page or post is being edited, you can choose to `Save as draft`. If so, the current version will be saved but will not be published. You can also do `Save and publish` which will both save and publish the current changes.
+VelnoxAICMS allows you to edit versions of the page without publishing them to the front end. When a page or post is being edited, you can choose to `Save as draft`. If so, the current version will be saved but will not be published. You can also do `Save and publish` which will both save and publish the current changes.
 Click on the `Preview` button to see how the current draft changes will look when published.
 ![Buttons](./images/publish-buttons.png)
 
 ## File manager
 
-ZioraCMS has a built-in file manager. For now, only images (jpeg, gif, png) are allowed but there are plans to expand to other file types in the future.
+VelnoxAICMS has a built-in file manager. For now, only images (jpeg, gif, png) are allowed but there are plans to expand to other file types in the future.
 
 When editing pages in the builder, you can pick images (eg background images) simply by clicking on the button in the element settings. This will launch the file manager where you can pick an existing image or upload a new image and then pick it.
 
@@ -61,7 +61,7 @@ Files are uploaded using `chunk uploads` so, even though not quite advisable, la
 
 Admin users can manage users and their roles. They can also control what each role can do using predefined permissions. New users can be created and assigned roles. Once users are created, they can go to the interface to reset their passwords or login using the password created by admin.
 
-ZioraCMS uses [Spatie Permissions](https://spatie.be/docs/laravel-permission/v6/introduction) package to assign permissions to roles. Then it uses policies to authorize actions both in the backend and front end. As site admin, you can control the permissions for each role from then interface.
+VelnoxAICMS uses [Spatie Permissions](https://spatie.be/docs/laravel-permission/v6/introduction) package to assign permissions to roles. Then it uses policies to authorize actions both in the backend and front end. As site admin, you can control the permissions for each role from then interface.
 ![Permissions](./images/permissions.png)
 
 The application comes with some predefined roles, but you are allowed to create new roles as required.
