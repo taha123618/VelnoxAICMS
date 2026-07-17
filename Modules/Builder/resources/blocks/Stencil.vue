@@ -12,6 +12,8 @@
         <img
             :src="block.image"
             class="rounded-sm"
+            loading="eager"
+            decoding="sync"
         />
         <p class="text-xs">
             {{ block.label }}

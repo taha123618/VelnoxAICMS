@@ -115,6 +115,7 @@ updated: string | null;
 statusColor: string | null;
 content?: Array<any>;
 can?: Array<any>;
+isDifferentFromPublishedVersion: boolean;
 };
 }
 declare namespace Modules.Media.Data {

@@ -51,7 +51,7 @@ export const useDnD = (element: ZioraElement) => {
     });
 
     function dragCall(currentEl: HTMLElement) {
-        if (!isEditable.value) {
+        if (!isEditable.value || element.props?.isLocked) {
             return () => void 0;
         }
 

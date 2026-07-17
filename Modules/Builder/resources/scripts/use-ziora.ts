@@ -122,6 +122,11 @@ export const useZiora = defineStore('zioraStore', () => {
     }
 
     function deleteElement(elementId: string) {
+        const target = findElement(editorElements.value, elementId);
+        if (target?.props?.isLocked) {
+            alert('This block is locked and cannot be deleted.');
+            return;
+        }
         const results = removeElement(editorElements.value, elementId);
         editorElements.value = [
             ZioraElement.fromObject(results[0] as TElement),
@@ -185,6 +190,11 @@ export const useZiora = defineStore('zioraStore', () => {
             return;
         }
 
+        if (item.props?.isLocked) {
+            alert('This block is locked and cannot be moved.');
+            return;
+        }
+
         if (insertAt == InsertLocation.After) {
             let result = removeElement(editorElements.value, targetElementId);
             result = insertElementAfter(result, targetParentId, item);
@@ -208,6 +218,10 @@ export const useZiora = defineStore('zioraStore', () => {
     }
 
     function duplicateElement(element: ZioraElement) {
+        if (element.props?.isLocked) {
+            alert('This block is locked and cannot be duplicated.');
+            return;
+        }
         const elementsArray = deepCopy(editorElements.value);
         const newElement = ZioraElement.newFromObject({ ...element });
         const result = insertElementAfter(

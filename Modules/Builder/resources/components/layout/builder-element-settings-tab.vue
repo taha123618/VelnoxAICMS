@@ -47,13 +47,13 @@
 
 <script setup lang="ts">
 import BuilderSelect from '@modules/Builder/resources/components/form/builder-select.vue';
+import AdvancedSettings from '@modules/Builder/resources/components/settings/advanced-settings.vue';
 import { elementSettings } from '@modules/Builder/resources/draggables';
 import { useZiora } from '@modules/Builder/resources/scripts/use-ziora';
 import type { AccordionItem } from '@nuxt/ui';
 import { computed } from 'vue';
 
 const store = useZiora();
-
 
 const settingsList = computed<Record<string, any>>(() => {
     if (!store.selectedElement) return [];
@@ -64,10 +64,16 @@ const settingsList = computed<Record<string, any>>(() => {
     if (!item) {
         return [];
     }
-    return item.settings;
-
-    // return item.settings.flatMap(i => i.content)
-
+    
+    // Auto-append Advanced Settings section to all elements
+    return [
+        ...item.settings,
+        {
+            name: 'Advanced settings',
+            id: 'advanced-settings',
+            component: AdvancedSettings
+        }
+    ];
 });
 </script>
 

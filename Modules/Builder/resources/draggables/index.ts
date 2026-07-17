@@ -14,29 +14,54 @@ const configs = Object.entries(configModules).map(([, module]) => {
 
 export const elementGroups: TElementGroup[] = [
     {
-        id: 'containers',
-        name: 'Containers',
-        components: configs.filter((x) => x.category == 'containers'),
+        id: 'layout',
+        name: 'Layout',
+        components: configs.filter((x) => x.category == 'layout' || x.category == 'containers' || x.type == 'accordion' || x.type == 'tabs' || x.type == 'navigation'),
     },
     {
-        id: 'typography',
-        name: 'Typography',
-        components: configs.filter((x) => x.category == 'typography'),
+        id: 'content',
+        name: 'Content',
+        components: configs.filter((x) => x.category == 'content' || x.category == 'typography'),
     },
     {
         id: 'media',
         name: 'Media',
-        components: configs.filter((x) => x.category == 'media'),
+        components: configs.filter((x) => x.category == 'media' && x.type !== 'avatar'),
     },
     {
-        id: 'components',
-        name: 'Components',
-        components: configs.filter((x) => x.category == 'components'),
+        id: 'interactive',
+        name: 'Interactive',
+        components: configs.filter((x) => x.category == 'interactive'),
     },
     {
         id: 'forms',
         name: 'Forms',
         components: configs.filter((x) => x.category == 'forms'),
+    },
+    {
+        id: 'marketing',
+        name: 'Marketing',
+        components: configs.filter((x) => x.category == 'marketing' || x.type == 'testimonials'),
+    },
+    {
+        id: 'ecommerce',
+        name: 'E-commerce',
+        components: configs.filter((x) => x.category == 'ecommerce'),
+    },
+    {
+        id: 'social',
+        name: 'Social',
+        components: configs.filter((x) => x.category == 'social' || x.type == 'avatar'),
+    },
+    {
+        id: 'blog',
+        name: 'Blog',
+        components: configs.filter((x) => x.category == 'blog' || x.type == 'post-list'),
+    },
+    {
+        id: 'advanced',
+        name: 'Advanced',
+        components: configs.filter((x) => x.category == 'advanced'),
     },
 ];
 

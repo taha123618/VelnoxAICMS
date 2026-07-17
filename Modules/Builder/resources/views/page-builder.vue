@@ -262,7 +262,7 @@
         </div>
 
         <aside
-            :class="showComponentsPanel ? 'w-56' : 'w-0'"
+            :class="showComponentsPanel ? 'w-64' : 'w-0'"
             class="fixed top-12 bottom-0 left-0 overflow-hidden border-r border-neutral-700 bg-neutral-900 transition-[left,right,width] duration-200 ease-linear">
             <UCard
                 variant="solid"
@@ -290,6 +290,9 @@
                                 </template>
                                 <template #blocks>
                                     <BuilderBlocksTab />
+                                </template>
+                                <template #globals>
+                                    <BuilderGlobalsTab />
                                 </template>
                             </UTabs>
                         </div>
@@ -346,6 +349,8 @@
                 </div>
             </UCard>
         </aside>
+        
+        <CommandPalette v-model:open="showCommandPalette" />
     </UApp>
 </template>
 
@@ -364,6 +369,8 @@ import ElementTree from '@modules/Builder/resources/components/element-tree/elem
 import BuilderBlocksTab from '@modules/Builder/resources/components/layout/builder-blocks-tab.vue';
 import BuilderElementSettings from '@modules/Builder/resources/components/layout/builder-element-settings-tab.vue';
 import ZioraElementsTab from '@modules/Builder/resources/components/layout/builder-elements-tab.vue';
+import BuilderGlobalsTab from '@modules/Builder/resources/components/layout/builder-globals-tab.vue';
+import CommandPalette from '@modules/Builder/resources/components/layout/command-palette.vue';
 import { DEVICES } from '@modules/Builder/resources/scripts/constants';
 import {
     DeviceType,
@@ -412,6 +419,7 @@ const zoomLevel = ref(0.92);
 const panLevel = ref(initialPan);
 const showComponentsPanel = ref(true);
 const showSettingsPanel = ref(true);
+const showCommandPalette = ref(false);
 
 const tabs = [
     {
@@ -424,6 +432,11 @@ const tabs = [
         icon: 'ph:cube',
         slot: 'blocks' as const,
     },
+    {
+        label: 'Globals',
+        icon: 'ph:palette',
+        slot: 'globals' as const,
+    },
 ] satisfies TabsItem[];
 
 // Memoize style extraction for performance
@@ -433,9 +446,35 @@ const computedLayoutStyles = computed(() =>
 const computedEditorStyles = computed(() =>
     extractStyles(store.editorElements),
 );
+const computedGlobalThemeStyles = computed(() => {
+    const body = store.elements[0];
+    if (!body || !body.props?.theme) {
+        return `
+            :root {
+                --color-primary: #3b82f6;
+                --color-background: #ffffff;
+                --font-family: 'Inter', sans-serif;
+                --border-radius: 8px;
+            }
+        `;
+    }
+    const theme = body.props.theme;
+    return `
+        :root {
+            --color-primary: ${theme.primaryColor || '#3b82f6'};
+            --color-background: ${theme.backgroundColor || '#ffffff'};
+            --font-family: ${theme.fontFamily || 'Inter, sans-serif'};
+            --border-radius: ${theme.borderRadius !== undefined ? theme.borderRadius : 8}px;
+        }
+    `;
+});
 
 useHead({
     style: [
+        {
+            textContent: computedGlobalThemeStyles,
+            id: 'global_theme_styles',
+        },
         {
             textContent: computedLayoutStyles,
             id: 'live_layout_styles',
@@ -695,6 +734,9 @@ defineShortcuts({
         if (store.history.canRedo) {
             store.history?.redo();
         }
+    },
+    meta_k: () => {
+        showCommandPalette.value = !showCommandPalette.value;
     },
 });
 </script>

@@ -23,6 +23,7 @@ export default class ZioraElement {
     icon: string;
     children: ZioraElement[];
     props: Record<string, any>;
+    parent: any;
 
     constructor(args: TElement) {
         this.id = args.id;
@@ -32,7 +33,15 @@ export default class ZioraElement {
         this.name = args.name;
         this.icon = args.icon;
         this.children = args.children;
-        this.props = deepCopy(args.props);
+        this.props = deepCopy(args.props) || {};
+        if (!this.props.styles) {
+            this.props.styles = {
+                custom: '',
+                desktop: { default: {}, hover: {} },
+                tablet: { default: {}, hover: {} },
+                mobile: { default: {}, hover: {} },
+            };
+        }
     }
 
     setName(name: string) {
@@ -474,7 +483,7 @@ export default class ZioraElement {
 
         return fields;
     }
-    
+
     getFormElementInitialValue() {
         if (this.type !== 'forminput') {
             return;
@@ -509,8 +518,8 @@ export default class ZioraElement {
             id: getId(),
             children: Array.isArray(obj.children)
                 ? obj.children.map(
-                      ZioraElement.newFromObject.bind(ZioraElement),
-                  )
+                    ZioraElement.newFromObject.bind(ZioraElement),
+                )
                 : obj.children,
         });
     }
