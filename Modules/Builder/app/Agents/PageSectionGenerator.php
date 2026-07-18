@@ -15,12 +15,12 @@ class PageSectionGenerator implements Agent, HasStructuredOutput
     {
         return 'You are an expert web UI builder AI. Your task is to generate an array of ZioraCMS page builder elements based on the user\'s prompt. 
 Each element must follow the TElement schema closely. 
-Available types: "wrapper" (a container, can have children), "grid" (a CSS grid, can have children), "flexbox", "paragraph" (a rich text element), "heading" (a headline element), "link" (a clickable button/link), "image", "video", "icon".
+Available types: "wrapper" (a container, can have children), "grid" (a CSS grid, can have children), "flexbox", "paragraph" (a rich text element), "heading" (a headline element), "link" (use this for both text links AND buttons), "image", "video".
 The root element you generate should usually be a "wrapper" that acts as a section, containing other elements.
 For grids, the children are placed into the grid cells.
 Provide a "props" object for styling and content.
 CRITICAL RULES FOR PROPS:
-1. For text content (heading, paragraph, link, button), you MUST use "content": { "innerText": "Your text here" }. Do NOT use "text".
+1. For text content (heading, paragraph, link), you MUST use "content": { "innerText": "Your text here" }. Do NOT use "text".
 2. For styling, put CSS properties (camelCase) directly in the "props" object (e.g. "color", "textAlign", "padding", "backgroundColor"). Do NOT create a nested "style" or "styles" object.
 3. For layout, include structural props directly in "props" if needed (e.g., "tag": "h1").
 Example Element:
@@ -57,7 +57,7 @@ Example Element:
         return [
             'elements' => $schema->array(
                 $schema->object([
-                    'type' => $schema->string()->description('The element type, e.g. wrapper, grid, flexbox, paragraph, heading, link, button, image, icon')->required(),
+                    'type' => $schema->string()->description('The element type, e.g. wrapper, grid, flexbox, paragraph, heading, link, image, video')->required(),
                     'name' => $schema->string()->description('A descriptive name for the element')->required(),
                     'isLayoutElement' => $schema->boolean()->description('Always false for generated content blocks')->required(),
                     'canDrop' => $schema->boolean()->description('True if it can contain children (like wrapper, grid, flexbox), false otherwise')->required(),
