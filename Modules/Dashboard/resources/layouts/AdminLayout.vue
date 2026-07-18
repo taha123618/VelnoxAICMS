@@ -217,6 +217,45 @@ const mainNavItems = computed<NavigationMenuItem[]>(() => [
             },
         ],
     },
+    {
+        label: 'Marketplace',
+        icon: 'ph:storefront',
+        active: route().current('marketplace.*'),
+        onSelect: () => router.visit(route('marketplace.index')),
+    },
+    {
+        label: 'Headless CMS',
+        type: 'label',
+        icon: 'ph:database',
+        trailingIcon: 'ph:minus',
+        open: true,
+        children: [
+            {
+                label: 'Collections',
+                active: route().current('admin.collections*'),
+                onSelect: () => router.visit(route('admin.collections.index')),
+            },
+        ],
+    },
+    {
+        label: 'Platform Settings',
+        type: 'label',
+        icon: 'ph:gear',
+        trailingIcon: 'ph:minus',
+        open: true,
+        children: [
+            {
+                label: 'Languages',
+                active: route().current('admin.languages*'),
+                onSelect: () => router.visit(route('admin.languages.index')),
+            },
+            {
+                label: 'Webhooks',
+                active: route().current('admin.webhooks*'),
+                onSelect: () => router.visit(route('admin.webhooks.index')),
+            },
+        ],
+    },
 ]);
 
 const userMenuItems = ref<DropdownMenuItem[]>([
