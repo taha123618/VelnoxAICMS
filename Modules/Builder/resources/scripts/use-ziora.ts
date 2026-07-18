@@ -123,9 +123,7 @@ export const useZiora = defineStore('zioraStore', () => {
 
     function deleteElement(elementId: string) {
         const results = removeElement(editorElements.value, elementId);
-        editorElements.value = [
-            ZioraElement.fromObject(results[0] as TElement),
-        ];
+        editorElements.value = results.map(el => ZioraElement.fromObject(el as TElement));
         clearSelectedElement();
     }
 
@@ -146,18 +144,14 @@ export const useZiora = defineStore('zioraStore', () => {
                 targetParentId,
                 newItem,
             );
-            editorElements.value = [
-                ZioraElement.fromObject(result[0] as TElement),
-            ];
+            editorElements.value = result.map(el => ZioraElement.fromObject(el as TElement));
         } else if (insertAt == InsertLocation.Before) {
             const result = insertElementBefore(
                 elementsArray,
                 targetParentId,
                 newItem,
             );
-            editorElements.value = [
-                ZioraElement.fromObject(result[0] as TElement),
-            ];
+            editorElements.value = result.map(el => ZioraElement.fromObject(el as TElement));
         } else {
             const result = addElementToParent(
                 elementsArray,
@@ -165,9 +159,7 @@ export const useZiora = defineStore('zioraStore', () => {
                 newItem,
             );
 
-            editorElements.value = [
-                ZioraElement.fromObject(result[0] as TElement),
-            ];
+            editorElements.value = result.map(el => ZioraElement.fromObject(el as TElement));
         }
     }
 
@@ -188,22 +180,16 @@ export const useZiora = defineStore('zioraStore', () => {
         if (insertAt == InsertLocation.After) {
             let result = removeElement(editorElements.value, targetElementId);
             result = insertElementAfter(result, targetParentId, item);
-            editorElements.value = [
-                ZioraElement.fromObject(result[0] as TElement),
-            ];
+            editorElements.value = result.map(el => ZioraElement.fromObject(el as TElement));
         } else if (insertAt == InsertLocation.Before) {
             let result = removeElement(editorElements.value, targetElementId);
             result = insertElementBefore(result, targetParentId, item);
-            editorElements.value = [
-                ZioraElement.fromObject(result[0] as TElement),
-            ];
+            editorElements.value = result.map(el => ZioraElement.fromObject(el as TElement));
         } else {
             // make child
             let result = removeElement(editorElements.value, targetElementId);
             result = addElementToParent(result, targetParentId, item);
-            editorElements.value = [
-                ZioraElement.fromObject(result[0] as TElement),
-            ];
+            editorElements.value = result.map(el => ZioraElement.fromObject(el as TElement));
         }
     }
 
@@ -215,9 +201,7 @@ export const useZiora = defineStore('zioraStore', () => {
             element.id,
             newElement,
         );
-        editorElements.value = [
-            ZioraElement.fromObject(result[0] as TElement),
-        ];
+        editorElements.value = result.map(el => ZioraElement.fromObject(el as TElement));
     }
 
     function pasteElement(targetParent: ZioraElement) {
@@ -255,9 +239,7 @@ export const useZiora = defineStore('zioraStore', () => {
 
         result = addElementToParent(result, targetParent.id, newElement);
 
-        editorElements.value = [
-            ZioraElement.fromObject(result[0] as TElement),
-        ];
+        editorElements.value = result.map(el => ZioraElement.fromObject(el as TElement));
 
         editor.cutOrCopiedElement = null;
         editor.cutOrCopyAction = null;

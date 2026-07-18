@@ -618,10 +618,8 @@ async function generateAiSection() {
             // Convert to ZioraElement instances with correctly mapped styles
             const newElements = response.data.elements.map((el: any) => ZioraElement.newFromObject(transformAiElement(el)));
             
-            // Insert at the bottom of the page
-            newElements.forEach((el: ZioraElement) => {
-                store.elements.push(el);
-            });
+            // Insert at the bottom of the page using the store's setter to ensure reactivity and history tracking
+            store.setElements([...store.elements, ...newElements]);
             
             toast.add({ title: 'AI Section Generated successfully!', icon: 'ph:check-circle', color: 'success' });
             showAiModal.value = false;
