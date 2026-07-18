@@ -2,26 +2,25 @@
 
 namespace Modules\Page\Http\Controllers;
 
-use Inertia\Inertia;
-use Illuminate\Http\Request;
-use Modules\Page\Models\Page;
-use Modules\Menu\Data\MenuData;
-use Modules\Page\Data\PageData;
-use Modules\Layout\Data\LayoutData;
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Redirect;
+use Inertia\Inertia;
+use Modules\Layout\Actions\GetLayoutDropdownOptionsAction;
+use Modules\Layout\Data\LayoutData;
+use Modules\Menu\Actions\GetAllMenusAction;
+use Modules\Menu\Data\MenuData;
 use Modules\Page\Actions\CreatePageAction;
 use Modules\Page\Actions\DeletePageAction;
-use Modules\Menu\Actions\GetAllMenusAction;
 use Modules\Page\Actions\SearchPagesAction;
+use Modules\Page\Data\PageData;
 use Modules\Page\Http\Requests\CreatePageRequest;
-use Modules\Layout\Actions\GetLayoutDropdownOptionsAction;
+use Modules\Page\Models\Page;
 
 class PageController extends Controller
 {
-
     public function index(Request $request)
     {
         $filters = $request->only(['search', 'sort']);
@@ -30,7 +29,7 @@ class PageController extends Controller
 
         return Inertia::render('Page::pages/index', [
             'data' => PageData::collect($data),
-            'filters' => $filters
+            'filters' => $filters,
         ]);
     }
 
@@ -39,17 +38,17 @@ class PageController extends Controller
         Gate::denyIf(Auth::user()->cannot('create_pages'));
 
         return Inertia::render('Page::pages/create', [
-            'layouts' => app(GetLayoutDropdownOptionsAction::class)->handle()
+            'layouts' => app(GetLayoutDropdownOptionsAction::class)->handle(),
         ]);
     }
 
     public function store(CreatePageRequest $request)
     {
         Gate::denyIf(Auth::user()->cannot('create_pages'));
-        
+
         app(CreatePageAction::class)->handle($request);
 
-        return Redirect::back()->with('success', 'Page created!');;
+        return Redirect::back()->with('success', 'Page created!');
     }
 
     public function edit(Page $page)
@@ -60,10 +59,9 @@ class PageController extends Controller
             'page' => PageData::fromModel($page),
             'layouts' => app(GetLayoutDropdownOptionsAction::class)->handle(),
             'layout' => LayoutData::fromModel($page->layout),
-            'menus' => MenuData::collect(app(GetAllMenusAction::class)->handle())
+            'menus' => MenuData::collect(app(GetAllMenusAction::class)->handle()),
         ]);
     }
-
 
     public function destroy(Page $page)
     {

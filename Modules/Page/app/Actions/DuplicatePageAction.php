@@ -30,7 +30,7 @@ class DuplicatePageAction
         $newPage = $page->replicate()->fill([
             'is_frontpage' => false,
             'published_at' => null,
-            'title' => $newTitle
+            'title' => $newTitle,
         ]);
 
         $newPage->save();

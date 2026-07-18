@@ -28,9 +28,8 @@ class AuthorizationData extends Data
         public bool $update_roles,
         public bool $create_testimonials,
         public bool $update_testimonials
-    ){}
+    ) {}
 
-    
     public static function fromModel(User $model): self
     {
         return new self(
@@ -54,5 +53,4 @@ class AuthorizationData extends Data
             update_testimonials: $model->can('update_testimonials'),
         );
     }
-    
 }

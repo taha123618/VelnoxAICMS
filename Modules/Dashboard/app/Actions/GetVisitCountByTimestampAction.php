@@ -11,9 +11,9 @@ class GetVisitCountByTimestampAction
 
         return DB::table('visits')
             ->selectRaw(
-                "UNIX_TIMESTAMP(created_at) as grouped_time, 
+                'created_at as grouped_time, 
                     COUNT(*) as total_views
-                "
+                '
             )
             ->groupBy('grouped_time')
             ->orderBy('grouped_time')

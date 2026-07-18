@@ -1,6 +1,7 @@
 <?php
 
 use Modules\Auth\Models\User;
+
 uses(Tests\TestCase::class);
 
 uses(\Illuminate\Foundation\Testing\RefreshDatabase::class);
@@ -51,7 +52,7 @@ test('email verification status is unchanged when the email address is unchanged
 
     $response
         ->assertSessionHasNoErrors();
-        // ->assertRedirect('/cp/settings/profile');
+    // ->assertRedirect('/cp/settings/profile');
 
     expect($user->refresh()->email_verified_at)->not->toBeNull();
 });

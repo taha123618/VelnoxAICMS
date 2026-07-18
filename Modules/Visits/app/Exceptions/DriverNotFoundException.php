@@ -1,6 +1,6 @@
 <?php
-namespace Modules\Visits\Exceptions;
 
+namespace Modules\Visits\Exceptions;
 
 class DriverNotFoundException extends \Exception
 {

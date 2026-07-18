@@ -245,6 +245,21 @@ const mainNavItems = computed<NavigationMenuItem[]>(() => [
         open: true,
         children: [
             {
+                label: 'General Settings',
+                active: route().current('settings.*'),
+                onSelect: () => router.visit(route('settings.index')),
+            },
+            {
+                label: 'API Tokens',
+                active: route().current('api-tokens.*'),
+                onSelect: () => router.visit(route('api-tokens.index')),
+            },
+            {
+                label: 'Audit Log',
+                active: route().current('audit-log.*'),
+                onSelect: () => router.visit(route('audit-log.index')),
+            },
+            {
                 label: 'Languages',
                 active: route().current('admin.languages*'),
                 onSelect: () => router.visit(route('admin.languages.index')),

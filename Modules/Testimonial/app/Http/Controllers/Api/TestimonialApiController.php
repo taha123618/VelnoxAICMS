@@ -2,9 +2,8 @@
 
 namespace Modules\Testimonial\Http\Controllers\Api;
 
-use Inertia\Inertia;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 use Modules\Testimonial\Data\TestimonialData;
 use Modules\Testimonial\Models\Testimonial;
 

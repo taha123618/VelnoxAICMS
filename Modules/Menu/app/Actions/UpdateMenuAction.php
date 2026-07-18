@@ -2,20 +2,21 @@
 
 namespace Modules\Menu\Actions;
 
+use Modules\Menu\Http\Requests\UpdateMenuRequest;
 use Modules\Menu\Models\Menu;
 use Modules\Menu\Models\MenuItem;
-use Modules\Menu\Http\Requests\UpdateMenuRequest;
 
 class UpdateMenuAction
 {
     public function handle(UpdateMenuRequest $request, Menu $menu)
     {
         $menu->update([
-            'name' => $request->name
+            'name' => $request->name,
         ]);
 
         if (empty($request->items)) {
             $menu->items()->delete();
+
             return;
         }
 
@@ -29,7 +30,6 @@ class UpdateMenuAction
             $this->processMenuItem($item, null, $idMap, $index);
         }
     }
-
 
     private function processMenuItem(array $item, ?string $parentId, array &$idMap, int $sortOrder)
     {

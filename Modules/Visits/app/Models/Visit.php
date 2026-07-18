@@ -9,13 +9,13 @@ use Illuminate\Support\Arr;
 
 class Visit extends BaseModel
 {
-
     protected $casts = [
         'data' => 'json',
-        'request'   => 'array',
+        'request' => 'array',
         'languages' => 'array',
-        'headers'   => 'array',
+        'headers' => 'array',
     ];
+
     public function visitable()
     {
         return $this->morphTo('visitable');
@@ -28,9 +28,10 @@ class Visit extends BaseModel
 
     public function getData(string $key)
     {
-        if (!$this->data || !is_array($this->data)) {
+        if (! $this->data || ! is_array($this->data)) {
             return null;
         }
+
         return Arr::get($this->data, $key);
     }
 }

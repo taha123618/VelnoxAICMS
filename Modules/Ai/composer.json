@@ -1,0 +1,30 @@
+{
+    "name": "velnoxaicms/ai",
+    "description": "",
+    "authors": [
+        {
+            "name": "Taha Ahmed",
+            "email": "tahaahmedanees2@gmail.com"
+        }
+    ],
+    "extra": {
+        "laravel": {
+            "providers": [],
+            "aliases": {
+
+            }
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Modules\\Ai\\": "app/",
+            "Modules\\Ai\\Database\\Factories\\": "database/factories/",
+            "Modules\\Ai\\Database\\Seeders\\": "database/seeders/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Modules\\Ai\\Tests\\": "tests/"
+        }
+    }
+}

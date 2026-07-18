@@ -4,8 +4,8 @@ namespace Modules\Page\Data;
 
 use App\Enums\Status;
 use Modules\Page\Enums\PageType;
-use Spatie\LaravelData\Data;
 use Modules\Page\Models\Page;
+use Spatie\LaravelData\Data;
 use Spatie\LaravelData\Optional;
 use Spatie\TypeScriptTransformer\Attributes\TypeScript;
 
@@ -25,9 +25,9 @@ class PostData extends Data
         public string $statusColor,
         public string $url,
         public bool $isPublished,
-        public string|null $description,
-        public string|null $excerpt,
-        public string|null $featuredImage,
+        public ?string $description,
+        public ?string $excerpt,
+        public ?string $featuredImage,
         public array $content,
         public array|Optional $keywords,
         public string $created_at,

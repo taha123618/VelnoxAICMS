@@ -15,5 +15,5 @@ class DashboardData extends Data
         public array|Collection $visits_by_browser,
         public array|Collection $visits_by_url,
         public DashboardStatsData $stats
-    ){}
+    ) {}
 }

@@ -8,7 +8,7 @@ return [
 
     'auto_discover_types' => [
         app_path(),
-        base_path('Modules')
+        base_path('Modules'),
     ],
 
     /*
@@ -19,7 +19,7 @@ return [
 
     'collectors' => [
         Spatie\TypeScriptTransformer\Collectors\DefaultCollector::class,
-        Spatie\TypeScriptTransformer\Collectors\EnumCollector::class
+        Spatie\TypeScriptTransformer\Collectors\EnumCollector::class,
     ],
 
     /*

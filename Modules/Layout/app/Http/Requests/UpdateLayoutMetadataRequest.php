@@ -2,8 +2,8 @@
 
 namespace Modules\Layout\Http\Requests;
 
-use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UpdateLayoutMetadataRequest extends FormRequest
 {
@@ -13,8 +13,8 @@ class UpdateLayoutMetadataRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['required', 'string', 'max:255', 
-                Rule::unique('layouts', 'name')->ignoreModel($this->layout)
+            'name' => ['required', 'string', 'max:255',
+                Rule::unique('layouts', 'name')->ignoreModel($this->layout),
             ],
         ];
     }

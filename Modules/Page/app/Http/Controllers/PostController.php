@@ -2,36 +2,36 @@
 
 namespace Modules\Page\Http\Controllers;
 
-use Inertia\Inertia;
-use Illuminate\Http\Request;
-use Modules\Page\Models\Page;
-use Modules\Menu\Data\MenuData;
-use Modules\Page\Data\PostData;
-use Modules\Layout\Data\LayoutData;
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Redirect;
+use Inertia\Inertia;
 use Modules\Category\Actions\GetCategoryDropdownOptionsAction;
 use Modules\Layout\Actions\GetLayoutDropdownOptionsAction;
+use Modules\Layout\Data\LayoutData;
 use Modules\Menu\Actions\GetAllMenusAction;
+use Modules\Menu\Data\MenuData;
 use Modules\Page\Actions\CreatePostAction;
 use Modules\Page\Actions\DeletePostAction;
 use Modules\Page\Actions\SearchPostsAction;
+use Modules\Page\Data\PostData;
 use Modules\Page\Http\Requests\CreatePostRequest;
+use Modules\Page\Models\Page;
 
 class PostController extends Controller
 {
     public function index(Request $request)
     {
-        
+
         $filters = $request->only(['search', 'sort']);
 
         $data = app(SearchPostsAction::class)->handle($request);
 
         return Inertia::render('Page::posts/index', [
             'data' => PostData::collect($data),
-            'filters' => $filters
+            'filters' => $filters,
         ]);
     }
 
@@ -45,7 +45,7 @@ class PostController extends Controller
 
         return Inertia::render('Page::posts/create', [
             'layouts' => $layouts,
-            'categories' => $categories
+            'categories' => $categories,
         ]);
     }
 
@@ -68,7 +68,7 @@ class PostController extends Controller
             'layouts' => app(GetLayoutDropdownOptionsAction::class)->handle(),
             'post' => PostData::fromModel($post),
             'layout' => LayoutData::fromModel($post->layout),
-            'menus' => MenuData::collect(app(GetAllMenusAction::class)->handle())
+            'menus' => MenuData::collect(app(GetAllMenusAction::class)->handle()),
         ]);
     }
 

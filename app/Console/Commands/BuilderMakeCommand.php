@@ -2,20 +2,20 @@
 
 namespace App\Console\Commands;
 
-use Illuminate\Support\Str;
-use Nwidart\Modules\Support\Stub;
-use function Laravel\Prompts\text;
-use function Laravel\Prompts\select;
-use Nwidart\Modules\Generators\FileGenerator;
-use Symfony\Component\Console\Input\InputArgument;
-use Nwidart\Modules\Commands\Make\GeneratorCommand;
 use Illuminate\Contracts\Console\PromptsForMissingInput;
-use Nwidart\Modules\Support\Config\GenerateConfigReader;
+use Illuminate\Support\Str;
+use Nwidart\Modules\Commands\Make\GeneratorCommand;
 use Nwidart\Modules\Exceptions\FileAlreadyExistException;
+use Nwidart\Modules\Generators\FileGenerator;
+use Nwidart\Modules\Support\Config\GenerateConfigReader;
+use Nwidart\Modules\Support\Stub;
+use Symfony\Component\Console\Input\InputArgument;
+
+use function Laravel\Prompts\select;
+use function Laravel\Prompts\text;
 
 class BuilderMakeCommand extends GeneratorCommand implements PromptsForMissingInput
 {
-
     protected $signature = 'builder:make {name} {category}';
 
     protected $description = 'Create a new builder element.';
@@ -23,11 +23,11 @@ class BuilderMakeCommand extends GeneratorCommand implements PromptsForMissingIn
     protected function promptForMissingArgumentsUsing(): array
     {
         return [
-            'name' => fn() => text(
+            'name' => fn () => text(
                 label: 'Enter a name for the new Builder element',
                 validate: ['name' => 'required|max:25|alpha_dash']
             ),
-            'category' => fn() => select(
+            'category' => fn () => select(
                 label: 'Select an element category',
                 options: [
                     'containers' => 'Container element',
@@ -61,7 +61,6 @@ class BuilderMakeCommand extends GeneratorCommand implements PromptsForMissingIn
         $settingsContent = $this->getSettingsContents();
         $settingsPath = str_replace('\\', '/', $this->getSettingsDestinationFilePath());
 
-
         try {
             $this->components->task("Generating file {$path}", function () use ($path, $contents, $configContent, $configPath, $renderContent, $renderPath, $settingsContent, $settingsPath) {
                 $overwriteFile = $this->hasOption('force') ? $this->option('force') : false;
@@ -73,6 +72,7 @@ class BuilderMakeCommand extends GeneratorCommand implements PromptsForMissingIn
             });
         } catch (FileAlreadyExistException $e) {
             $this->components->error("File : {$path} already exists.");
+
             return E_ERROR;
         }
 
@@ -107,7 +107,6 @@ class BuilderMakeCommand extends GeneratorCommand implements PromptsForMissingIn
         ]))->render();
     }
 
-
     protected function getElementStubName(): string
     {
         return '/builder/element.stub';
@@ -115,7 +114,7 @@ class BuilderMakeCommand extends GeneratorCommand implements PromptsForMissingIn
 
     protected function getBaseDraggablePath(): string
     {
-        return GenerateConfigReader::read('draggables')->getPath() . '/' . $this->getElementCategory();
+        return GenerateConfigReader::read('draggables')->getPath().'/'.$this->getElementCategory();
     }
 
     public function getDestinationFilePath(): string
@@ -126,7 +125,7 @@ class BuilderMakeCommand extends GeneratorCommand implements PromptsForMissingIn
 
         $filePath = $this->getBaseDraggablePath();
 
-        return $path . $filePath . '/' . $elementName . '/' . $elementName . '.vue';
+        return $path.$filePath.'/'.$elementName.'/'.$elementName.'.vue';
     }
 
     // CONFIG
@@ -154,7 +153,7 @@ class BuilderMakeCommand extends GeneratorCommand implements PromptsForMissingIn
 
         $filePath = $this->getBaseDraggablePath();
 
-        return $path . $filePath . '/' . $elementName . '/config.ts';
+        return $path.$filePath.'/'.$elementName.'/config.ts';
     }
 
     // RENDER ELEMENT
@@ -180,9 +179,8 @@ class BuilderMakeCommand extends GeneratorCommand implements PromptsForMissingIn
 
         $filePath = $this->getBaseDraggablePath();
 
-        return $path . $filePath . '/' . $elementName . '/render.vue';
+        return $path.$filePath.'/'.$elementName.'/render.vue';
     }
-
 
     // SETTINGS
     protected function getSettingsStubName(): string
@@ -209,6 +207,6 @@ class BuilderMakeCommand extends GeneratorCommand implements PromptsForMissingIn
 
         $filePath = $this->getBaseDraggablePath();
 
-        return $path . $filePath . '/' . $elementName . '/settings.ts';
+        return $path.$filePath.'/'.$elementName.'/settings.ts';
     }
 }

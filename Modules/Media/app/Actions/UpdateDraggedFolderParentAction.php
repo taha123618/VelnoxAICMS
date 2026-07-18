@@ -11,7 +11,7 @@ class UpdateDraggedFolderParentAction
     {
 
         $folder->update([
-            'parent_id' => $request->parentId
+            'parent_id' => $request->parentId,
         ]);
     }
 }

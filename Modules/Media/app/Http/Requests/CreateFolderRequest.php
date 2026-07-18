@@ -14,8 +14,8 @@ class CreateFolderRequest extends FormRequest
         return [
             'name' => [
                 'required',
-                'unique:folders,name'
-            ]
+                'unique:folders,name',
+            ],
         ];
     }
 

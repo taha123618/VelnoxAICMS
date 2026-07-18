@@ -1,0 +1,11 @@
+{
+    "name": "ApiTokens",
+    "alias": "apitokens",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\ApiTokens\\Providers\\ApiTokensServiceProvider"
+    ],
+    "files": []
+}

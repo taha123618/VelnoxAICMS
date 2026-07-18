@@ -12,7 +12,7 @@ class CreateMenuRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['required', 'unique:menus,name']
+            'name' => ['required', 'unique:menus,name'],
         ];
     }
 

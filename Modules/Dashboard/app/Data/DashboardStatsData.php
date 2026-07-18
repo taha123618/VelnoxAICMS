@@ -15,6 +15,5 @@ class DashboardStatsData extends Data
         public ?int $pending_posts,
         public ?int $total_pages,
         public ?int $total_posts,
-    ){}
-    
+    ) {}
 }

@@ -3,8 +3,8 @@
 namespace Modules\Page\Data;
 
 use App\Enums\Status;
-use Spatie\LaravelData\Data;
 use Modules\Page\Models\Page;
+use Spatie\LaravelData\Data;
 use Spatie\LaravelData\Optional;
 use Spatie\TypeScriptTransformer\Attributes\TypeScript;
 
@@ -21,7 +21,7 @@ class PageData extends Data
         public Status $status,
         public string $statusColor,
         public string $url,
-        public string|null $description,
+        public ?string $description,
         public array $content,
         public bool $isFrontpage,
         public bool $isPublished,

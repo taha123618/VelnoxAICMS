@@ -2,11 +2,11 @@
 
 namespace Modules\Auth\Models;
 
-use Illuminate\Support\Facades\Gate;
-use Modules\Auth\Policies\RolePolicy;
+use Illuminate\Database\Eloquent\Attributes\UsePolicy;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
-use Illuminate\Database\Eloquent\Attributes\UsePolicy;
+use Illuminate\Support\Facades\Gate;
+use Modules\Auth\Policies\RolePolicy;
 
 #[UsePolicy(RolePolicy::class)]
 class Role extends \Spatie\Permission\Models\Role
@@ -41,9 +41,7 @@ class Role extends \Spatie\Permission\Models\Role
         return [
             'update' => Gate::allows('update', $this),
             'delete' => Gate::allows('delete', $this),
-            'super' => $this->name == 'administrator'
+            'super' => $this->name == 'administrator',
         ];
     }
-
-    
 }

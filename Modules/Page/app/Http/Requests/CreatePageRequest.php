@@ -17,7 +17,7 @@ class CreatePageRequest extends FormRequest
                 // 'unique:pages,title'
             ],
             'layout' => ['required', 'exists:layouts,id'],
-            'content' => ['required']
+            'content' => ['required'],
         ];
     }
 

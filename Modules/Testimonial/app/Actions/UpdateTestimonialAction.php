@@ -2,8 +2,8 @@
 
 namespace Modules\Testimonial\Actions;
 
-use Modules\Testimonial\Models\Testimonial;
 use Modules\Testimonial\Http\Requests\UpdateTestimonialRequest;
+use Modules\Testimonial\Models\Testimonial;
 
 class UpdateTestimonialAction
 {
@@ -13,7 +13,7 @@ class UpdateTestimonialAction
             'name' => $request->name,
             'avatar' => $request->avatar,
             'title' => $request->title,
-            'comment' => $request->comment
+            'comment' => $request->comment,
         ]);
     }
 }

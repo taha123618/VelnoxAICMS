@@ -4,19 +4,18 @@ namespace Modules\Layout\Models;
 
 use App\Enums\Status;
 use App\Models\BaseModel;
-use Illuminate\Support\Facades\Gate;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Attributes\UsePolicy;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Gate;
 use Modules\Layout\Policies\LayoutPolicy;
 use Modules\Page\Models\Page;
 
 #[UsePolicy(LayoutPolicy::class)]
 class Layout extends BaseModel
 {
-
     protected $casts = [
         'published_at' => 'datetime',
-        'content' => 'json'
+        'content' => 'json',
     ];
 
     public function pages()
@@ -26,7 +25,7 @@ class Layout extends BaseModel
 
     public function getStatus(): Status
     {
-        return !is_null($this->published_at)
+        return ! is_null($this->published_at)
             ? Status::Published
             : Status::Draft;
     }
@@ -48,7 +47,7 @@ class Layout extends BaseModel
     {
         return [
             'update' => Gate::allows('update', $this),
-            'delete' => Gate::allows('delete', $this)
+            'delete' => Gate::allows('delete', $this),
         ];
     }
 }

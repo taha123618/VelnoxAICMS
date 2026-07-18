@@ -15,8 +15,8 @@ class UpdateFolderRequest extends FormRequest
         return [
             'name' => [
                 'required',
-                Rule::unique('folders')->ignoreModel($this->folder)
-            ]
+                Rule::unique('folders')->ignoreModel($this->folder),
+            ],
         ];
     }
 

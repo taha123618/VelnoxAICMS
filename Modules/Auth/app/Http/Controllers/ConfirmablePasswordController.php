@@ -2,7 +2,6 @@
 
 namespace Modules\Auth\Http\Controllers;
 
-
 use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -13,7 +12,6 @@ use Inertia\Response;
 
 class ConfirmablePasswordController extends Controller
 {
-    
     public function show(): Response
     {
         return Inertia::render('Auth::confirm-password');

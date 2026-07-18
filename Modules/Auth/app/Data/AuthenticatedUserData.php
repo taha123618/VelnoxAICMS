@@ -2,10 +2,8 @@
 
 namespace Modules\Auth\Data;
 
-use Illuminate\Support\Facades\Gate;
-use Spatie\LaravelData\Data;
 use Modules\Auth\Models\User;
-use Modules\Page\Models\Page;
+use Spatie\LaravelData\Data;
 use Spatie\TypeScriptTransformer\Attributes\TypeScript;
 
 #[TypeScript()]
@@ -18,7 +16,7 @@ class AuthenticatedUserData extends Data
         public string $name,
         public string $email,
         public bool $isVerified,
-        public string|null $avatar,
+        public ?string $avatar,
         public AuthorizationData $can
     ) {}
 

@@ -19,6 +19,6 @@ class PageDuplicationController extends Controller
         app(DuplicatePageAction::class)->handle($page);
 
         return Redirect::back()->with('success', 'Entry has been duplicated successfully');
-        
+
     }
 }

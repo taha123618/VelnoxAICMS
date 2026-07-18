@@ -2,32 +2,31 @@
 
 namespace Modules\Auth\Models;
 
-
 // use Modules\Auth\Database\Factories\UserFactory;
 
+use Illuminate\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Attributes\UsePolicy;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Concerns\HasUlids;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Gate;
+use Modules\Auth\Database\Factories\UserFactory;
+use Modules\Auth\Policies\UserPolicy;
 use Modules\Media\Models\Folder;
 use Modules\Visits\Traits\CanVisit;
-use Illuminate\Auth\MustVerifyEmail;
-use Illuminate\Support\Facades\Gate;
-use Modules\Auth\Policies\UserPolicy;
 use Spatie\Permission\Traits\HasRoles;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Notifications\Notifiable;
-use Illuminate\Database\Eloquent\Builder;
-use Modules\Auth\Database\Factories\UserFactory;
-use Illuminate\Database\Eloquent\Concerns\HasUlids;
-use Illuminate\Database\Eloquent\Attributes\UsePolicy;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Foundation\Auth\User as Authenticatable;
 
 #[UsePolicy(UserPolicy::class)]
 class User extends Authenticatable
 {
+    use CanVisit;
     use HasFactory;
+    use HasRoles;
     use HasUlids;
     use Notifiable;
-    use HasRoles;
-    use CanVisit;
 
     // use MustVerifyEmail;
     /**
@@ -35,12 +34,10 @@ class User extends Authenticatable
      */
     protected $fillable = [];
 
-
     public function getNameAttribute()
     {
-        return $this->first_name . ' ' . $this->last_name;
+        return $this->first_name.' '.$this->last_name;
     }
-
 
     public function folders()
     {
@@ -69,8 +66,13 @@ class User extends Authenticatable
     {
         return [
             'update' => Gate::allows('update', $this),
-            'delete' => Gate::allows('delete', $this)
+            'delete' => Gate::allows('delete', $this),
         ];
+    }
+
+    public function tenants()
+    {
+        return $this->belongsToMany(\App\Models\Tenant::class)->withTimestamps();
     }
 
     protected static function newFactory()

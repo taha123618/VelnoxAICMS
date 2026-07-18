@@ -1,0 +1,30 @@
+{
+    "name": "velnoxaicms/acl",
+    "description": "",
+    "authors": [
+        {
+            "name": "Taha Ahmed",
+            "email": "tahaahmedanees2@gmail.com"
+        }
+    ],
+    "extra": {
+        "laravel": {
+            "providers": [],
+            "aliases": {
+
+            }
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Modules\\Acl\\": "app/",
+            "Modules\\Acl\\Database\\Factories\\": "database/factories/",
+            "Modules\\Acl\\Database\\Seeders\\": "database/seeders/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Modules\\Acl\\Tests\\": "tests/"
+        }
+    }
+}

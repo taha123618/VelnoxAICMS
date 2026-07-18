@@ -9,7 +9,6 @@ use Staudenmeir\LaravelAdjacencyList\Eloquent\HasRecursiveRelationships;
 
 class MenuItem extends BaseModel
 {
-
     use HasRecursiveRelationships;
 
     protected $casts = [
@@ -29,14 +28,16 @@ class MenuItem extends BaseModel
     public function getUrl()
     {
         if ($this->type == MenuItemType::Page || $this->type == MenuItemType::Post) {
-            
+
             $this->load('page');
 
-            if (!$this->page) {
+            if (! $this->page) {
                 return '#';
             }
+
             return $this->page->getUrl(false);
         }
+
         return $this->path;
     }
 }

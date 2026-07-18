@@ -16,13 +16,13 @@ class CreateCategoryRequest extends FormRequest
                 'required',
                 'string',
                 'max:100',
-                'unique:categories,name'
+                'unique:categories,name',
             ],
             'parent' => [
                 'nullable',
-                'exists:categories,id'
+                'exists:categories,id',
             ],
-            'description' => ['nullable']
+            'description' => ['nullable'],
         ];
     }
 

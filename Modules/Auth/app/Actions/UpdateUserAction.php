@@ -2,8 +2,8 @@
 
 namespace Modules\Auth\Actions;
 
-use Modules\Auth\Models\User;
 use Modules\Auth\Http\Requests\UpdateUserRequest;
+use Modules\Auth\Models\User;
 
 class UpdateUserAction
 {
@@ -13,7 +13,7 @@ class UpdateUserAction
         return tap($user)->update([
             'first_name' => $request->first_name,
             'last_name' => $request->last_name,
-            'email' => $request->email
+            'email' => $request->email,
         ]);
     }
 }

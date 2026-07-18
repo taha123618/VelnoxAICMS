@@ -2,28 +2,26 @@
 
 namespace Modules\Menu\Http\Controllers;
 
-use Inertia\Inertia;
-use Illuminate\Http\Request;
-use Modules\Menu\Models\Menu;
-use Modules\Menu\Data\MenuData;
-use Modules\Page\Data\PageData;
-use Modules\Page\Data\PostData;
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Redirect;
-use Modules\Layout\Models\Layout;
+use Inertia\Inertia;
 use Modules\Menu\Actions\CreateMenuAction;
 use Modules\Menu\Actions\DeleteMenuAction;
-use Modules\Menu\Actions\UpdateMenuAction;
 use Modules\Menu\Actions\SearchMenusAction;
-use Modules\Page\Actions\GetAllPagesAction;
-use Modules\Page\Actions\GetAllPostsAction;
+use Modules\Menu\Actions\UpdateMenuAction;
+use Modules\Menu\Data\MenuData;
 use Modules\Menu\Http\Requests\CreateMenuRequest;
 use Modules\Menu\Http\Requests\UpdateMenuRequest;
+use Modules\Menu\Models\Menu;
+use Modules\Page\Actions\GetAllPagesAction;
+use Modules\Page\Actions\GetAllPostsAction;
+use Modules\Page\Data\PageData;
+use Modules\Page\Data\PostData;
 
 class MenuController extends Controller
 {
-
     public function index(Request $request)
     {
 
@@ -33,10 +31,9 @@ class MenuController extends Controller
 
         return Inertia::render('Menu::index', [
             'data' => MenuData::collect($data),
-            'filters' => $filters
+            'filters' => $filters,
         ]);
     }
-
 
     public function create()
     {
@@ -44,7 +41,6 @@ class MenuController extends Controller
 
         return Inertia::render('Menu::create');
     }
-
 
     public function store(CreateMenuRequest $request)
     {
@@ -70,8 +66,6 @@ class MenuController extends Controller
             'posts' => PostData::collect(app(GetAllPostsAction::class)->handle()),
         ]);
     }
-
-
 
     public function update(UpdateMenuRequest $request, Menu $menu)
     {

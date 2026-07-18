@@ -16,18 +16,18 @@ class UpdatePostRequest extends FormRequest
             'title' => [
                 'required',
                 Rule::unique('pages', 'title')
-                    ->ignoreModel($this->post)
+                    ->ignoreModel($this->post),
             ],
             'slug' => [
                 'required',
                 'regex:/^[a-zA-Z0-9\-]+$/',
-                Rule::unique('pages', 'slug')->ignoreModel($this->post)
+                Rule::unique('pages', 'slug')->ignoreModel($this->post),
             ],
             'category' => ['required', 'exists:categories,id'],
             'layout' => ['required', 'exists:layouts,id'],
             'excerpt' => ['required', 'string', 'max:255'],
             'description' => ['nullable'],
-            'featuredImage' => ['nullable']
+            'featuredImage' => ['nullable'],
         ];
     }
 
@@ -39,10 +39,10 @@ class UpdatePostRequest extends FormRequest
         return true;
     }
 
-     public function messages(): array
+    public function messages(): array
     {
         return [
-            'slug.regex' => 'May only contain letters, numbers and dash'
+            'slug.regex' => 'May only contain letters, numbers and dash',
         ];
     }
 }

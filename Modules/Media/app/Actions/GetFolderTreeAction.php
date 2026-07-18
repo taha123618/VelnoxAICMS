@@ -26,6 +26,7 @@ class GetFolderTreeAction
             if ($node->relationLoaded('children')) {
                 $data['children'] = $this->cleanFolderTree($node->children);
             }
+
             return $data;
         });
     }

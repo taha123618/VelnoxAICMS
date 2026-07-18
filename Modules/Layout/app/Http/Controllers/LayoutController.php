@@ -2,26 +2,26 @@
 
 namespace Modules\Layout\Http\Controllers;
 
-use Inertia\Inertia;
-use Illuminate\Http\Request;
-use Modules\Menu\Data\MenuData;
-use Modules\Layout\Models\Layout;
-use Modules\Layout\Data\LayoutData;
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Redirect;
-use Modules\Menu\Actions\GetAllMenusAction;
+use Inertia\Inertia;
 use Modules\Layout\Actions\CreateLayoutAction;
 use Modules\Layout\Actions\DeleteLayoutAction;
-use Modules\Layout\Actions\UpdateLayoutAction;
 use Modules\Layout\Actions\SearchLayoutsAction;
+use Modules\Layout\Actions\UpdateLayoutAction;
+use Modules\Layout\Data\LayoutData;
+use Modules\Layout\Events\LayoutContentUpdated;
 use Modules\Layout\Http\Requests\CreateLayoutRequest;
 use Modules\Layout\Http\Requests\UpdateLayoutRequest;
+use Modules\Layout\Models\Layout;
+use Modules\Menu\Actions\GetAllMenusAction;
+use Modules\Menu\Data\MenuData;
 
 class LayoutController extends Controller
 {
-
     public function index(Request $request)
     {
         $filters = $request->only(['search', 'sort']);
@@ -30,7 +30,7 @@ class LayoutController extends Controller
 
         return Inertia::render('Layout::index', [
             'data' => LayoutData::collect($data),
-            'filters' => $filters
+            'filters' => $filters,
         ]);
     }
 
@@ -59,10 +59,9 @@ class LayoutController extends Controller
 
         return Inertia::render('Layout::edit', [
             'layout' => LayoutData::fromModel($layout),
-            'menus' => MenuData::collect(app(GetAllMenusAction::class)->handle())
+            'menus' => MenuData::collect(app(GetAllMenusAction::class)->handle()),
         ]);
     }
-
 
     public function update(UpdateLayoutRequest $request, Layout $layout)
     {
@@ -72,7 +71,9 @@ class LayoutController extends Controller
 
         app(UpdateLayoutAction::class)->handle($request, $layout);
 
-        return Redirect::back()->with('success', 'Category updated!');
+        broadcast(new LayoutContentUpdated($layout->id, $request->input('content', []), auth()->id()))->toOthers();
+
+        return Redirect::back()->with('success', 'Layout updated!');
     }
 
     public function destroy(Layout $layout)

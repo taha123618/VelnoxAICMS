@@ -2,9 +2,9 @@
 
 namespace Modules\Page\Actions;
 
-use Modules\Page\Models\Page;
 use Modules\Page\Enums\PageType;
 use Modules\Page\Http\Requests\CreatePageRequest;
+use Modules\Page\Models\Page;
 
 class CreatePageAction
 {
@@ -15,7 +15,7 @@ class CreatePageAction
             'title' => $request->title,
             'layout_id' => $request->layout,
             'content' => $request->content,
-            'type' => PageType::Page
+            'type' => PageType::Page,
         ]);
     }
 }

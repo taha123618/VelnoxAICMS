@@ -2,11 +2,11 @@
 
 namespace Modules\Menu\Data;
 
-use Spatie\LaravelData\Data;
-use Spatie\LaravelData\Lazy;
-use Modules\Menu\Models\MenuItem;
 use Illuminate\Support\Collection;
 use Modules\Menu\Enums\MenuItemType;
+use Modules\Menu\Models\MenuItem;
+use Spatie\LaravelData\Data;
+use Spatie\LaravelData\Lazy;
 use Spatie\TypeScriptTransformer\Attributes\TypeScript;
 
 #[TypeScript()]
@@ -16,7 +16,7 @@ class MenuItemData extends Data
         public string $id,
         public bool $isRecent,
         public string $menuId,
-        public string|null $parentId,
+        public ?string $parentId,
         public MenuItemType $type,
         public string $label,
         public string $path,
@@ -41,7 +41,7 @@ class MenuItemData extends Data
             to: $item->getUrl(),
             defaultOpen: true,
             target: $item->target,
-            children: Lazy::whenLoaded('children', $item, fn() => MenuItemData::collect($item->children()->orderBy('sort_order')->get())) ?? []
+            children: Lazy::whenLoaded('children', $item, fn () => MenuItemData::collect($item->children()->orderBy('sort_order')->get())) ?? []
         );
     }
 }

@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
 use Modules\Contacts\Http\Controllers\ContactsController;
 
 Route::post('contacts', [ContactsController::class, 'store'])

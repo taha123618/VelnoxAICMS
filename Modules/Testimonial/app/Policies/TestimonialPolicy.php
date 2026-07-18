@@ -2,8 +2,8 @@
 
 namespace Modules\Testimonial\Policies;
 
-use Modules\Auth\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
+use Modules\Auth\Models\User;
 use Modules\Testimonial\Models\Testimonial;
 
 class TestimonialPolicy

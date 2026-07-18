@@ -6,10 +6,8 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
-
 class UserFactory extends Factory
 {
-
     protected $model = \Modules\Auth\Models\User::class;
 
     /**

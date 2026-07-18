@@ -3,21 +3,20 @@
 namespace Modules\Menu\Models;
 
 use App\Models\BaseModel;
+use Illuminate\Database\Eloquent\Attributes\UsePolicy;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Gate;
 use Modules\Menu\Policies\MenuPolicy;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Attributes\UsePolicy;
+
 // use Modules\Menu\Database\Factories\MenuFactory;
 
 #[UsePolicy(MenuPolicy::class)]
 class Menu extends BaseModel
 {
-
     public function items()
     {
         return $this->hasMany(MenuItem::class, 'menu_id')->orderBy('sort_order', 'asc');
     }
-
 
     public function scopeFilter(Builder $query, array $filters)
     {
@@ -36,10 +35,9 @@ class Menu extends BaseModel
     {
         return [
             'update' => Gate::allows('update', $this),
-            'delete' => Gate::allows('delete', $this)
+            'delete' => Gate::allows('delete', $this),
         ];
     }
-
 
     // public static function extractMenuIdsFromContent($data): array
     // {

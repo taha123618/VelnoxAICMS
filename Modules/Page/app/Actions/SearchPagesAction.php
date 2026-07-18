@@ -4,8 +4,8 @@ namespace Modules\Page\Actions;
 
 use Illuminate\Http\Request;
 use Modules\Page\Models\Page;
-use Spatie\QueryBuilder\QueryBuilder;
 use Spatie\QueryBuilder\AllowedFilter;
+use Spatie\QueryBuilder\QueryBuilder;
 
 class SearchPagesAction
 {

@@ -15,7 +15,7 @@ class CreateTestimonialRequest extends FormRequest
             'name' => ['required', 'string', 'max:255'],
             'avatar' => ['nullable'],
             'designation' => ['nullable'],
-            'comment' => ['required']
+            'comment' => ['required'],
         ];
     }
 

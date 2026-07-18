@@ -1,9 +1,9 @@
 <?php
 
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 use Modules\Page\Enums\PageType;
-use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Database\Migrations\Migration;
 
 return new class extends Migration
 {
@@ -14,6 +14,7 @@ return new class extends Migration
     {
         Schema::create('pages', function (Blueprint $table) {
             $table->ulid('id')->primary();
+            $table->foreignUlid('tenant_id')->constrained()->cascadeOnDelete();
             $table->foreignUlid('category_id')
                 ->nullable()
                 ->constrained('categories');

@@ -1,9 +1,9 @@
 <?php
 
 uses(Tests\TestCase::class);
-use Modules\Auth\Models\User;
 use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Support\Facades\Notification;
+use Modules\Auth\Models\User;
 
 uses(\Illuminate\Foundation\Testing\RefreshDatabase::class);
 

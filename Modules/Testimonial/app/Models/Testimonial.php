@@ -4,16 +4,15 @@ namespace Modules\Testimonial\Models;
 
 use App\Enums\Status;
 use App\Models\BaseModel;
-use Illuminate\Support\Facades\Gate;
+use Illuminate\Database\Eloquent\Attributes\UsePolicy;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Support\Facades\Gate;
 use Modules\Testimonial\Policies\TestimonialPolicy;
-use Illuminate\Database\Eloquent\Attributes\UsePolicy;
 
 #[UsePolicy(TestimonialPolicy::class)]
 class Testimonial extends BaseModel
 {
-
     protected $casts = [
         'published_at' => 'datetime',
     ];
@@ -21,8 +20,8 @@ class Testimonial extends BaseModel
     public function isPublished(): Attribute
     {
         return Attribute::make(
-            get: fn() => filled($this->published_at),
-            set: fn($value) => ['published_at' => $value ? now() : null]
+            get: fn () => filled($this->published_at),
+            set: fn ($value) => ['published_at' => $value ? now() : null]
         );
     }
 
@@ -43,7 +42,7 @@ class Testimonial extends BaseModel
 
     public function getStatus(): Status
     {
-        return !is_null($this->published_at)
+        return ! is_null($this->published_at)
             ? Status::Published
             : Status::Draft;
     }
@@ -71,7 +70,7 @@ class Testimonial extends BaseModel
     {
         return [
             'update' => Gate::allows('update', $this),
-            'delete' => Gate::allows('delete', $this)
+            'delete' => Gate::allows('delete', $this),
         ];
     }
 }

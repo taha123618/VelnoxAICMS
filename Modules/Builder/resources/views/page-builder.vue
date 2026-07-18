@@ -20,19 +20,18 @@
                             color="warning"
                             icon="ph:arrow-left"
                             variant="soft" />
-                        <div
-                            class="flex items-center gap-1 font-bold text-white">
+                        <div class="flex items-center gap-2 font-bold text-white">
                             <template v-if="store.builderType == 'layout'">
-                                | &nbsp;&nbsp;Layout: {{ editable.name }}
+                                | &nbsp;&nbsp;Layout: {{ (editable as any).name }}
                             </template>
                             <template v-else>
-                                | &nbsp;&nbsp;{{ editable.title }}
+                                | &nbsp;&nbsp;{{ (editable as any).title }}
                                 <UBadge
                                     variant="subtle"
                                     class="dark"
                                     size="sm"
-                                    :color="editable.statusColor"
-                                    :label="editable.status" />
+                                    :color="(editable as any).statusColor"
+                                    :label="(editable as any).status" />
                             </template>
                         </div>
                         <UButton
@@ -92,7 +91,7 @@
                                 :icon="device!.icon" />
                         </BaseTooltip>
                     </div>
-                    <div class="flex w-1/3 items-center justify-end gap-2">
+                    <div class="flex w-1/3 items-center justify-end gap-4">
                         <UButtonGroup>
                             <BaseTooltip content="Zoom out">
                                 <UButton
@@ -162,6 +161,26 @@
                             </a>
                         </UButton>
 
+                        <BaseTooltip content="Version History" v-if="type != 'layout'">
+                            <UButton
+                                size="sm"
+                                variant="soft"
+                                color="neutral"
+                                @click.prevent="() => { showHistoryModal = true; }"
+                                icon="ph:clock-counter-clockwise"
+                                label="History" />
+                        </BaseTooltip>
+
+                        <BaseTooltip content="Generate with AI">
+                            <UButton
+                                size="sm"
+                                variant="soft"
+                                color="info"
+                                @click.prevent="() => { showAiModal = true; }"
+                                icon="ph:magic-wand"
+                                label="AI Assistant" />
+                        </BaseTooltip>
+
                         <template v-if="type == 'layout'">
                             <UButton
                                 :disabled="store.history.history?.length < 2"
@@ -180,7 +199,7 @@
                             <UButton
                                 :disabled="
                                     store.history.history?.length < 2 &&
-                                    !editable.isDifferentFromPublishedVersion
+                                    !(editable as any).isDifferentFromPublishedVersion
                                 "
                                 @click.prevent="saveAndPublishPage"
                                 :loading="isSaving"
@@ -235,6 +254,20 @@
                                 :key="layoutElement.id"
                                 :element="layoutElement" />
                         </template>
+
+                        <div v-if="store.elements.length === 0" class="flex flex-col items-center justify-center h-[calc(100vh-120px)] text-neutral-400 gap-4 border-2 border-dashed border-neutral-700/50 hover:border-neutral-600 transition-colors rounded-2xl m-6 bg-neutral-800/20 backdrop-blur-sm">
+                            <div class="flex items-center justify-center w-20 h-20 rounded-full bg-neutral-800 border border-neutral-700 shadow-inner mb-2">
+                                <UIcon name="ph:layout-duotone" class="w-10 h-10 text-neutral-400" />
+                            </div>
+                            <div class="text-center">
+                                <h3 class="text-xl font-bold text-white mb-2 tracking-tight">Your Canvas is Empty</h3>
+                                <p class="text-sm text-neutral-400 max-w-sm mx-auto leading-relaxed">
+                                    Drag elements from the left sidebar to start building your layout manually, or click 
+                                    <button @click.prevent="showAiModal = true" class="text-info-400 hover:text-info-300 font-semibold underline underline-offset-4 transition-colors mx-1">Generate with AI</button> 
+                                    to create it instantly.
+                                </p>
+                            </div>
+                        </div>
                     </div>
                 </VueZoomable>
                 <button
@@ -346,6 +379,87 @@
                 </div>
             </UCard>
         </aside>
+
+        <!-- Modals now inside UApp -->
+        <UModal v-model:open="showAiModal" class="z-50 backdrop-blur-sm" aria-describedby="undefined">
+            <template #content>
+            <UCard class="border border-neutral-800 shadow-2xl rounded-xl overflow-hidden bg-neutral-900/95">
+                <template #header>
+                    <div class="flex items-center gap-3">
+                        <div class="flex items-center justify-center w-10 h-10 rounded-lg bg-info-500/20 text-info-400 ring-1 ring-info-500/30">
+                            <UIcon name="ph:magic-wand-duotone" class="w-5 h-5" />
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-bold text-white bg-clip-text text-transparent bg-gradient-to-r from-info-400 to-primary-400">AI Section Generator</h3>
+                            <p class="text-xs text-neutral-400 mt-0.5">Powered by advanced LLM models</p>
+                        </div>
+                    </div>
+                </template>
+                <div class="space-y-4">
+                    <p class="text-sm text-neutral-300 leading-relaxed">
+                        Describe the section you want to create in natural language. The AI will instantly build the structure, apply styles, and populate dummy content.
+                    </p>
+                    <div class="relative group">
+                        <div class="absolute -inset-0.5 bg-gradient-to-r from-info-500 to-primary-500 rounded-lg blur opacity-20 group-focus-within:opacity-40 transition duration-500"></div>
+                        <UTextarea
+                            v-model="aiPrompt"
+                            color="info"
+                            variant="outline"
+                            placeholder="e.g. A three column pricing table for a SaaS product with a highlighted pro plan..."
+                            autoresize
+                            class="relative w-full" />
+                    </div>
+                </div>
+                <template #footer>
+                    <div class="flex justify-end gap-2">
+                        <UButton color="neutral" variant="ghost" @click.prevent="() => { showAiModal = false; }">Cancel</UButton>
+                        <UButton color="primary" :loading="isGeneratingAi" @click="generateAiSection">Generate</UButton>
+                    </div>
+                </template>
+            </UCard>
+            </template>
+        </UModal>
+        
+        <UModal v-model:open="showHistoryModal" title="Version History" class="z-50" aria-describedby="undefined">
+            <template #content>
+            <UCard>
+                <template #header>
+                    <div class="flex items-center gap-2">
+                        <UIcon name="ph:clock-counter-clockwise" class="text-primary-500" />
+                        <h3 class="text-base font-semibold leading-6 text-white">Version History</h3>
+                    </div>
+                </template>
+                    <div class="space-y-4 max-h-[60vh] overflow-y-auto pr-2">
+                        <p class="text-sm text-neutral-400">View and restore previous published versions of this page.</p>
+                        
+                        <div v-if="!pageVersions || pageVersions.length === 0" class="text-center py-8 text-neutral-500">
+                            No previous versions found.
+                    </div>
+                    
+                    <div v-else class="space-y-3">
+                            <div v-for="version in pageVersions" :key="version.id" class="flex items-center justify-between p-3 bg-neutral-800 rounded-lg border border-neutral-700">
+                            <div>
+                                    <div class="text-sm font-medium text-white">{{ new Date(version.created_at).toLocaleString() }}</div>
+                                    <div class="text-xs text-neutral-400">Version ID: {{ version.id }}</div>
+                            </div>
+                                <UButton 
+                                    size="xs" 
+                                    color="primary" 
+                                    variant="soft" 
+                                    @click="restoreVersion(version)"
+                                    icon="ph:arrow-u-up-left"
+                                    label="Restore" />
+                        </div>
+                    </div>
+                </div>
+                <template #footer>
+                        <div class="flex justify-end gap-2">
+                            <UButton color="neutral" variant="ghost" @click="() => { showHistoryModal = false; }">Close</UButton>
+                    </div>
+                </template>
+            </UCard>
+            </template>
+        </UModal>
     </UApp>
 </template>
 
@@ -355,8 +469,15 @@ import { triggerPostMoveFlash } from '@atlaskit/pragmatic-drag-and-drop-flourish
 import { extractClosestEdge } from '@atlaskit/pragmatic-drag-and-drop-hitbox/closest-edge';
 import { combine } from '@atlaskit/pragmatic-drag-and-drop/combine';
 import { monitorForElements } from '@atlaskit/pragmatic-drag-and-drop/element/adapter';
-import { router } from '@inertiajs/vue3';
+import { router, usePage } from '@inertiajs/vue3';
 import { visitModal } from '@inertiaui/modal-vue';
+import axios from 'axios';
+import { ref, computed, watch, onMounted, onBeforeMount, watchEffect } from 'vue';
+import { route } from 'ziggy-js';
+
+axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+axios.defaults.withCredentials = true;
+
 import BaseLoader from '@modules/Builder/resources/components/base-loader.vue';
 import BaseRecursiveElement from '@modules/Builder/resources/components/base-recursive-element.vue';
 import BaseTooltip from '@modules/Builder/resources/components/base-tooltip.vue';
@@ -412,6 +533,108 @@ const zoomLevel = ref(0.92);
 const panLevel = ref(initialPan);
 const showComponentsPanel = ref(true);
 const showSettingsPanel = ref(true);
+
+const showAiModal = ref<boolean>(false);
+const showHistoryModal = ref<boolean>(false);
+const pageVersions = ref<any[]>([]);
+
+onMounted(async () => {
+    if (type !== 'layout' && editable?.id) {
+        try {
+            const response = await axios.get(route('api.builder.pages.show', editable.id));
+            if (response.data?.data?.versions) {
+                pageVersions.value = response.data.data.versions;
+            }
+        } catch (e) {
+            console.error('Failed to load page versions', e);
+        }
+    }
+});
+
+function restoreVersion(version: any) {
+    if (!version || !version.content) return;
+    
+    // Parse the AST content from the version
+    const parsedContent = version.content.map((item: any) => ZioraElement.fromObject(item));
+    store.setElements(parsedContent);
+    
+    toast.add({ title: 'Version restored!', description: 'Click Save to persist changes.', color: 'success' });
+    showHistoryModal.value = false;
+}
+const aiPrompt = ref<string>('');
+const isGeneratingAi = ref<boolean>(false);
+
+async function generateAiSection() {
+    if (!aiPrompt.value) return;
+    
+    isGeneratingAi.value = true;
+    try {
+        const response = await axios.post('/api/ai/generate-section', {
+            prompt: aiPrompt.value
+        });
+        
+        if (response.data?.elements && response.data.elements.length > 0) {
+            
+            const transformAiElement = (el: any): any => {
+                if (!el) return el;
+                
+                const props = el.props ? { ...el.props } : {};
+                let content = props.content || {};
+                if (typeof content !== 'object') {
+                    content = { innerText: String(content) };
+                }
+                const styles = props.styles || {};
+                if (!styles.desktop) styles.desktop = { default: {}, hover: {}, active: {} };
+                if (!styles.desktop.default) styles.desktop.default = {};
+                if (!styles.tablet) styles.tablet = { default: {}, hover: {}, active: {} };
+                if (!styles.mobile) styles.mobile = { default: {}, hover: {}, active: {} };
+                if (!styles.custom) styles.custom = {};
+
+                // Move flat style properties to desktop.default but preserve structural props
+                const structuralProps = ['content', 'styles', 'tag', 'src', 'href', 'target', 'placeholder', 'type', 'name', 'value', 'options'];
+                Object.keys(props).forEach(key => {
+                    if (!structuralProps.includes(key)) {
+                        styles.desktop.default[key] = props[key];
+                        delete props[key];
+                    }
+                });
+                
+                props.content = content;
+                props.styles = styles;
+
+                // Ensure fallback tags for basic typographic elements
+                if (el.type === 'heading' && !props.tag) props.tag = 'h2';
+                if (el.type === 'paragraph' && !props.tag) props.tag = 'p';
+                if (el.type === 'link' && !props.tag) props.tag = 'a';
+                if (el.type === 'button' && !props.tag) props.tag = 'button';
+
+                return {
+                    ...el,
+                    props,
+                    children: Array.isArray(el.children) ? el.children.map(transformAiElement) : []
+                };
+            };
+            
+            // Convert to ZioraElement instances with correctly mapped styles
+            const newElements = response.data.elements.map((el: any) => ZioraElement.newFromObject(transformAiElement(el)));
+            
+            // Insert at the bottom of the page
+            newElements.forEach((el: ZioraElement) => {
+                store.elements.push(el);
+            });
+            
+            toast.add({ title: 'AI Section Generated successfully!', icon: 'ph:check-circle', color: 'success' });
+            showAiModal.value = false;
+            aiPrompt.value = '';
+        } else {
+            toast.add({ title: 'No elements generated', description: 'The AI did not return any elements. Please try a different prompt.', color: 'warning' });
+        }
+    } catch (e: any) {
+        toast.add({ title: 'Error generating section', description: e.response?.data?.error || e.message, color: 'error' });
+    } finally {
+        isGeneratingAi.value = false;
+    }
+}
 
 const tabs = [
     {
@@ -583,14 +806,45 @@ function savePost() {
 
 onMounted(() => {
     store.history.clear();
+
+    const currentUser = usePage<any>().props.auth?.user;
+
+    if (window.Echo && editable.id && currentUser) {
+        const channelName = type === 'layout' ? `layout.${editable.id}` : `page.${editable.id}`;
+        
+        window.Echo.join(channelName)
+            .here((users: any[]) => {
+                // Initial users
+            })
+            .joining((user: any) => {
+                toast.add({ title: `${user.name} joined the editing session`, color: 'info' });
+            })
+            .leaving((user: any) => {
+                toast.add({ title: `${user.name} left the editing session`, color: 'info' });
+            })
+            .listen('.Modules\\Page\\Events\\PageContentUpdated', (e: any) => {
+                if (e.userId !== currentUser.id) {
+                    const parsedContent = e.content.map((item: any) => ZioraElement.fromObject(item));
+                    store.setElements(parsedContent);
+                    toast.add({ title: 'Page content was updated by another user.', color: 'primary' });
+                }
+            })
+            .listen('.Modules\\Layout\\Events\\LayoutContentUpdated', (e: any) => {
+                if (e.userId !== currentUser.id) {
+                    const parsedContent = e.content.map((item: any) => ZioraElement.fromObject(item));
+                    store.setElements(parsedContent);
+                    toast.add({ title: 'Layout content was updated by another user.', color: 'primary' });
+                }
+            });
+    }
 });
 
 onBeforeMount(() => {
-    const pageContent = editable.content!.map((item: TElement) =>
+    const pageContent = (editable.content || []).map((item: TElement) =>
         ZioraElement.fromObject(item),
     );
     if (!!layout) {
-        const layoutContent = layout.content!.map((item: TElement) =>
+        const layoutContent = (layout.content || []).map((item: TElement) =>
             ZioraElement.fromObject(item),
         );
         store.setLayoutElements(layoutContent);

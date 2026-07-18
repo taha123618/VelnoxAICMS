@@ -1,0 +1,40 @@
+<?php
+
+namespace Modules\Page\Events;
+
+use Illuminate\Broadcasting\InteractsWithSockets;
+use Illuminate\Broadcasting\PresenceChannel;
+use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
+use Illuminate\Foundation\Events\Dispatchable;
+use Illuminate\Queue\SerializesModels;
+
+class PageContentUpdated implements ShouldBroadcastNow
+{
+    use Dispatchable, InteractsWithSockets, SerializesModels;
+
+    public string $pageId;
+
+    public array $content;
+
+    public string $userId;
+
+    /**
+     * Create a new event instance.
+     */
+    public function __construct(string $pageId, array $content, string $userId)
+    {
+        $this->pageId = $pageId;
+        $this->content = $content;
+        $this->userId = $userId;
+    }
+
+    /**
+     * Get the channels the event should be broadcast on.
+     */
+    public function broadcastOn(): array
+    {
+        return [
+            new PresenceChannel('page.'.$this->pageId),
+        ];
+    }
+}

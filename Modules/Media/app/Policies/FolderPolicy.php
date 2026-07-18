@@ -2,8 +2,8 @@
 
 namespace Modules\Media\Policies;
 
-use Modules\Auth\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
+use Modules\Auth\Models\User;
 use Modules\Media\Models\Folder;
 
 class FolderPolicy

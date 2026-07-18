@@ -2,9 +2,9 @@
 
 namespace Modules\Menu\Policies;
 
+use Illuminate\Auth\Access\HandlesAuthorization;
 use Modules\Auth\Models\User;
 use Modules\Menu\Models\Menu;
-use Illuminate\Auth\Access\HandlesAuthorization;
 
 class MenuPolicy
 {
@@ -24,6 +24,4 @@ class MenuPolicy
     {
         return $user->can('delete_menus');
     }
-
-
 }
