@@ -255,7 +255,47 @@
                                 :element="layoutElement" />
                         </template>
 
-                        <div v-if="store.elements.length === 0" class="flex flex-col items-center justify-center h-[calc(100vh-120px)] text-neutral-400 gap-4 border-2 border-dashed border-neutral-700/50 hover:border-neutral-600 transition-colors rounded-2xl m-6 bg-neutral-800/20 backdrop-blur-sm">
+                        <!-- Modern AI Section Generating Skeleton Placeholder -->
+                        <div v-if="aiJobId && (aiJobStatus === 'queued' || aiJobStatus === 'processing')" class="relative my-6 p-6 rounded-2xl border-2 border-dashed border-info-500/40 bg-neutral-900/80 backdrop-blur-md shadow-2xl overflow-hidden animate-pulse">
+                            <div class="absolute inset-0 bg-gradient-to-r from-info-500/10 via-primary-500/10 to-info-500/10"></div>
+                            <div class="relative z-10 space-y-6">
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center gap-3">
+                                        <div class="flex items-center justify-center w-9 h-9 rounded-xl bg-info-500/20 text-info-400 ring-1 ring-info-500/30">
+                                            <UIcon name="ph:sparkle-duotone" class="w-5 h-5 animate-spin text-info-400" />
+                                        </div>
+                                        <div>
+                                            <h4 class="text-sm font-bold text-white flex items-center gap-2">
+                                                Generating AI Section...
+                                                <UBadge color="info" variant="subtle" size="xs">{{ aiJobProgress > 0 ? aiJobProgress + '%' : 'Queued' }}</UBadge>
+                                            </h4>
+                                            <p class="text-xs text-neutral-400">Constructing layout, structure, and responsive styles in background</p>
+                                        </div>
+                                    </div>
+                                    <UButton size="xs" color="error" variant="ghost" icon="ph:x" @click="cancelAiJob">Cancel</UButton>
+                                </div>
+                                <!-- Skeleton Card & Line Grid -->
+                                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                    <div class="h-32 rounded-xl bg-neutral-800/80 border border-neutral-700/50 p-4 space-y-3">
+                                        <div class="h-4 w-3/4 bg-neutral-700/60 rounded-md"></div>
+                                        <div class="h-3 w-1/2 bg-neutral-700/40 rounded-md"></div>
+                                        <div class="h-8 w-full bg-neutral-700/30 rounded-lg mt-4"></div>
+                                    </div>
+                                    <div class="h-32 rounded-xl bg-neutral-800/80 border border-neutral-700/50 p-4 space-y-3">
+                                        <div class="h-4 w-2/3 bg-neutral-700/60 rounded-md"></div>
+                                        <div class="h-3 w-1/2 bg-neutral-700/40 rounded-md"></div>
+                                        <div class="h-8 w-full bg-neutral-700/30 rounded-lg mt-4"></div>
+                                    </div>
+                                    <div class="h-32 rounded-xl bg-neutral-800/80 border border-neutral-700/50 p-4 space-y-3">
+                                        <div class="h-4 w-4/5 bg-neutral-700/60 rounded-md"></div>
+                                        <div class="h-3 w-1/2 bg-neutral-700/40 rounded-md"></div>
+                                        <div class="h-8 w-full bg-neutral-700/30 rounded-lg mt-4"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div v-if="store.elements.length === 0 && !aiJobId" class="flex flex-col items-center justify-center h-[calc(100vh-120px)] text-neutral-400 gap-4 border-2 border-dashed border-neutral-700/50 hover:border-neutral-600 transition-colors rounded-2xl m-6 bg-neutral-800/20 backdrop-blur-sm">
                             <div class="flex items-center justify-center w-20 h-20 rounded-full bg-neutral-800 border border-neutral-700 shadow-inner mb-2">
                                 <UIcon name="ph:layout-duotone" class="w-10 h-10 text-neutral-400" />
                             </div>
@@ -381,8 +421,12 @@
         </aside>
 
         <!-- Modals now inside UApp -->
-        <UModal v-model:open="showAiModal" class="z-50 backdrop-blur-sm" aria-describedby="undefined">
+        <UModal v-model:open="showAiModal" title="AI Section Generator" description="Describe the section you want to create in natural language." class="z-50 backdrop-blur-sm">
             <template #content>
+            <VisuallyHidden>
+                <DialogTitle>AI Section Generator</DialogTitle>
+                <DialogDescription>Describe the section you want to create in natural language.</DialogDescription>
+            </VisuallyHidden>
             <UCard class="border border-neutral-800 shadow-2xl rounded-xl overflow-hidden bg-neutral-900/95">
                 <template #header>
                     <div class="flex items-center gap-3">
@@ -397,32 +441,60 @@
                 </template>
                 <div class="space-y-4">
                     <p class="text-sm text-neutral-300 leading-relaxed">
-                        Describe the section you want to create in natural language. The AI will instantly build the structure, apply styles, and populate dummy content.
+                        Describe the section you want to create in natural language. The AI will build the structure, apply styles, and populate content asynchronously.
                     </p>
                     <div class="relative group">
                         <div class="absolute -inset-0.5 bg-gradient-to-r from-info-500 to-primary-500 rounded-lg blur opacity-20 group-focus-within:opacity-40 transition duration-500"></div>
                         <UTextarea
                             v-model="aiPrompt"
+                            :disabled="isGeneratingAi"
                             color="info"
                             variant="outline"
                             placeholder="e.g. A three column pricing table for a SaaS product with a highlighted pro plan..."
                             autoresize
                             class="relative w-full" />
                     </div>
+
+                    <!-- Live Progress & Status Bar -->
+                    <div v-if="aiJobStatus !== 'idle'" class="p-3 bg-neutral-800/80 rounded-lg border border-neutral-700 space-y-2">
+                        <div class="flex items-center justify-between text-xs">
+                            <span class="font-medium capitalize text-neutral-300 flex items-center gap-1.5">
+                                <UIcon v-if="aiJobStatus === 'queued' || aiJobStatus === 'processing'" name="ph:spinner" class="animate-spin text-info-400" />
+                                <UIcon v-else-if="aiJobStatus === 'completed'" name="ph:check-circle" class="text-success-400" />
+                                <UIcon v-else-if="aiJobStatus === 'failed'" name="ph:warning-circle" class="text-error-400" />
+                                Status: {{ aiJobStatus }}
+                            </span>
+                            <span class="font-bold text-info-400">{{ aiJobProgress }}%</span>
+                        </div>
+                        <div class="w-full h-2 bg-neutral-700 rounded-full overflow-hidden">
+                            <div
+                                class="h-full bg-gradient-to-r from-info-500 to-primary-500 transition-all duration-300 ease-out"
+                                :style="{ width: aiJobProgress + '%' }"
+                            ></div>
+                        </div>
+                        <p v-if="aiJobError" class="text-xs text-error-400 font-mono mt-1">
+                            Error: {{ aiJobError }}
+                        </p>
+                    </div>
                 </div>
                 <template #footer>
                     <div class="flex justify-end gap-2">
-                        <UButton color="neutral" variant="ghost" @click.prevent="() => { showAiModal = false; }">Cancel</UButton>
-                        <UButton color="primary" :loading="isGeneratingAi" @click="generateAiSection">Generate</UButton>
+                        <UButton color="neutral" variant="ghost" :disabled="isGeneratingAi" @click.prevent="() => { showAiModal = false; }">Cancel</UButton>
+                        <UButton v-if="aiJobStatus === 'failed'" color="warning" variant="subtle" @click="retryAiJob">Retry Job</UButton>
+                        <UButton color="primary" :loading="isGeneratingAi" :disabled="isGeneratingAi || !aiPrompt" @click="generateAiSection">Generate</UButton>
                     </div>
                 </template>
             </UCard>
             </template>
         </UModal>
         
-        <UModal v-model:open="showHistoryModal" title="Version History" class="z-50" aria-describedby="undefined">
+        <UModal v-model:open="showHistoryModal" title="Version History" description="View and restore previous versions of your page layout." class="z-50">
             <template #content>
-            <UCard>
+            <VisuallyHidden>
+                <DialogTitle>Version History</DialogTitle>
+                <DialogDescription>View and restore previous versions of your page layout.</DialogDescription>
+            </VisuallyHidden>
+            <UCard class="border border-neutral-800 shadow-2xl rounded-xl overflow-hidden bg-neutral-900/95">
                 <template #header>
                     <div class="flex items-center gap-2">
                         <UIcon name="ph:clock-counter-clockwise" class="text-primary-500" />
@@ -471,8 +543,9 @@ import { combine } from '@atlaskit/pragmatic-drag-and-drop/combine';
 import { monitorForElements } from '@atlaskit/pragmatic-drag-and-drop/element/adapter';
 import { router, usePage } from '@inertiajs/vue3';
 import { visitModal } from '@inertiaui/modal-vue';
+import { DialogTitle, DialogDescription, VisuallyHidden } from 'reka-ui';
 import axios from 'axios';
-import { ref, computed, watch, onMounted, onBeforeMount, watchEffect } from 'vue';
+import { ref, computed, watch, onMounted, onUnmounted, onBeforeMount, watchEffect } from 'vue';
 import { route } from 'ziggy-js';
 
 axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
@@ -563,75 +636,174 @@ function restoreVersion(version: any) {
 }
 const aiPrompt = ref<string>('');
 const isGeneratingAi = ref<boolean>(false);
+const aiJobId = ref<string | null>(null);
+const aiJobStatus = ref<string>('idle');
+const aiJobProgress = ref<number>(0);
+const aiJobError = ref<string | null>(null);
 
-async function generateAiSection() {
-    if (!aiPrompt.value) return;
+function resetAiJob() {
+    aiJobId.value = null;
+    aiJobStatus.value = 'idle';
+    aiJobProgress.value = 0;
+    aiJobError.value = null;
+}
+
+const transformAiElement = (el: any): any => {
+    if (!el) return el;
     
-    isGeneratingAi.value = true;
-    try {
-        const response = await axios.post('/api/ai/generate-section', {
-            prompt: aiPrompt.value
+    const props = el.props ? { ...el.props } : {};
+    let content = props.content || {};
+    if (typeof content !== 'object') {
+        content = { innerText: String(content) };
+    }
+    const styles = props.styles || {};
+    if (!styles.desktop) styles.desktop = { default: {}, hover: {}, active: {} };
+    if (!styles.desktop.default) styles.desktop.default = {};
+    if (!styles.tablet) styles.tablet = { default: {}, hover: {}, active: {} };
+    if (!styles.mobile) styles.mobile = { default: {}, hover: {}, active: {} };
+    if (!styles.custom) styles.custom = {};
+
+    // Move flat style properties to desktop.default but preserve structural props
+    const structuralProps = ['content', 'styles', 'tag', 'src', 'href', 'target', 'placeholder', 'type', 'name', 'value', 'options'];
+    Object.keys(props).forEach(key => {
+        if (!structuralProps.includes(key)) {
+            styles.desktop.default[key] = props[key];
+            delete props[key];
+        }
+    });
+    
+    props.content = content;
+    props.styles = styles;
+
+    // Ensure fallback tags for basic typographic elements
+    if (el.type === 'heading' && !props.tag) props.tag = 'h2';
+    if (el.type === 'paragraph' && !props.tag) props.tag = 'p';
+    if (el.type === 'link' && !props.tag) props.tag = 'a';
+    if (el.type === 'button' && !props.tag) props.tag = 'button';
+
+    return {
+        ...el,
+        props,
+        children: Array.isArray(el.children) ? el.children.map(transformAiElement) : []
+    };
+};
+
+function handleAiJobUpdate(e: any) {
+    if (aiJobId.value && e.jobId && e.jobId !== aiJobId.value) return;
+
+    aiJobStatus.value = e.status;
+    aiJobProgress.value = e.progress || 0;
+
+    if (e.progress === 80 || (e.status === 'processing' && e.progress >= 80 && e.progress < 100)) {
+        toast.add({
+            title: 'AI Generation 80% Complete',
+            description: 'Finalizing layout components and styles...',
+            color: 'info',
+            icon: 'ph:lightning-duotone'
         });
+    } else if (e.status === 'completed') {
+        isGeneratingAi.value = false;
+        aiJobProgress.value = 100;
         
-        if (response.data?.elements && response.data.elements.length > 0) {
-            
-            const transformAiElement = (el: any): any => {
-                if (!el) return el;
-                
-                const props = el.props ? { ...el.props } : {};
-                let content = props.content || {};
-                if (typeof content !== 'object') {
-                    content = { innerText: String(content) };
-                }
-                const styles = props.styles || {};
-                if (!styles.desktop) styles.desktop = { default: {}, hover: {}, active: {} };
-                if (!styles.desktop.default) styles.desktop.default = {};
-                if (!styles.tablet) styles.tablet = { default: {}, hover: {}, active: {} };
-                if (!styles.mobile) styles.mobile = { default: {}, hover: {}, active: {} };
-                if (!styles.custom) styles.custom = {};
-
-                // Move flat style properties to desktop.default but preserve structural props
-                const structuralProps = ['content', 'styles', 'tag', 'src', 'href', 'target', 'placeholder', 'type', 'name', 'value', 'options'];
-                Object.keys(props).forEach(key => {
-                    if (!structuralProps.includes(key)) {
-                        styles.desktop.default[key] = props[key];
-                        delete props[key];
-                    }
-                });
-                
-                props.content = content;
-                props.styles = styles;
-
-                // Ensure fallback tags for basic typographic elements
-                if (el.type === 'heading' && !props.tag) props.tag = 'h2';
-                if (el.type === 'paragraph' && !props.tag) props.tag = 'p';
-                if (el.type === 'link' && !props.tag) props.tag = 'a';
-                if (el.type === 'button' && !props.tag) props.tag = 'button';
-
-                return {
-                    ...el,
-                    props,
-                    children: Array.isArray(el.children) ? el.children.map(transformAiElement) : []
-                };
-            };
-            
-            // Convert to ZioraElement instances with correctly mapped styles
-            const newElements = response.data.elements.map((el: any) => ZioraElement.newFromObject(transformAiElement(el)));
-            
-            // Insert at the bottom of the page using the store's setter to ensure reactivity and history tracking
+        const rawElements = e.result?.elements || [];
+        if (rawElements.length > 0) {
+            const newElements = rawElements.map((el: any) => ZioraElement.newFromObject(transformAiElement(el)));
             store.setElements([...store.elements, ...newElements]);
             
-            toast.add({ title: 'AI Section Generated successfully!', icon: 'ph:check-circle', color: 'success' });
-            showAiModal.value = false;
-            aiPrompt.value = '';
+            toast.add({ title: 'AI generation completed successfully.', color: 'success', icon: 'ph:check-circle' });
+            resetAiJob();
         } else {
-            toast.add({ title: 'No elements generated', description: 'The AI did not return any elements. Please try a different prompt.', color: 'warning' });
+            toast.add({ title: 'No elements generated', description: 'The AI did not return elements. Try another prompt.', color: 'warning' });
+            resetAiJob();
+        }
+    } else if (e.status === 'failed') {
+        isGeneratingAi.value = false;
+        aiJobError.value = e.error || 'Failed to process AI generation job.';
+        toast.add({ title: 'AI generation failed.', description: aiJobError.value || undefined, color: 'error', icon: 'ph:warning-circle' });
+    }
+}
+
+onMounted(() => {
+    const user = (usePage().props as any).auth?.user;
+    if ((window as any).Echo) {
+        if (user?.id) {
+            (window as any).Echo.private(`user.${user.id}`)
+                .listen('.AiJobStatusUpdated', (e: any) => {
+                    handleAiJobUpdate(e);
+                });
+        }
+    }
+});
+
+onUnmounted(() => {
+    const user = (usePage().props as any).auth?.user;
+    if ((window as any).Echo && user?.id) {
+        (window as any).Echo.leave(`user.${user.id}`);
+    }
+    if ((window as any).Echo && aiJobId.value) {
+        (window as any).Echo.leave(`ai-job.${aiJobId.value}`);
+    }
+});
+
+async function generateAiSection() {
+    if (!aiPrompt.value || isGeneratingAi.value) return;
+    
+    isGeneratingAi.value = true;
+    aiJobStatus.value = 'queued';
+    aiJobError.value = null;
+
+    try {
+        // Set aiJobId to a dummy value so the skeleton loader shows immediately
+        const currentJobId = 'sync-job-' + Date.now();
+        aiJobId.value = currentJobId;
+        showAiModal.value = false;
+
+        toast.add({ title: 'AI generation has been queued.', color: 'info', icon: 'ph:clock' });
+
+        const response = await axios.post('/api/builder/ai/generate-section', {
+            prompt: aiPrompt.value,
+            async: false
+        });
+
+        // Skip if user cancelled during the request
+        if (aiJobId.value !== currentJobId) return;
+
+        if (response.data?.elements) {
+            aiJobStatus.value = 'processing';
+            aiJobProgress.value = 100;
+            
+            const rawElements = response.data.elements || [];
+            if (rawElements.length > 0) {
+                const newElements = rawElements.map((el: any) => ZioraElement.newFromObject(transformAiElement(el)));
+                store.setElements([...store.elements, ...newElements]);
+                
+                toast.add({ title: 'AI generation completed successfully.', color: 'success', icon: 'ph:check-circle' });
+            } else {
+                toast.add({ title: 'No elements generated', description: 'The AI did not return elements. Try another prompt.', color: 'warning' });
+            }
+            isGeneratingAi.value = false;
+            aiPrompt.value = '';
+            resetAiJob();
         }
     } catch (e: any) {
-        toast.add({ title: 'Error generating section', description: e.response?.data?.error || e.message, color: 'error' });
-    } finally {
+        // Skip if user cancelled during the request
+        if (aiJobId.value === null) return;
+        
         isGeneratingAi.value = false;
+        aiJobStatus.value = 'failed';
+        aiJobError.value = e.response?.data?.error || e.response?.data?.message || e.message;
+        toast.add({ title: 'AI generation failed.', description: aiJobError.value || undefined, color: 'error' });
     }
+}
+
+async function retryAiJob() {
+    generateAiSection();
+}
+
+async function cancelAiJob() {
+    isGeneratingAi.value = false;
+    resetAiJob();
+    toast.add({ title: 'AI Generation Cancelled', color: 'neutral', icon: 'ph:x-circle' });
 }
 
 const tabs = [

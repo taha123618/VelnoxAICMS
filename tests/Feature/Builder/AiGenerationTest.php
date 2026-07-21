@@ -135,7 +135,7 @@ it('successfully processes various ai generation requests', function (string $pr
 
     $user = User::factory()->create();
 
-    $response = actingAs($user, 'sanctum')->postJson('/api/ai/generate-section', [
+    $response = actingAs($user, 'sanctum')->postJson('/api/builder/ai/generate-section', [
         'prompt' => $prompt,
     ]);
 
@@ -159,7 +159,7 @@ it('successfully processes various ai generation requests', function (string $pr
 it('validates the prompt input', function () {
     $user = User::factory()->create();
 
-    $response = actingAs($user, 'sanctum')->postJson('/api/ai/generate-section', [
+    $response = actingAs($user, 'sanctum')->postJson('/api/builder/ai/generate-section', [
         'prompt' => '', // Empty prompt
     ]);
 

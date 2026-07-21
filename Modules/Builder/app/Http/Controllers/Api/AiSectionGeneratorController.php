@@ -3,32 +3,46 @@
 namespace Modules\Builder\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use Modules\Builder\Agents\PageSectionGenerator;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
+use Modules\Ai\Services\AiGenerationService;
+use Modules\Builder\Agents\PageSectionGenerator;
 
 class AiSectionGeneratorController extends Controller
 {
+    public function __construct(protected AiGenerationService $aiService) {}
+
     public function __invoke(Request $request): JsonResponse
     {
         $request->validate([
             'prompt' => ['required', 'string', 'max:2000'],
+            'async' => ['nullable', 'boolean'],
         ]);
 
-        try {
-            $agent = new PageSectionGenerator();
-            
-            // Pass the user's prompt to the agent
-            $response = $agent->prompt($request->input('prompt'));
-            
-            // The structured output ensures we get an array of 'elements'
+        // Support async queued mode by default unless explicitly disabled with async=false
+        if ($request->boolean('async', false)) {
+            $job = $this->aiService->dispatchJob(
+                prompt: $request->input('prompt'),
+                type: 'section',
+                userId: $request->user()?->id
+            );
+
             return response()->json([
-                'elements' => $response['elements'] ?? []
+                'message' => 'AI section generation queued successfully.',
+                'job' => $job,
+            ], 202);
+        }
+
+        try {
+            $agent = new PageSectionGenerator;
+            $response = $agent->prompt($request->input('prompt'));
+
+            return response()->json([
+                'elements' => $response['elements'] ?? [],
             ]);
-            
         } catch (\Exception $e) {
             return response()->json([
-                'error' => $e->getMessage()
+                'error' => $e->getMessage(),
             ], 500);
         }
     }
