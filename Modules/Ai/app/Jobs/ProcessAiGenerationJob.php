@@ -22,6 +22,7 @@ class ProcessAiGenerationJob implements ShouldQueue
     public int $tries = 3;
 
     public int $backoff = 5;
+    public int $timeout = 60;
 
     public function __construct(public string $jobId)
     {

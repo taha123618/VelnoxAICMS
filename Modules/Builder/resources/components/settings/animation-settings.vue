@@ -65,7 +65,6 @@ import ZioraElement from '@modules/Builder/resources/scripts/ziora-element';
 
 const { element } = defineProps<{
     element: ZioraElement;
-    options: Record<string, any>;
 }>();
 
 const repeatOptions = [
