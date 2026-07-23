@@ -9,11 +9,6 @@ use Modules\Visits\Contracts\UserAgentParser;
 class JenssegersAgent implements UserAgentParser
 {
     /**
-     * Request container.
-     */
-    protected Request $request;
-
-    /**
      * Agent parser.
      */
     protected Agent $parser;
@@ -21,9 +16,11 @@ class JenssegersAgent implements UserAgentParser
     /**
      * Parser constructor.
      */
-    public function __construct(Request $request)
+    public function __construct(/**
+     * Request container.
+     */
+        protected Request $request)
     {
-        $this->request = $request;
         $this->parser = $this->initParser();
     }
 
@@ -64,12 +61,12 @@ class JenssegersAgent implements UserAgentParser
      */
     protected function initParser(): Agent
     {
-        $parser = new Agent;
+        $agent = new Agent;
         $userAgent = $this->request->userAgent() ?? '';
 
-        $parser->setUserAgent($userAgent);
-        $parser->setHttpHeaders((array) $this->request->headers);
+        $agent->setUserAgent($userAgent);
+        $agent->setHttpHeaders((array) $this->request->headers);
 
-        return $parser;
+        return $agent;
     }
 }

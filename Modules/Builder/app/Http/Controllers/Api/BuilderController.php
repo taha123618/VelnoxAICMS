@@ -32,7 +32,7 @@ class BuilderController extends Controller
     public function update(Request $request, Page $page)
     {
         $validated = $request->validate([
-            'content' => 'required|array',
+            'content' => ['required', 'array'],
         ]);
 
         $page->update([

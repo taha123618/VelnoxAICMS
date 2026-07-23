@@ -12,7 +12,7 @@ trait BelongsToTenant
     {
         static::addGlobalScope(new TenantScope);
 
-        static::creating(function ($model) {
+        static::creating(function ($model): void {
             if (! $model->tenant_id) {
                 $tenantId = null;
 
@@ -26,7 +26,7 @@ trait BelongsToTenant
                             $tenantId = $defaultTenant->id;
                             try {
                                 $user->forceFill(['current_tenant_id' => $tenantId])->save();
-                            } catch (\Throwable $e) {
+                            } catch (\Throwable) {
                                 // Ignore save errors during quiet assignment
                             }
                         }

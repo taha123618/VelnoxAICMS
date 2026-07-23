@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use Illuminate\Support\Facades\Route;
 use Modules\Auth\Http\Controllers\AuthenticatedSessionController;
 use Modules\Auth\Http\Controllers\ChangePasswordController;
@@ -16,8 +18,8 @@ use Modules\Auth\Http\Controllers\UserController;
 use Modules\Auth\Http\Controllers\UserSendPasswordResetLinkController;
 use Modules\Auth\Http\Controllers\VerifyEmailController;
 
-Route::group(['as' => 'admin.', 'prefix' => 'cp'], function () {
-    Route::middleware(['guest', 'demo.protect'])->group(function () {
+Route::group(['as' => 'admin.', 'prefix' => 'cp'], function (): void {
+    Route::middleware(['guest', 'demo.protect'])->group(function (): void {
 
         Route::get('register', [RegisteredUserController::class, 'create'])
             ->name('register');
@@ -42,7 +44,7 @@ Route::group(['as' => 'admin.', 'prefix' => 'cp'], function () {
             ->name('password.store');
     });
 
-    Route::middleware(['auth', 'demo.protect'])->group(function () {
+    Route::middleware(['auth', 'demo.protect'])->group(function (): void {
         Route::get('settings/profile', [ProfileUpdateController::class, 'edit'])
             ->name('profile.edit');
 

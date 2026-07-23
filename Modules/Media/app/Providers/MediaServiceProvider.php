@@ -32,6 +32,7 @@ class MediaServiceProvider extends ServiceProvider
     /**
      * Register the service provider.
      */
+    #[\Override]
     public function register(): void
     {
         $this->app->register(EventServiceProvider::class);
@@ -135,6 +136,7 @@ class MediaServiceProvider extends ServiceProvider
     /**
      * Get the services provided by the provider.
      */
+    #[\Override]
     public function provides(): array
     {
         return [];

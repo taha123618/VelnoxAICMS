@@ -58,7 +58,7 @@ class Agent extends MobileDetect
         'WeChat' => 'MicroMessenger',
     ];
 
-    protected static CrawlerDetect $crawlerDetect;
+    protected static ?CrawlerDetect $crawlerDetect = null;
 
     /**
      * Key value store for resolved strings.
@@ -67,6 +67,7 @@ class Agent extends MobileDetect
      */
     protected array $store = [];
 
+    #[\Override]
     public function getRules(): array
     {
         static $rules;
@@ -121,17 +122,15 @@ class Agent extends MobileDetect
      */
     public function browser(): bool|string
     {
-        return $this->retrieveUsingCacheOrResolve('visitor.browser', function () {
-            return $this->findDetectionRulesAgainstUserAgent(
-                $this->mergeRules(static::$additionalBrowsers, MobileDetect::getBrowsers())
-            );
-        });
+        return $this->retrieveUsingCacheOrResolve('visitor.browser', fn (): ?string => $this->findDetectionRulesAgainstUserAgent(
+            $this->mergeRules(static::$additionalBrowsers, MobileDetect::getBrowsers())
+        ));
     }
 
     /**
      * Retrieve from the given key from the cache or resolve the value.
      *
-     * @param  \Closure():mixed  $callback
+     * @param  Closure():mixed  $callback
      */
     protected function retrieveUsingCacheOrResolve(string $key, Closure $callback): mixed
     {
@@ -141,7 +140,7 @@ class Agent extends MobileDetect
             return $cacheItem;
         }
 
-        return tap($callback(), function ($result) use ($cacheKey) {
+        return tap($callback(), function ($result) use ($cacheKey): void {
             $this->store[$cacheKey] = $result;
         });
     }
@@ -149,6 +148,7 @@ class Agent extends MobileDetect
     /**
      * @throws RandomException
      */
+    #[\Override]
     protected function createCacheKey(string $key): string
     {
         $userAgentKey = $this->hasUserAgent() ? $this->userAgent : '';
@@ -182,7 +182,7 @@ class Agent extends MobileDetect
             }
         }
 
-        return false;
+        return null;
     }
 
     /**
@@ -215,11 +215,9 @@ class Agent extends MobileDetect
      */
     public function platform(): bool|string
     {
-        return $this->retrieveUsingCacheOrResolve('visitor.platform', function () {
-            return $this->findDetectionRulesAgainstUserAgent(
-                $this->mergeRules(static::$additionalOperatingSystems, MobileDetect::getOperatingSystems())
-            );
-        });
+        return $this->retrieveUsingCacheOrResolve('visitor.platform', fn (): ?string => $this->findDetectionRulesAgainstUserAgent(
+            $this->mergeRules(static::$additionalOperatingSystems, MobileDetect::getOperatingSystems())
+        ));
     }
 
     /**
@@ -254,7 +252,7 @@ class Agent extends MobileDetect
         $userAgent = $this->getUserAgent();
 
         if ($this->getCrawlerDetect()->isCrawler($userAgent ?: $this->userAgent)) {
-            return ucfirst($this->getCrawlerDetect()->getMatches());
+            return ucfirst((string) $this->getCrawlerDetect()->getMatches());
         }
 
         return false;
@@ -262,7 +260,7 @@ class Agent extends MobileDetect
 
     public function getCrawlerDetect(): CrawlerDetect
     {
-        if (static::$crawlerDetect === null) {
+        if (! static::$crawlerDetect instanceof CrawlerDetect) {
             static::$crawlerDetect = new CrawlerDetect;
         }
 
@@ -304,14 +302,14 @@ class Agent extends MobileDetect
     {
         $userAgent = $this->getUserAgent();
 
-        return $this->retrieveUsingCacheOrResolve('visitor.desktop', function () use ($userAgent) {
+        return $this->retrieveUsingCacheOrResolve('visitor.desktop', function () use ($userAgent): bool {
 
             // Check specifically for cloudfront headers if the useragent === 'Amazon CloudFront'
             if ($userAgent === static::$cloudFrontUA && $this->getHttpHeader('HTTP_CLOUDFRONT_IS_DESKTOP_VIEWER') === 'true') {
                 return true;
             }
 
-            return ! $this->isMobile() && ! $this->isTablet() && ! $this->isRobot($userAgent);
+            return ! $this->isMobile() && ! $this->isTablet() && ! $this->isRobot();
         });
     }
 
@@ -338,6 +336,7 @@ class Agent extends MobileDetect
     /**
      * {@inheritdoc}
      */
+    #[\Override]
     public function __call(string $name, array $arguments): bool
     {
         // Make sure the name starts with 'is', otherwise

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Modules\Media\Policies;
 
 use Illuminate\Auth\Access\HandlesAuthorization;
@@ -15,15 +17,15 @@ class FolderPolicy
         return $user->can('create_folders');
     }
 
-    public function update(User $user, Folder $model)
+    public function update(User $user, Folder $folder)
     {
         return $user->can('edit_folders');
     }
 
-    public function delete(User $user, Folder $model): bool
+    public function delete(User $user, Folder $folder): bool
     {
         return $user->can('delete_folders')
-            && $model->children()->doesntExist()
-            && $model->media()->doesntExist();
+            && $folder->children()->doesntExist()
+            && $folder->media()->doesntExist();
     }
 }

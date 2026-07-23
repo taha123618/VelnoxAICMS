@@ -8,18 +8,18 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('ai_generation_jobs', function (Blueprint $table) {
-            $table->ulid('id')->primary();
-            $table->foreignUlid('user_id')->nullable()->constrained('users')->nullOnDelete();
-            $table->string('type')->default('section');
-            $table->text('prompt');
-            $table->string('status')->default('queued');
-            $table->unsignedInteger('progress')->default(0);
-            $table->json('result')->nullable();
-            $table->text('error')->nullable();
-            $table->timestamps();
+        Schema::create('ai_generation_jobs', function (Blueprint $blueprint): void {
+            $blueprint->ulid('id')->primary();
+            $blueprint->foreignUlid('user_id')->nullable()->constrained('users')->nullOnDelete();
+            $blueprint->string('type')->default('section');
+            $blueprint->text('prompt');
+            $blueprint->string('status')->default('queued');
+            $blueprint->unsignedInteger('progress')->default(0);
+            $blueprint->json('result')->nullable();
+            $blueprint->text('error')->nullable();
+            $blueprint->timestamps();
 
-            $table->index(['user_id', 'status']);
+            $blueprint->index(['user_id', 'status']);
         });
     }
 

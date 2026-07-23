@@ -12,29 +12,29 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('pages', function (Blueprint $table) {
-            $table->ulid('id')->primary();
-            $table->foreignUlid('tenant_id')->constrained()->cascadeOnDelete();
-            $table->foreignUlid('category_id')
+        Schema::create('pages', function (Blueprint $blueprint): void {
+            $blueprint->ulid('id')->primary();
+            $blueprint->foreignUlid('tenant_id')->constrained()->cascadeOnDelete();
+            $blueprint->foreignUlid('category_id')
                 ->nullable()
                 ->constrained('categories');
-            $table->boolean('is_frontpage')
+            $blueprint->boolean('is_frontpage')
                 ->default(false);
-            $table->string('type')->default(PageType::Page->value);
-            $table->foreignUlid('layout_id')->nullable();
-            $table->string('slug')->unique()->index();
-            $table->string('title');
-            $table->string('description')->nullable();
-            $table->json('content')->nullable();
-            $table->text('excerpt')->nullable();
-            $table->string('featured_image')->nullable();
-            $table->json('data')->nullable();
-            $table->integer('published_version_id')->nullable();
-            $table->datetime('published_at')->nullable();
-            $table->string('created_by')->nullable();
-            $table->string('updated_by')->nullable();
-            $table->softDeletes();
-            $table->timestamps();
+            $blueprint->string('type')->default(PageType::Page->value);
+            $blueprint->foreignUlid('layout_id')->nullable();
+            $blueprint->string('slug')->unique()->index();
+            $blueprint->string('title');
+            $blueprint->string('description')->nullable();
+            $blueprint->json('content')->nullable();
+            $blueprint->text('excerpt')->nullable();
+            $blueprint->string('featured_image')->nullable();
+            $blueprint->json('data')->nullable();
+            $blueprint->integer('published_version_id')->nullable();
+            $blueprint->datetime('published_at')->nullable();
+            $blueprint->string('created_by')->nullable();
+            $blueprint->string('updated_by')->nullable();
+            $blueprint->softDeletes();
+            $blueprint->timestamps();
         });
     }
 

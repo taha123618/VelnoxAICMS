@@ -5,7 +5,6 @@ namespace Modules\Forms\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Modules\Forms\Models\Form;
-use Modules\Forms\Models\FormSubmission;
 
 class FormSubmissionController extends Controller
 {
@@ -16,13 +15,13 @@ class FormSubmissionController extends Controller
     {
         $form = Form::where('slug', $slug)->firstOrFail();
 
-        if (!$form->is_active) {
+        if (! $form->is_active) {
             return response()->json(['message' => 'Form is inactive.'], 403);
         }
 
         // We can add validation based on the $form->schema here later
 
-        $submission = $form->submissions()->create([
+        $form->submissions()->create([
             'data' => $request->except(['_token']),
             'ip_address' => $request->ip(),
             'user_agent' => $request->userAgent(),

@@ -8,7 +8,7 @@ use Modules\Media\Models\Media;
 
 class UpdateDraggedMediaAction
 {
-    public function handle(Request $request)
+    public function handle(Request $request): void
     {
 
         $destinationId = $request->destinationId;

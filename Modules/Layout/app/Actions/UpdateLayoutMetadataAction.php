@@ -7,10 +7,10 @@ use Modules\Layout\Models\Layout;
 
 class UpdateLayoutMetadataAction
 {
-    public function handle(UpdateLayoutMetadataRequest $request, Layout $layout)
+    public function handle(UpdateLayoutMetadataRequest $updateLayoutMetadataRequest, Layout $layout)
     {
         return tap($layout)->update([
-            'name' => $request->name,
+            'name' => $updateLayoutMetadataRequest->name,
         ]);
     }
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Modules\Auth\Policies;
 
 use Illuminate\Auth\Access\HandlesAuthorization;
@@ -14,7 +16,7 @@ class UserPolicy
         return $user->can('create_users');
     }
 
-    public function update(User $user, User $model)
+    public function update(User $user, User $model): bool
     {
         return $user->can('edit_users') && $user->isNot($model);
     }

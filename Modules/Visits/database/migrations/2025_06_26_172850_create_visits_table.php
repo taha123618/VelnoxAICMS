@@ -11,32 +11,32 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('visits', function (Blueprint $table) {
-            $table->ulid('id')->primary();
-            $table->nullableUlidMorphs('visitable');
-            $table->nullableUlidMorphs('visitor');
-            $table->string('method')->nullable();
-            $table->longText('request')->nullable();
-            $table->longText('url')->nullable();
-            $table->longText('referer')->nullable();
-            $table->text('languages')->nullable();
-            $table->text('useragent')->nullable();
-            $table->text('headers')->nullable();
-            $table->string('device')->nullable();
-            $table->string('platform')->nullable();
-            $table->string('browser')->nullable();
-            $table->ipAddress('request_ip')->nullable();
-            $table->ipAddress('location_ip')->nullable();
-            $table->string('country_name')->nullable();
-            $table->string('country_code')->nullable();
-            $table->decimal('latitude')->nullable();
-            $table->decimal('longitude')->nullable();
-            $table->string('region_name')->nullable();
-            $table->string('region_code')->nullable();
-            $table->string('city_name')->nullable();
-            $table->string('zip_code')->nullable();
-            $table->string('timezone')->nullable();
-            $table->timestamps();
+        Schema::create('visits', function (Blueprint $blueprint): void {
+            $blueprint->ulid('id')->primary();
+            $blueprint->nullableUlidMorphs('visitable');
+            $blueprint->nullableUlidMorphs('visitor');
+            $blueprint->string('method')->nullable();
+            $blueprint->longText('request')->nullable();
+            $blueprint->longText('url')->nullable();
+            $blueprint->longText('referer')->nullable();
+            $blueprint->text('languages')->nullable();
+            $blueprint->text('useragent')->nullable();
+            $blueprint->text('headers')->nullable();
+            $blueprint->string('device')->nullable();
+            $blueprint->string('platform')->nullable();
+            $blueprint->string('browser')->nullable();
+            $blueprint->ipAddress('request_ip')->nullable();
+            $blueprint->ipAddress('location_ip')->nullable();
+            $blueprint->string('country_name')->nullable();
+            $blueprint->string('country_code')->nullable();
+            $blueprint->decimal('latitude')->nullable();
+            $blueprint->decimal('longitude')->nullable();
+            $blueprint->string('region_name')->nullable();
+            $blueprint->string('region_code')->nullable();
+            $blueprint->string('city_name')->nullable();
+            $blueprint->string('zip_code')->nullable();
+            $blueprint->string('timezone')->nullable();
+            $blueprint->timestamps();
         });
     }
 

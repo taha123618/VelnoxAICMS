@@ -1,10 +1,11 @@
 <?php
 
 use Illuminate\Support\Str;
+use Pdo\Mysql;
 
 $sslCaAttribute = PHP_VERSION_ID >= 80500
-    ? \Pdo\Mysql::ATTR_SSL_CA
-    : PDO::MYSQL_ATTR_SSL_CA;
+    ? Mysql::ATTR_SSL_CA
+    : Mysql::ATTR_SSL_CA;
 
 return [
 

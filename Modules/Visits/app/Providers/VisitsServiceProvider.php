@@ -34,14 +34,13 @@ class VisitsServiceProvider extends ServiceProvider
 
     protected function registerMacroHelpers(): void
     {
-        Request::macro('visitor', function () {
-            return app('ziora-visitor');
-        });
+        Request::macro('visitor', fn () => resolve('ziora-visitor'));
     }
 
     /**
      * Register the service provider.
      */
+    #[\Override]
     public function register(): void
     {
         $this->app->register(EventServiceProvider::class);
@@ -52,8 +51,8 @@ class VisitsServiceProvider extends ServiceProvider
             'visits'
         );
 
-        $this->app->singleton('ziora-visitor', function () {
-            $request = app(Request::class);
+        $this->app->singleton('ziora-visitor', function (): Visitor {
+            $request = resolve(Request::class);
 
             return new Visitor($request, config('visits'));
         });
@@ -156,6 +155,7 @@ class VisitsServiceProvider extends ServiceProvider
     /**
      * Get the services provided by the provider.
      */
+    #[\Override]
     public function provides(): array
     {
         return [];

@@ -17,7 +17,7 @@ class SettingsController extends Controller
         $settings = Setting::all()->groupBy('group');
 
         return Inertia::render('Settings::index', [
-            'settings' => $settings
+            'settings' => $settings,
         ]);
     }
 
@@ -27,11 +27,11 @@ class SettingsController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'settings' => 'required|array',
-            'settings.*.key' => 'required|string',
-            'settings.*.value' => 'nullable',
-            'settings.*.type' => 'required|string',
-            'settings.*.group' => 'required|string',
+            'settings' => ['required', 'array'],
+            'settings.*.key' => ['required', 'string'],
+            'settings.*.value' => ['nullable'],
+            'settings.*.type' => ['required', 'string'],
+            'settings.*.group' => ['required', 'string'],
         ]);
 
         foreach ($validated['settings'] as $settingData) {
@@ -40,7 +40,7 @@ class SettingsController extends Controller
                 [
                     'group' => $settingData['group'],
                     'value' => is_array($settingData['value']) ? json_encode($settingData['value']) : $settingData['value'],
-                    'type' => $settingData['type']
+                    'type' => $settingData['type'],
                 ]
             );
 
@@ -51,6 +51,6 @@ class SettingsController extends Controller
             }
         }
 
-        return redirect()->back()->with('success', 'Settings updated successfully.');
+        return back()->with('success', 'Settings updated successfully.');
     }
 }

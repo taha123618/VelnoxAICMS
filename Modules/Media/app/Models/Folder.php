@@ -11,6 +11,7 @@ use Modules\Auth\Models\User;
 use Modules\Media\Policies\FolderPolicy;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Staudenmeir\LaravelAdjacencyList\Eloquent\HasRecursiveRelationships;
 
 // use Modules\Media\Database\Factories\FolderFactory;
@@ -31,7 +32,7 @@ class Folder extends BaseModel implements HasMedia
         $folder = Folder::isRoot()->first();
 
         if (! $folder) {
-            $folder = Folder::create([
+            return Folder::create([
                 'name' => 'Home',
             ]);
         }
@@ -44,7 +45,7 @@ class Folder extends BaseModel implements HasMedia
         return $this->ancestorsAndSelf()->get()
             ->sortBy('depth')
             ->values()
-            ->map(fn ($item) => [
+            ->map(fn ($item): array => [
                 'id' => $item->id,
                 'icon' => is_null($item->parent_id) ? 'ph:house' : null,
                 'label' => $item->name,
@@ -53,7 +54,7 @@ class Folder extends BaseModel implements HasMedia
             ]);
     }
 
-    public function getTotalChildren()
+    public function getTotalChildren(): int
     {
         return count($this->media) + count($this->children);
     }
@@ -66,7 +67,7 @@ class Folder extends BaseModel implements HasMedia
         // ->useFallbackUrl(url('/storage/no-product-image.png'));
     }
 
-    public function registerAllMediaConversions(?\Spatie\MediaLibrary\MediaCollections\Models\Media $media = null): void
+    public function registerAllMediaConversions(?Media $media = null): void
     {
         ini_set('memory_limit', '4048M');
         $this
@@ -77,7 +78,7 @@ class Folder extends BaseModel implements HasMedia
             ->sharpen(10);
     }
 
-    public function getAuthorizationAttribute()
+    protected function getAuthorizationAttribute(): array
     {
         return [
             'update' => Gate::allows('update', $this),

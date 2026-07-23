@@ -3,9 +3,9 @@
 namespace Modules\Auth\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
-use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Str;
 use Inertia\Inertia;
 use Modules\Auth\Actions\SearchRolesAction;
@@ -20,7 +20,7 @@ class RoleController extends Controller
     {
         $filters = $request->only(['search', 'sort']);
 
-        $data = app(SearchRolesAction::class)->handle($request);
+        $data = resolve(SearchRolesAction::class)->handle($request);
 
         return Inertia::render('Auth::roles/index', [
             'data' => RoleData::collect($data),
@@ -35,17 +35,17 @@ class RoleController extends Controller
         return Inertia::render('Auth::roles/create');
     }
 
-    public function store(CreateRoleRequest $request)
+    public function store(CreateRoleRequest $createRoleRequest): RedirectResponse
     {
         Gate::authorize('create', Role::class);
 
         Role::create([
-            'name' => Str::slug($request->name),
-            'label' => $request->name,
+            'name' => Str::slug($createRoleRequest->name),
+            'label' => $createRoleRequest->name,
             'guard_name' => 'web',
         ]);
 
-        return Redirect::back();
+        return back();
     }
 
     public function edit(Role $role)
@@ -57,18 +57,18 @@ class RoleController extends Controller
         ]);
     }
 
-    public function update(UpdateRoleRequest $request, Role $role)
+    public function update(UpdateRoleRequest $updateRoleRequest, Role $role): RedirectResponse
     {
         Gate::authorize('update', $role);
 
         $role->update([
-            'label' => $request->label,
+            'label' => $updateRoleRequest->label,
         ]);
 
-        return Redirect::back();
+        return back();
     }
 
-    public function destroy(Role $role)
+    public function destroy(Role $role): RedirectResponse
     {
         Gate::authorize('delete', $role);
 
@@ -76,6 +76,6 @@ class RoleController extends Controller
             $role->delete();
         }
 
-        return Redirect::back();
+        return back();
     }
 }

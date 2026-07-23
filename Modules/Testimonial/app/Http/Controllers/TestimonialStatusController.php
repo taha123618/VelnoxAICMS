@@ -1,10 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Modules\Testimonial\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Gate;
-use Illuminate\Support\Facades\Redirect;
 use Modules\Testimonial\Models\Testimonial;
 
 class TestimonialStatusController extends Controller
@@ -15,6 +16,6 @@ class TestimonialStatusController extends Controller
 
         $testimonial->togglePublish();
 
-        return Redirect::back()->with('success', 'Status changed!');
+        return back()->with('success', 'Status changed!');
     }
 }

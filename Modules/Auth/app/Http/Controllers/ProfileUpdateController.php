@@ -1,11 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Modules\Auth\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 use Modules\Auth\Actions\UpdateProfileInformationAction;
 use Modules\Auth\Http\Requests\ProfileUpdateRequest;
@@ -20,10 +22,10 @@ class ProfileUpdateController extends Controller
         ]);
     }
 
-    public function update(ProfileUpdateRequest $request)
+    public function update(ProfileUpdateRequest $profileUpdateRequest): RedirectResponse
     {
-        app(UpdateProfileInformationAction::class)->handle($request);
+        resolve(UpdateProfileInformationAction::class)->handle($profileUpdateRequest);
 
-        return Redirect::back();
+        return back();
     }
 }

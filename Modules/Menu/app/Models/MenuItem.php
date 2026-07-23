@@ -11,6 +11,7 @@ class MenuItem extends BaseModel
 {
     use HasRecursiveRelationships;
 
+    #[\Override]
     protected $casts = [
         'type' => MenuItemType::class,
     ];

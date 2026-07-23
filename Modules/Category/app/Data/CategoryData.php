@@ -13,11 +13,11 @@ use Spatie\TypeScriptTransformer\Attributes\TypeScript;
 class CategoryData extends Data
 {
     public function __construct(
-        public string $id,
+        public int|string $id,
         public string $name,
         public string $slug,
         public int $totalPosts,
-        public ?string $parentId,
+        public int|string|null $parentId,
         public ?string $parentName,
         public ?string $description,
         public Lazy|Collection|null $children,
@@ -35,8 +35,8 @@ class CategoryData extends Data
             parentId: $category->parent?->id,
             parentName: $category->parent?->name,
             description: $category->description,
-            can: $category->authorization,
-            children: Lazy::whenLoaded('children', $category, fn () => CategoryData::collect($category->children)) ?? []
+            children: Lazy::whenLoaded('children', $category, fn (): array|\Illuminate\Contracts\Pagination\CursorPaginator|\Illuminate\Contracts\Pagination\Paginator|\Illuminate\Pagination\AbstractCursorPaginator|\Illuminate\Pagination\AbstractPaginator|\Illuminate\Support\Enumerable|\Spatie\LaravelData\CursorPaginatedDataCollection|\Spatie\LaravelData\DataCollection|\Spatie\LaravelData\PaginatedDataCollection => CategoryData::collect($category->children)) ?? [],
+            can: $category->authorization
         );
     }
 }

@@ -11,16 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('collections', function (Blueprint $table) {
-            $table->ulid('id')->primary();
-            $table->foreignUlid('tenant_id')->constrained('tenants')->cascadeOnDelete();
-            $table->string('name');
-            $table->string('slug');
-            $table->text('description')->nullable();
-            $table->boolean('is_publishable')->default(true);
-            $table->timestamps();
+        Schema::create('collections', function (Blueprint $blueprint): void {
+            $blueprint->ulid('id')->primary();
+            $blueprint->foreignUlid('tenant_id')->constrained('tenants')->cascadeOnDelete();
+            $blueprint->string('name');
+            $blueprint->string('slug');
+            $blueprint->text('description')->nullable();
+            $blueprint->boolean('is_publishable')->default(true);
+            $blueprint->timestamps();
 
-            $table->unique(['tenant_id', 'slug']);
+            $blueprint->unique(['tenant_id', 'slug']);
         });
     }
 

@@ -11,16 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('forms', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
-            $table->string('slug')->unique();
-            $table->text('description')->nullable();
-            $table->json('schema')->nullable(); // JSON representation of form fields
-            $table->boolean('is_active')->default(true);
-            $table->string('success_message')->nullable();
-            $table->string('redirect_url')->nullable();
-            $table->timestamps();
+        Schema::create('forms', function (Blueprint $blueprint): void {
+            $blueprint->id();
+            $blueprint->string('name');
+            $blueprint->string('slug')->unique();
+            $blueprint->text('description')->nullable();
+            $blueprint->json('schema')->nullable(); // JSON representation of form fields
+            $blueprint->boolean('is_active')->default(true);
+            $blueprint->string('success_message')->nullable();
+            $blueprint->string('redirect_url')->nullable();
+            $blueprint->timestamps();
         });
     }
 

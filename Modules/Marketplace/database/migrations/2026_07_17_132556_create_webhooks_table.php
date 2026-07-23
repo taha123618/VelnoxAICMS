@@ -11,14 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('webhooks', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
-            $table->string('url');
-            $table->json('events')->nullable(); // Array of events, e.g. ['page.created', 'page.updated']
-            $table->string('secret')->nullable();
-            $table->boolean('is_active')->default(true);
-            $table->timestamps();
+        Schema::create('webhooks', function (Blueprint $blueprint): void {
+            $blueprint->id();
+            $blueprint->string('name');
+            $blueprint->string('url');
+            $blueprint->json('events')->nullable(); // Array of events, e.g. ['page.created', 'page.updated']
+            $blueprint->string('secret')->nullable();
+            $blueprint->boolean('is_active')->default(true);
+            $blueprint->timestamps();
         });
     }
 

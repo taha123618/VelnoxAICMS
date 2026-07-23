@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Modules\Ai\Agents;
 
 use Laravel\Ai\Attributes\MaxTokens;

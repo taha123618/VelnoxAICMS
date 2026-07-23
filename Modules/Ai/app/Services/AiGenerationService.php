@@ -14,7 +14,7 @@ class AiGenerationService
     /**
      * Queue a new AI generation job.
      */
-    public function dispatchJob(string $prompt, string $type = 'section', ?string $userId = null): AiGenerationJob
+    public function dispatchJob(string $prompt, string $type = 'section', int|string|null $userId = null): AiGenerationJob
     {
         // Prevent duplicate active submissions for the same user and type
         if ($userId) {
@@ -23,9 +23,9 @@ class AiGenerationService
                 ->whereIn('status', [AiGenerationJob::STATUS_QUEUED, AiGenerationJob::STATUS_PROCESSING])
                 ->get();
 
-            foreach ($activeJobs as $existingJob) {
-                if ($existingJob->updated_at && $existingJob->updated_at->diffInMinutes(now()) >= 2) {
-                    $existingJob->markAsFailed('Job timed out due to queue inactivity.');
+            foreach ($activeJobs as $activeJob) {
+                if ($activeJob->updated_at && $activeJob->updated_at->diffInMinutes(now()) >= 2) {
+                    $activeJob->markAsFailed('Job timed out due to queue inactivity.');
                 } else {
                     throw ValidationException::withMessages([
                         'prompt' => ['An AI generation job is already processing. Please wait for it to complete.'],
@@ -43,7 +43,7 @@ class AiGenerationService
         ]);
 
         // Dispatch background queue job
-        ProcessAiGenerationJob::dispatch($job->id);
+        dispatch(new ProcessAiGenerationJob($job->id));
 
         return $job;
     }
@@ -51,7 +51,7 @@ class AiGenerationService
     /**
      * Get job status by ID.
      */
-    public function getJob(string $jobId, ?string $userId = null): AiGenerationJob
+    public function getJob(int|string $jobId, int|string|null $userId = null): AiGenerationJob
     {
         $query = AiGenerationJob::where('id', $jobId);
 
@@ -65,51 +65,51 @@ class AiGenerationService
     /**
      * Retry a failed job.
      */
-    public function retryJob(string $jobId, ?string $userId = null): AiGenerationJob
+    public function retryJob(int|string $jobId, int|string|null $userId = null): AiGenerationJob
     {
-        $job = $this->getJob($jobId, $userId);
+        $aiGenerationJob = $this->getJob($jobId, $userId);
 
-        $job->update([
+        $aiGenerationJob->update([
             'status' => AiGenerationJob::STATUS_QUEUED,
             'progress' => 0,
             'error' => null,
             'result' => null,
         ]);
 
-        $this->safeBroadcast($job);
+        $this->safeBroadcast($aiGenerationJob);
 
-        ProcessAiGenerationJob::dispatch($job->id);
+        dispatch(new ProcessAiGenerationJob($aiGenerationJob->id));
 
-        return $job;
+        return $aiGenerationJob;
     }
 
     /**
      * Cancel an active AI generation job.
      */
-    public function cancelJob(string $jobId, ?string $userId = null): AiGenerationJob
+    public function cancelJob(int|string $jobId, int|string|null $userId = null): AiGenerationJob
     {
-        $job = $this->getJob($jobId, $userId);
+        $aiGenerationJob = $this->getJob($jobId, $userId);
 
-        if (in_array($job->status, [AiGenerationJob::STATUS_COMPLETED, AiGenerationJob::STATUS_FAILED])) {
-            return $job;
+        if (in_array($aiGenerationJob->status, [AiGenerationJob::STATUS_COMPLETED, AiGenerationJob::STATUS_FAILED])) {
+            return $aiGenerationJob;
         }
 
-        $job->update([
+        $aiGenerationJob->update([
             'status' => AiGenerationJob::STATUS_CANCELLED,
             'error' => 'Job was cancelled by the user.',
         ]);
 
-        $this->safeBroadcast($job);
+        $this->safeBroadcast($aiGenerationJob);
 
-        return $job;
+        return $aiGenerationJob;
     }
 
-    protected function safeBroadcast(AiGenerationJob $job): void
+    protected function safeBroadcast(AiGenerationJob $aiGenerationJob): void
     {
         try {
-            event(new AiJobStatusUpdated($job));
+            event(new AiJobStatusUpdated($aiGenerationJob));
         } catch (Throwable $e) {
-            Log::warning("WebSocket broadcast failed for AiGenerationJob {$job->id} (Reverb server down or unreachable): ".$e->getMessage());
+            Log::warning("WebSocket broadcast failed for AiGenerationJob {$aiGenerationJob->id} (Reverb server down or unreachable): ".$e->getMessage());
         }
     }
 }

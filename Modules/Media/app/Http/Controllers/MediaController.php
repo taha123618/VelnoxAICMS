@@ -4,7 +4,6 @@ namespace Modules\Media\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Redirect;
 use Modules\Media\Actions\DeleteMediaAction;
 use Modules\Media\Data\MediaData;
 use Modules\Media\Models\Folder;
@@ -34,10 +33,10 @@ class MediaController extends Controller
         return response()->noContent();
     }
 
-    public function destroy(Request $request, Media $file)
+    public function destroy(Request $request, Media $media)
     {
-        app(DeleteMediaAction::class)->handle($file);
+        resolve(DeleteMediaAction::class)->handle($media);
 
-        return Redirect::back()->with('success', 'File deleted!');
+        return back()->with('success', 'File deleted!');
     }
 }

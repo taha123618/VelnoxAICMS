@@ -11,14 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('languages', function (Blueprint $table) {
-            $table->id();
-            $table->string('code')->unique();
-            $table->string('name');
-            $table->string('native_name')->nullable();
-            $table->boolean('is_default')->default(false);
-            $table->boolean('is_active')->default(true);
-            $table->timestamps();
+        Schema::create('languages', function (Blueprint $blueprint): void {
+            $blueprint->id();
+            $blueprint->string('code')->unique();
+            $blueprint->string('name');
+            $blueprint->string('native_name')->nullable();
+            $blueprint->boolean('is_default')->default(false);
+            $blueprint->boolean('is_active')->default(true);
+            $blueprint->timestamps();
         });
     }
 

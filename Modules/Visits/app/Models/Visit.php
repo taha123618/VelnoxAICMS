@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Modules\Visits\Models;
 
 use App\Models\BaseModel;
@@ -9,6 +11,7 @@ use Illuminate\Support\Arr;
 
 class Visit extends BaseModel
 {
+    #[\Override]
     protected $casts = [
         'data' => 'json',
         'request' => 'array',

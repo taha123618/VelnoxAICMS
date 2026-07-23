@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
-use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 use Modules\Layout\Actions\GetLayoutDropdownOptionsAction;
 use Modules\Layout\Data\LayoutData;
@@ -25,7 +24,7 @@ class PageController extends Controller
     {
         $filters = $request->only(['search', 'sort']);
 
-        $data = app(SearchPagesAction::class)->handle($request);
+        $data = resolve(SearchPagesAction::class)->handle($request);
 
         return Inertia::render('Page::pages/index', [
             'data' => PageData::collect($data),
@@ -38,17 +37,17 @@ class PageController extends Controller
         Gate::denyIf(Auth::user()->cannot('create_pages'));
 
         return Inertia::render('Page::pages/create', [
-            'layouts' => app(GetLayoutDropdownOptionsAction::class)->handle(),
+            'layouts' => resolve(GetLayoutDropdownOptionsAction::class)->handle(),
         ]);
     }
 
-    public function store(CreatePageRequest $request)
+    public function store(CreatePageRequest $createPageRequest)
     {
         Gate::denyIf(Auth::user()->cannot('create_pages'));
 
-        app(CreatePageAction::class)->handle($request);
+        resolve(CreatePageAction::class)->handle($createPageRequest);
 
-        return Redirect::back()->with('success', 'Page created!');
+        return back()->with('success', 'Page created!');
     }
 
     public function edit(Page $page)
@@ -57,9 +56,9 @@ class PageController extends Controller
 
         return Inertia::render('Page::pages/edit', [
             'page' => PageData::fromModel($page),
-            'layouts' => app(GetLayoutDropdownOptionsAction::class)->handle(),
+            'layouts' => resolve(GetLayoutDropdownOptionsAction::class)->handle(),
             'layout' => LayoutData::fromModel($page->layout),
-            'menus' => MenuData::collect(app(GetAllMenusAction::class)->handle()),
+            'menus' => MenuData::collect(resolve(GetAllMenusAction::class)->handle()),
         ]);
     }
 
@@ -67,8 +66,8 @@ class PageController extends Controller
     {
         Gate::authorize('delete_page', $page);
 
-        app(DeletePageAction::class)->handle($page);
+        resolve(DeletePageAction::class)->handle($page);
 
-        return Redirect::back()->with('success', 'Page deleted!');
+        return back()->with('success', 'Page deleted!');
     }
 }

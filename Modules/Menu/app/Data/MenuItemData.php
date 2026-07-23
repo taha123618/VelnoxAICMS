@@ -13,10 +13,10 @@ use Spatie\TypeScriptTransformer\Attributes\TypeScript;
 class MenuItemData extends Data
 {
     public function __construct(
-        public string $id,
+        public int|string $id,
         public bool $isRecent,
         public string $menuId,
-        public ?string $parentId,
+        public int|string|null $parentId,
         public MenuItemType $type,
         public string $label,
         public string $path,
@@ -27,21 +27,21 @@ class MenuItemData extends Data
         public Lazy|Collection|null $children,
     ) {}
 
-    public static function fromModel(MenuItem $item): self
+    public static function fromModel(MenuItem $menuItem): self
     {
         return new self(
-            id: $item->id,
+            id: $menuItem->id,
             isRecent: false,
-            parentId: $item->parent_id,
-            menuId: $item->menu_id,
-            type: $item->type,
-            label: $item->label,
-            path: $item->path,
-            href: $item->getUrl(),
-            to: $item->getUrl(),
+            menuId: $menuItem->menu_id,
+            parentId: $menuItem->parent_id,
+            type: $menuItem->type,
+            label: $menuItem->label,
+            path: $menuItem->path,
+            href: $menuItem->getUrl(),
+            to: $menuItem->getUrl(),
+            target: $menuItem->target,
             defaultOpen: true,
-            target: $item->target,
-            children: Lazy::whenLoaded('children', $item, fn () => MenuItemData::collect($item->children()->orderBy('sort_order')->get())) ?? []
+            children: Lazy::whenLoaded('children', $menuItem, fn (): array|\Illuminate\Contracts\Pagination\CursorPaginator|\Illuminate\Contracts\Pagination\Paginator|\Illuminate\Pagination\AbstractCursorPaginator|\Illuminate\Pagination\AbstractPaginator|\Illuminate\Support\Enumerable|\Spatie\LaravelData\CursorPaginatedDataCollection|\Spatie\LaravelData\DataCollection|\Spatie\LaravelData\PaginatedDataCollection => MenuItemData::collect($menuItem->children()->orderBy('sort_order')->get())) ?? []
         );
     }
 }

@@ -1,23 +1,25 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Modules\Media\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
-use Illuminate\Support\Facades\Redirect;
 use Modules\Media\Actions\UpdateDraggedFolderParentAction;
 use Modules\Media\Actions\UpdateDraggedMediaAction;
 use Modules\Media\Models\Folder;
 
 class DraggableMediaController extends Controller
 {
-    public function update(Request $request)
+    public function update(Request $request): RedirectResponse
     {
 
-        app(UpdateDraggedMediaAction::class)->handle($request);
+        resolve(UpdateDraggedMediaAction::class)->handle($request);
 
-        return Redirect::back();
+        return back();
     }
 
     public function drag(Request $request, Folder $folder)
@@ -25,8 +27,8 @@ class DraggableMediaController extends Controller
 
         Gate::authorize('update', $folder);
 
-        app(UpdateDraggedFolderParentAction::class)->handle($request, $folder);
+        resolve(UpdateDraggedFolderParentAction::class)->handle($request, $folder);
 
-        return Redirect::back()->with('success', 'Folder updated!');
+        return back()->with('success', 'Folder updated!');
     }
 }

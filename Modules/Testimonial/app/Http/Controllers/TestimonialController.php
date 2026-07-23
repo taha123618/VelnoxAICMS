@@ -5,7 +5,6 @@ namespace Modules\Testimonial\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
-use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 use Modules\Testimonial\Actions\CreateTestimonialAction;
 use Modules\Testimonial\Actions\DeleteTestimonialAction;
@@ -22,7 +21,7 @@ class TestimonialController extends Controller
     {
         $filters = $request->only(['search', 'sort']);
 
-        $data = app(SearchTestimonialsAction::class)->handle($request);
+        $data = resolve(SearchTestimonialsAction::class)->handle($request);
 
         return Inertia::render('Testimonial::index', [
             'data' => TestimonialData::collect($data),
@@ -37,13 +36,13 @@ class TestimonialController extends Controller
         return Inertia::render('Testimonial::create');
     }
 
-    public function store(CreateTestimonialRequest $request)
+    public function store(CreateTestimonialRequest $createTestimonialRequest)
     {
         Gate::authorize('create', Testimonial::class);
 
-        app(CreateTestimonialAction::class)->handle($request);
+        resolve(CreateTestimonialAction::class)->handle($createTestimonialRequest);
 
-        return Redirect::back()->with('success', 'Testimonial created!');
+        return back()->with('success', 'Testimonial created!');
     }
 
     public function edit(Testimonial $testimonial)
@@ -55,21 +54,21 @@ class TestimonialController extends Controller
         ]);
     }
 
-    public function update(UpdateTestimonialRequest $request, Testimonial $testimonial)
+    public function update(UpdateTestimonialRequest $updateTestimonialRequest, Testimonial $testimonial)
     {
         Gate::authorize('update', $testimonial);
 
-        app(UpdateTestimonialAction::class)->handle($request, $testimonial);
+        resolve(UpdateTestimonialAction::class)->handle($updateTestimonialRequest, $testimonial);
 
-        return Redirect::back()->with('success', 'Testimonial updated!');
+        return back()->with('success', 'Testimonial updated!');
     }
 
     public function destroy(Testimonial $testimonial)
     {
         Gate::authorize('delete', $testimonial);
 
-        app(DeleteTestimonialAction::class)->handle($testimonial);
+        resolve(DeleteTestimonialAction::class)->handle($testimonial);
 
-        return Redirect::back()->with('success', 'Testimonial deleted!');
+        return back()->with('success', 'Testimonial deleted!');
     }
 }

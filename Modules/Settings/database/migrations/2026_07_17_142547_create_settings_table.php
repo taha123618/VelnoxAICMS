@@ -11,13 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('settings', function (Blueprint $table) {
-            $table->id();
-            $table->string('group')->default('general');
-            $table->string('key')->unique();
-            $table->text('value')->nullable();
-            $table->string('type')->default('string'); // string, boolean, image, integer
-            $table->timestamps();
+        Schema::create('settings', function (Blueprint $blueprint): void {
+            $blueprint->id();
+            $blueprint->string('group')->default('general');
+            $blueprint->string('key')->unique();
+            $blueprint->text('value')->nullable();
+            $blueprint->string('type')->default('string'); // string, boolean, image, integer
+            $blueprint->timestamps();
         });
     }
 

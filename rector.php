@@ -11,10 +11,15 @@ return RectorConfig::configure()
         __DIR__.'/app',
         __DIR__.'/bootstrap',
         __DIR__.'/config',
-        __DIR__.'/public',
         __DIR__.'/resources',
         __DIR__.'/routes',
         __DIR__.'/tests',
+    ])
+    ->withSkip([
+        __DIR__.'/bootstrap/cache',
+        __DIR__.'/vendor',
+        __DIR__.'/public',
+        __DIR__.'/storage',
     ])
     ->withPhpSets()
     ->withPreparedSets(

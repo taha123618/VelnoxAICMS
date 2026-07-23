@@ -4,7 +4,6 @@ namespace Modules\Page\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Gate;
-use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 use Modules\Layout\Actions\GetAllLayoutsAction;
 use Modules\Layout\Data\LayoutData;
@@ -21,16 +20,16 @@ class PageMetaController extends Controller
 
         return Inertia::render('Page::pages/edit-metadata', [
             'page' => PageData::fromModel($page),
-            'layouts' => LayoutData::collect(app(GetAllLayoutsAction::class)->handle()),
+            'layouts' => LayoutData::collect(resolve(GetAllLayoutsAction::class)->handle()),
         ]);
     }
 
-    public function update(UpdatePageRequest $request, Page $page)
+    public function update(UpdatePageRequest $updatePageRequest, Page $page)
     {
         Gate::authorize('update_page', $page);
 
-        app(UpdatePageMetadataAction::class)->handle($request, $page);
+        resolve(UpdatePageMetadataAction::class)->handle($updatePageRequest, $page);
 
-        return Redirect::back()->with('success', 'Page updated!');
+        return back()->with('success', 'Page updated!');
     }
 }

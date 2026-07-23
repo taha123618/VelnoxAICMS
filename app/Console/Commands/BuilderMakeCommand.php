@@ -2,6 +2,8 @@
 
 namespace App\Console\Commands;
 
+use Illuminate\Console\Attributes\Description;
+use Illuminate\Console\Attributes\Signature;
 use Illuminate\Contracts\Console\PromptsForMissingInput;
 use Illuminate\Support\Str;
 use Nwidart\Modules\Commands\Make\GeneratorCommand;
@@ -14,20 +16,19 @@ use Symfony\Component\Console\Input\InputArgument;
 use function Laravel\Prompts\select;
 use function Laravel\Prompts\text;
 
+#[Description('Create a new builder element.')]
+#[Signature('builder:make {name} {category}')]
 class BuilderMakeCommand extends GeneratorCommand implements PromptsForMissingInput
 {
-    protected $signature = 'builder:make {name} {category}';
-
-    protected $description = 'Create a new builder element.';
-
+    #[\Override]
     protected function promptForMissingArgumentsUsing(): array
     {
         return [
-            'name' => fn () => text(
+            'name' => fn (): string => text(
                 label: 'Enter a name for the new Builder element',
                 validate: ['name' => 'required|max:25|alpha_dash']
             ),
-            'category' => fn () => select(
+            'category' => fn (): int|string => select(
                 label: 'Select an element category',
                 options: [
                     'containers' => 'Container element',
@@ -41,6 +42,7 @@ class BuilderMakeCommand extends GeneratorCommand implements PromptsForMissingIn
         ];
     }
 
+    #[\Override]
     public function handle(): int
     {
 
@@ -62,15 +64,15 @@ class BuilderMakeCommand extends GeneratorCommand implements PromptsForMissingIn
         $settingsPath = str_replace('\\', '/', $this->getSettingsDestinationFilePath());
 
         try {
-            $this->components->task("Generating file {$path}", function () use ($path, $contents, $configContent, $configPath, $renderContent, $renderPath, $settingsContent, $settingsPath) {
+            $this->components->task("Generating file {$path}", function () use ($path, $contents, $configContent, $configPath, $renderContent, $renderPath, $settingsContent, $settingsPath): void {
                 $overwriteFile = $this->hasOption('force') ? $this->option('force') : false;
-                (new FileGenerator($path, $contents))->withFileOverwrite($overwriteFile)->generate();
+                new FileGenerator($path, $contents)->withFileOverwrite($overwriteFile)->generate();
 
-                (new FileGenerator($configPath, $configContent))->withFileOverwrite($overwriteFile)->generate();
-                (new FileGenerator($renderPath, $renderContent))->withFileOverwrite($overwriteFile)->generate();
-                (new FileGenerator($settingsPath, $settingsContent))->withFileOverwrite($overwriteFile)->generate();
+                new FileGenerator($configPath, $configContent)->withFileOverwrite($overwriteFile)->generate();
+                new FileGenerator($renderPath, $renderContent)->withFileOverwrite($overwriteFile)->generate();
+                new FileGenerator($settingsPath, $settingsContent)->withFileOverwrite($overwriteFile)->generate();
             });
-        } catch (FileAlreadyExistException $e) {
+        } catch (FileAlreadyExistException) {
             $this->components->error("File : {$path} already exists.");
 
             return E_ERROR;
@@ -79,6 +81,7 @@ class BuilderMakeCommand extends GeneratorCommand implements PromptsForMissingIn
         return 0;
     }
 
+    #[\Override]
     protected function getArguments(): array
     {
         return [
@@ -102,9 +105,9 @@ class BuilderMakeCommand extends GeneratorCommand implements PromptsForMissingIn
     {
         $elementName = $this->getElementName();
 
-        return (new Stub($this->getElementStubName(), [
+        return new Stub($this->getElementStubName(), [
             'NAME' => Str::lower($elementName),
-        ]))->render();
+        ])->render();
     }
 
     protected function getElementStubName(): string
@@ -138,11 +141,11 @@ class BuilderMakeCommand extends GeneratorCommand implements PromptsForMissingIn
     {
         $elementName = $this->getElementName();
 
-        return (new Stub($this->getConfigStubName(), [
+        return new Stub($this->getConfigStubName(), [
             'CATEGORY' => $this->getElementCategory(),
             'ID' => Str::lower($elementName),
             'NAME' => $elementName,
-        ]))->render();
+        ])->render();
     }
 
     public function getConfigDestinationFilePath(): string
@@ -166,9 +169,9 @@ class BuilderMakeCommand extends GeneratorCommand implements PromptsForMissingIn
     {
         $elementName = $this->getElementName();
 
-        return (new Stub($this->getRenderStubName(), [
+        return new Stub($this->getRenderStubName(), [
             'NAME' => Str::lower($elementName),
-        ]))->render();
+        ])->render();
     }
 
     public function getRenderDestinationFilePath(): string
@@ -192,11 +195,11 @@ class BuilderMakeCommand extends GeneratorCommand implements PromptsForMissingIn
     {
         $elementName = $this->getElementName();
 
-        return (new Stub($this->getSettingsStubName(), [
+        return new Stub($this->getSettingsStubName(), [
             'STUDLY_NAME' => $elementName,
             'NAME' => Str::lower($elementName),
             'CATEGORY' => $this->getElementCategory(),
-        ]))->render();
+        ])->render();
     }
 
     public function getSettingsDestinationFilePath(): string

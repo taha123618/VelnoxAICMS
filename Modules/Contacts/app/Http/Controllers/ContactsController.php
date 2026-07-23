@@ -3,8 +3,8 @@
 namespace Modules\Contacts\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 use Modules\Contacts\Actions\CreateContactAction;
 use Modules\Contacts\Actions\DeleteContactAction;
@@ -19,7 +19,7 @@ class ContactsController extends Controller
     {
         $filters = $request->only(['search', 'sort']);
 
-        $data = app(SearchContactsAction::class)->handle($request);
+        $data = resolve(SearchContactsAction::class)->handle($request);
 
         return Inertia::render('Contacts::index', [
             'data' => ContactData::collect($data),
@@ -34,19 +34,19 @@ class ContactsController extends Controller
         ]);
     }
 
-    public function store(CreateContactRequest $request)
+    public function store(CreateContactRequest $createContactRequest): RedirectResponse
     {
 
-        app(CreateContactAction::class)->handle($request);
+        resolve(CreateContactAction::class)->handle($createContactRequest);
 
-        return Redirect::back();
+        return back();
     }
 
-    public function destroy(Contact $contact)
+    public function destroy(Contact $contact): RedirectResponse
     {
 
-        app(DeleteContactAction::class)->handle($contact);
+        resolve(DeleteContactAction::class)->handle($contact);
 
-        return Redirect::back();
+        return back();
     }
 }

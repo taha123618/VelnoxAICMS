@@ -2,17 +2,18 @@
 
 namespace Modules\Automation\Providers;
 
-use Illuminate\Support\ServiceProvider;
-use Illuminate\Support\Facades\Event;
-use Modules\Automation\Models\Webhook;
-use Modules\Automation\Jobs\FireWebhookJob;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Event;
+use Illuminate\Support\ServiceProvider;
+use Modules\Automation\Jobs\FireWebhookJob;
+use Modules\Automation\Models\Webhook;
 
 class AutomationServiceProvider extends ServiceProvider
 {
     /**
      * Register the service provider.
      */
+    #[\Override]
     public function register(): void
     {
         $this->app->register(RouteServiceProvider::class);
@@ -27,25 +28,27 @@ class AutomationServiceProvider extends ServiceProvider
         $this->loadViewsFrom(module_path('Automation', 'resources/views'), 'Automation');
 
         // Listen for all Eloquent saved events
-        Event::listen('eloquent.saved: *', function (string $eventName, array $data) {
+        Event::listen('eloquent.saved: *', function (string $eventName, array $data): void {
             $this->dispatchWebhooks('entry.updated', $data[0] ?? null);
         });
 
-        Event::listen('eloquent.created: *', function (string $eventName, array $data) {
+        Event::listen('eloquent.created: *', function (string $eventName, array $data): void {
             $this->dispatchWebhooks('entry.created', $data[0] ?? null);
         });
 
-        Event::listen('eloquent.deleted: *', function (string $eventName, array $data) {
+        Event::listen('eloquent.deleted: *', function (string $eventName, array $data): void {
             $this->dispatchWebhooks('entry.deleted', $data[0] ?? null);
         });
     }
 
     protected function dispatchWebhooks(string $eventType, ?Model $model): void
     {
-        if (!$model) return;
+        if (! $model instanceof Model) {
+            return;
+        }
 
         // Optionally, restrict to certain models like Page, Post, Entry
-        $class = get_class($model);
+        $class = $model::class;
         if (str_contains($class, 'Webhook') || str_contains($class, 'Language') || str_contains($class, 'SeoMeta')) {
             return;
         }
@@ -56,9 +59,9 @@ class AutomationServiceProvider extends ServiceProvider
                 ->get();
 
             foreach ($webhooks as $webhook) {
-                FireWebhookJob::dispatch($webhook, $eventType, $model->toArray());
+                dispatch(new FireWebhookJob($webhook, $eventType, $model->toArray()));
             }
-        } catch (\Exception $e) {
+        } catch (\Exception) {
             // Table might not exist yet during migration
         }
     }

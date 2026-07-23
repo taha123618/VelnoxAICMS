@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Modules\Dashboard\Actions;
 
 use Illuminate\Support\Facades\DB;
@@ -18,11 +20,9 @@ class GetVisitCountByTimestampAction
             ->groupBy('grouped_time')
             ->orderBy('grouped_time')
             ->get()
-            ->map(function ($row) {
-                return [
-                    'x' => strtotime($row->grouped_time) * 1000,
-                    'y' => $row->total_views,
-                ];
-            });
+            ->map(fn ($row): array => [
+                'x' => strtotime((string) $row->grouped_time) * 1000,
+                'y' => $row->total_views,
+            ]);
     }
 }

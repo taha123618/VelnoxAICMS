@@ -7,11 +7,11 @@ use Modules\Page\Models\Page;
 
 class UpdatePostContentAction
 {
-    public function handle(UpdatePostContentRequest $request, Page $post)
+    public function handle(UpdatePostContentRequest $updatePostContentRequest, Page $page)
     {
 
-        return tap($post)->update([
-            'content' => $request->content,
+        return tap($page)->update([
+            'content' => $updatePostContentRequest->content,
         ]);
     }
 }

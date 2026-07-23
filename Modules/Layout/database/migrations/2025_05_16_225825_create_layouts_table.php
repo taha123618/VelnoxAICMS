@@ -11,14 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('layouts', function (Blueprint $table) {
-            $table->ulid('id')->primary();
-            $table->string('name');
-            $table->json('content')->nullable();
-            $table->integer('published_version_id')->nullable();
-            $table->datetime('published_at')->nullable();
-            $table->softDeletes();
-            $table->timestamps();
+        Schema::create('layouts', function (Blueprint $blueprint): void {
+            $blueprint->ulid('id')->primary();
+            $blueprint->string('name');
+            $blueprint->json('content')->nullable();
+            $blueprint->integer('published_version_id')->nullable();
+            $blueprint->datetime('published_at')->nullable();
+            $blueprint->softDeletes();
+            $blueprint->timestamps();
         });
     }
 

@@ -12,7 +12,7 @@ use Spatie\TypeScriptTransformer\Attributes\TypeScript;
 class MediaData extends Data
 {
     public function __construct(
-        public string $id,
+        public int|string $id,
         public string $uuid,
         public string $name,
         public string $size,

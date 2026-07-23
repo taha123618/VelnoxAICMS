@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Providers;
 
 use Carbon\CarbonImmutable;
@@ -17,6 +19,7 @@ class AppServiceProvider extends ServiceProvider
     /**
      * Register any application services.
      */
+    #[\Override]
     public function register(): void
     {
         //
@@ -37,9 +40,7 @@ class AppServiceProvider extends ServiceProvider
 
         Vite::useAggressivePrefetching();
 
-        ResetPassword::createUrlUsing(function (User $user, string $token) {
-            return URL::route('admin.password.reset', ['token' => $token, 'email' => $user->getEmailForPasswordReset()]);
-        });
+        ResetPassword::createUrlUsing(fn (User $user, string $token) => URL::route('admin.password.reset', ['token' => $token, 'email' => $user->getEmailForPasswordReset()]));
 
     }
 }

@@ -5,7 +5,6 @@ namespace Modules\ApiTokens\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
-use Illuminate\Support\Str;
 
 class ApiTokensController extends Controller
 {
@@ -15,7 +14,7 @@ class ApiTokensController extends Controller
     public function index(Request $request)
     {
         return Inertia::render('ApiTokens::index', [
-            'tokens' => $request->user()->tokens
+            'tokens' => $request->user()->tokens,
         ]);
     }
 
@@ -25,14 +24,14 @@ class ApiTokensController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|string|max:255',
+            'name' => ['required', 'string', 'max:255'],
         ]);
 
         $token = $request->user()->createToken($request->name);
 
         return back()->with('flash', [
             'token' => $token->plainTextToken,
-            'message' => 'Token created successfully. Please copy it now as it will not be shown again.'
+            'message' => 'Token created successfully. Please copy it now as it will not be shown again.',
         ]);
     }
 

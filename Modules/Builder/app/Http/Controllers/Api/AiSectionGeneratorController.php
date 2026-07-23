@@ -36,13 +36,13 @@ class AiSectionGeneratorController extends Controller
         }
 
         try {
-            $agent = new PageSectionGenerator;
-            $response = $agent->prompt($request->input('prompt'));
+            $pageSectionGenerator = new PageSectionGenerator;
+            $response = $pageSectionGenerator->prompt($request->input('prompt'));
 
             return response()->json([
                 'elements' => $response['elements'] ?? [],
             ]);
-        } catch (PromptInjectionGuardException|InterceptException $e) {
+        } catch (PromptInjectionGuardException|InterceptException) {
             return response()->json([
                 'message' => 'Your message could not be processed because it appears to contain unsafe prompt instructions.',
             ], 422);

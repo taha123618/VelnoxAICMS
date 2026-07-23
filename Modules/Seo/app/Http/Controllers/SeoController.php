@@ -14,14 +14,14 @@ class SeoController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'seoable_type' => 'required|string',
-            'seoable_id' => 'required|integer',
-            'title' => 'nullable|string|max:255',
-            'description' => 'nullable|string',
-            'keywords' => 'nullable|string|max:255',
-            'canonical_url' => 'nullable|url',
-            'og_image' => 'nullable|string|max:255',
-            'robots' => 'nullable|string|max:255',
+            'seoable_type' => ['required', 'string'],
+            'seoable_id' => ['required', 'integer'],
+            'title' => ['nullable', 'string', 'max:255'],
+            'description' => ['nullable', 'string'],
+            'keywords' => ['nullable', 'string', 'max:255'],
+            'canonical_url' => ['nullable', 'url'],
+            'og_image' => ['nullable', 'string', 'max:255'],
+            'robots' => ['nullable', 'string', 'max:255'],
         ]);
 
         $seoMeta = SeoMeta::updateOrCreate(
@@ -43,6 +43,6 @@ class SeoController extends Controller
             return response()->json(['message' => 'SEO saved successfully.', 'data' => $seoMeta]);
         }
 
-        return redirect()->back()->with('success', 'SEO saved successfully.');
+        return back()->with('success', 'SEO saved successfully.');
     }
 }

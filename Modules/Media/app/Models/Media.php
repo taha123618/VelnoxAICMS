@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Modules\Media\Models;
 
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -18,11 +20,10 @@ class Media extends BaseMedia
 
     public function getIcon(): string
     {
-        $name = '/assets/images/other.png';
         if (File::exists(public_path("assets/images/{$this->type}.png"))) {
-            $name = "/assets/images/{$this->type}.png";
+            return "/assets/images/{$this->type}.png";
         }
 
-        return $name;
+        return '/assets/images/other.png';
     }
 }

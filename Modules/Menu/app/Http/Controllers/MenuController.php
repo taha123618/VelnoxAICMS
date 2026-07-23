@@ -5,7 +5,6 @@ namespace Modules\Menu\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
-use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 use Modules\Menu\Actions\CreateMenuAction;
 use Modules\Menu\Actions\DeleteMenuAction;
@@ -25,7 +24,7 @@ class MenuController extends Controller
     public function index(Request $request)
     {
 
-        $data = app(SearchMenusAction::class)->handle($request);
+        $data = resolve(SearchMenusAction::class)->handle($request);
 
         $filters = $request->only(['search', 'sort']);
 
@@ -42,16 +41,16 @@ class MenuController extends Controller
         return Inertia::render('Menu::create');
     }
 
-    public function store(CreateMenuRequest $request)
+    public function store(CreateMenuRequest $createMenuRequest)
     {
         Gate::authorize('create', Menu::class);
 
-        app(CreateMenuAction::class)->handle($request);
+        resolve(CreateMenuAction::class)->handle($createMenuRequest);
 
-        return Redirect::back()->with('success', 'Menu created!');
+        return back()->with('success', 'Menu created!');
     }
 
-    public function show(Menu $menu)
+    public function show(Menu $menu): MenuData
     {
         return MenuData::fromModel($menu->load('items.children'));
     }
@@ -62,27 +61,27 @@ class MenuController extends Controller
 
         return Inertia::render('Menu::edit', [
             'menu' => MenuData::fromModel($menu->load('items', 'items.children')),
-            'pages' => PageData::collect(app(GetAllPagesAction::class)->handle()),
-            'posts' => PostData::collect(app(GetAllPostsAction::class)->handle()),
+            'pages' => PageData::collect(resolve(GetAllPagesAction::class)->handle()),
+            'posts' => PostData::collect(resolve(GetAllPostsAction::class)->handle()),
         ]);
     }
 
-    public function update(UpdateMenuRequest $request, Menu $menu)
+    public function update(UpdateMenuRequest $updateMenuRequest, Menu $menu)
     {
 
         Gate::authorize('update', $menu);
 
-        app(UpdateMenuAction::class)->handle($request, $menu);
+        resolve(UpdateMenuAction::class)->handle($updateMenuRequest, $menu);
 
-        return Redirect::back()->with('success', 'Menu updated!');
+        return back()->with('success', 'Menu updated!');
     }
 
     public function destroy(Menu $menu)
     {
         Gate::authorize('delete', $menu);
 
-        app(DeleteMenuAction::class)->handle($menu);
+        resolve(DeleteMenuAction::class)->handle($menu);
 
-        return Redirect::back()->with('success', 'Menu deleted!');
+        return back()->with('success', 'Menu deleted!');
     }
 }

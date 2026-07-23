@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\PreviewPageController;
 use Illuminate\Support\Facades\Route;

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use Illuminate\Support\Facades\Route;
 use Modules\ApiTokens\Http\Controllers\ApiTokensController;
 
@@ -14,7 +16,7 @@ use Modules\ApiTokens\Http\Controllers\ApiTokensController;
 |
 */
 
-Route::middleware(['auth', 'verified'])->prefix('admin')->group(function () {
+Route::middleware(['auth', 'verified'])->prefix('admin')->group(function (): void {
     Route::get('api-tokens', [ApiTokensController::class, 'index'])->name('api-tokens.index');
     Route::post('api-tokens', [ApiTokensController::class, 'store'])->name('api-tokens.store');
     Route::delete('api-tokens/{id}', [ApiTokensController::class, 'destroy'])->name('api-tokens.destroy');

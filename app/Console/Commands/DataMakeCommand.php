@@ -2,24 +2,26 @@
 
 namespace App\Console\Commands;
 
+use Illuminate\Console\Attributes\Description;
 use Illuminate\Support\Str;
-use Nwidart\Modules\Commands\Make\GeneratorCommand;
 // use Illuminate\Console\GeneratorCommand;
+use Nwidart\Modules\Commands\Make\GeneratorCommand;
 use Nwidart\Modules\Support\Config\GenerateConfigReader;
 use Nwidart\Modules\Support\Stub;
 use Nwidart\Modules\Traits\ModuleCommandTrait;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 
+#[Description('Create a new data class for the specified module.')]
 class DataMakeCommand extends GeneratorCommand
 {
     use ModuleCommandTrait;
 
+    #[\Override]
     protected $argumentName = 'name';
 
+    #[\Override]
     protected $name = 'builder:make-data';
-
-    protected $description = 'Create a new data class for the specified module.';
 
     public function getDestinationFilePath(): string
     {
@@ -34,12 +36,13 @@ class DataMakeCommand extends GeneratorCommand
     {
         $module = $this->laravel['modules']->findOrFail($this->getModuleName());
 
-        return (new Stub($this->getStubName(), [
+        return new Stub($this->getStubName(), [
             'CLASS_NAMESPACE' => $this->getClassNamespace($module),
             'CLASS' => $this->getClassNameWithoutNamespace(),
-        ]))->render();
+        ])->render();
     }
 
+    #[\Override]
     protected function getArguments(): array
     {
         return [
@@ -48,6 +51,7 @@ class DataMakeCommand extends GeneratorCommand
         ];
     }
 
+    #[\Override]
     protected function getOptions(): array
     {
         return [
@@ -61,11 +65,12 @@ class DataMakeCommand extends GeneratorCommand
         return Str::studly($this->argument('name'));
     }
 
-    private function getClassNameWithoutNamespace(): array|string
+    private function getClassNameWithoutNamespace(): string
     {
         return class_basename($this->getDataName());
     }
 
+    #[\Override]
     public function getDefaultNamespace(): string
     {
         return config('modules.paths.generator.data.namespace', 'Data');

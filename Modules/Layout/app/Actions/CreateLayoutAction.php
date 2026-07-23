@@ -7,12 +7,12 @@ use Modules\Layout\Models\Layout;
 
 class CreateLayoutAction
 {
-    public function handle(CreateLayoutRequest $request)
+    public function handle(CreateLayoutRequest $createLayoutRequest)
     {
 
         return Layout::create([
-            'name' => $request->name,
-            'content' => $request->content,
+            'name' => $createLayoutRequest->name,
+            'content' => $createLayoutRequest->content,
         ]);
     }
 }

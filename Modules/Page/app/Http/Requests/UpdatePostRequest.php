@@ -39,6 +39,7 @@ class UpdatePostRequest extends FormRequest
         return true;
     }
 
+    #[\Override]
     public function messages(): array
     {
         return [

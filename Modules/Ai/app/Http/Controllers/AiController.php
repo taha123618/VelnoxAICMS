@@ -4,7 +4,9 @@ namespace Modules\Ai\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Modules\Ai\Agents\ContentGenerator;
 use Modules\Ai\Agents\PageSectionGenerator;
+use Modules\Ai\Agents\SeoOptimizer;
 use PromptPHP\Intercept\Exceptions\InterceptException;
 use PromptPHP\Intercept\InjectionGuard\Exceptions\PromptInjectionGuardException;
 
@@ -16,17 +18,17 @@ class AiController extends Controller
     public function generateSection(Request $request)
     {
         $request->validate([
-            'prompt' => 'required|string|max:1000',
+            'prompt' => ['required', 'string', 'max:1000'],
         ]);
 
         try {
-            $agent = new PageSectionGenerator;
-            $response = $agent->prompt($request->input('prompt'));
+            $pageSectionGenerator = new PageSectionGenerator;
+            $response = $pageSectionGenerator->prompt($request->input('prompt'));
 
             return response()->json([
                 'elements' => $response['elements'] ?? [],
             ]);
-        } catch (PromptInjectionGuardException|InterceptException $e) {
+        } catch (PromptInjectionGuardException|InterceptException) {
             return response()->json([
                 'message' => 'Your message could not be processed because it appears to contain unsafe prompt instructions.',
             ], 422);
@@ -39,12 +41,12 @@ class AiController extends Controller
     public function generateContent(Request $request)
     {
         $request->validate([
-            'prompt' => 'required|string|max:2000',
+            'prompt' => ['required', 'string', 'max:2000'],
         ]);
 
         try {
-            $agent = new \Modules\Ai\Agents\ContentGenerator;
-            $response = $agent->prompt($request->input('prompt'));
+            $contentGenerator = new ContentGenerator;
+            $response = $contentGenerator->prompt($request->input('prompt'));
 
             return response()->json([
                 'content' => $response->text,
@@ -62,12 +64,12 @@ class AiController extends Controller
     public function optimizeSeo(Request $request)
     {
         $request->validate([
-            'content' => 'required|string|max:10000',
+            'content' => ['required', 'string', 'max:10000'],
         ]);
 
         try {
-            $agent = new \Modules\Ai\Agents\SeoOptimizer;
-            $response = $agent->prompt('Optimize SEO for this content: '.$request->input('content'));
+            $seoOptimizer = new SeoOptimizer;
+            $response = $seoOptimizer->prompt('Optimize SEO for this content: '.$request->input('content'));
 
             return response()->json([
                 'meta_title' => $response['meta_title'] ?? '',

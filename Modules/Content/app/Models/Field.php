@@ -3,20 +3,21 @@
 namespace Modules\Content\Models;
 
 use App\Models\BaseModel;
+use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
+#[Fillable([
+    'collection_id',
+    'name',
+    'handle',
+    'type',
+    'validation_rules',
+    'ui_config',
+    'order_column',
+])]
 class Field extends BaseModel
 {
-    protected $fillable = [
-        'collection_id',
-        'name',
-        'handle',
-        'type',
-        'validation_rules',
-        'ui_config',
-        'order_column',
-    ];
-
+    #[\Override]
     protected function casts(): array
     {
         return [

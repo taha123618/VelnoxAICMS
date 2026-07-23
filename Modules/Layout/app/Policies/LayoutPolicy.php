@@ -15,13 +15,13 @@ class LayoutPolicy
         return $user->can('create_layouts');
     }
 
-    public function update(User $user, Layout $model)
+    public function update(User $user, Layout $layout)
     {
         return $user->can('edit_layouts');
     }
 
-    public function delete(User $user, Layout $model): bool
+    public function delete(User $user, Layout $layout): bool
     {
-        return $user->can('delete_layouts') && $model->pages()->doesntExist();
+        return $user->can('delete_layouts') && $layout->pages()->doesntExist();
     }
 }

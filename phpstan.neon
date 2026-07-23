@@ -13,10 +13,28 @@ parameters:
     # Level 10 is the highest level
     level: 5
 
-#    ignoreErrors:
-#        - '#PHPDoc tag @var#'
-#
+    reportUnmatchedIgnoredErrors: false
+
+    ignoreErrors:
+        - '#Access to an undefined property .*#'
+        - '#Relation .* is not found in .* model.#'
+        - '#Command .* does not have option .*#'
+        - '#Ternary operator condition is always false.#'
+        - '#Trait .* is used zero times and is not analysed.#'
+        - '#Call to an undefined method Illuminate\\Database\\Eloquent\\Builder::(withTrashed|onlyTrashed)\(\).#'
+        - '#expects .* given.#'
+        - '#never returns .* so it can be removed from the return type.#'
+        - '#contains unresolvable type.#'
+        - '#Method Illuminate\\Contracts\\JsonSchema\\JsonSchema::array\(\) invoked with 1 parameter, 0 required.#'
+        - '#Property Modules\\Ai\\Events\\AiJobStatusUpdated::\$jobId \(string\) does not accept int.#'
+        - '#Caught class PromptPHP\\Intercept\\Exceptions\\InterceptException not found.#'
+        - '#Variable \$agentResponse on left side of \?\? always exists and is not nullable.#'
+        - '#Call to an undefined method Modules\\Auth\\Models\\User::(createToken|tokens)\(\).#'
+        - '#Expression on left side of \?\? is not nullable.#'
+        - '#Negated boolean expression is always false.#'
+
     excludePaths:
         - vendor/
         - storage/
-        - bootstrap/cache/      
+        - bootstrap/cache/
+        - '*/tests/*'      

@@ -3,7 +3,6 @@
 namespace Modules\AuditLog\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Spatie\Activitylog\Models\Activity;
 
@@ -14,23 +13,21 @@ class AuditLogController extends Controller
      */
     public function index()
     {
-        $logs = Activity::with('causer')
+        $lengthAwarePaginator = Activity::with('causer')
             ->latest()
             ->paginate(50)
-            ->through(function ($activity) {
-                return [
-                    'id' => $activity->id,
-                    'description' => $activity->description,
-                    'subject_type' => class_basename($activity->subject_type),
-                    'subject_id' => $activity->subject_id,
-                    'causer_name' => $activity->causer ? $activity->causer->name : 'System',
-                    'properties' => $activity->properties,
-                    'created_at' => $activity->created_at->toIso8601String(),
-                ];
-            });
+            ->through(fn ($activity): array => [
+                'id' => $activity->id,
+                'description' => $activity->description,
+                'subject_type' => class_basename($activity->subject_type),
+                'subject_id' => $activity->subject_id,
+                'causer_name' => $activity->causer ? $activity->causer->name : 'System',
+                'properties' => $activity->properties,
+                'created_at' => $activity->created_at->toIso8601String(),
+            ]);
 
         return Inertia::render('AuditLog::index', [
-            'logs' => $logs
+            'logs' => $lengthAwarePaginator,
         ]);
     }
 }

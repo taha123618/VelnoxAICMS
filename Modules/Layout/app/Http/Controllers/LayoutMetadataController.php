@@ -1,10 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Modules\Layout\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Gate;
-use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 use Modules\Layout\Actions\UpdateLayoutMetadataAction;
 use Modules\Layout\Data\LayoutData;
@@ -22,13 +23,13 @@ class LayoutMetadataController extends Controller
         ]);
     }
 
-    public function update(UpdateLayoutMetadataRequest $request, Layout $layout)
+    public function update(UpdateLayoutMetadataRequest $updateLayoutMetadataRequest, Layout $layout)
     {
 
         Gate::authorize('update', $layout);
 
-        app(UpdateLayoutMetadataAction::class)->handle($request, $layout);
+        resolve(UpdateLayoutMetadataAction::class)->handle($updateLayoutMetadataRequest, $layout);
 
-        return Redirect::back()->with('success', 'Category updated!');
+        return back()->with('success', 'Category updated!');
     }
 }

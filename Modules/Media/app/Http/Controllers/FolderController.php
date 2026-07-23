@@ -5,7 +5,6 @@ namespace Modules\Media\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
-use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Session;
 use Inertia\Inertia;
 use Modules\Media\Actions\CreateFolderAction;
@@ -31,11 +30,11 @@ class FolderController extends Controller
 
         Session::put('lastVisitedFolderId', $folder->id);
 
-        $breadcrumbs = app(GetFolderBreadcrumbsAction::class)->handle($folder);
+        $breadcrumbs = resolve(GetFolderBreadcrumbsAction::class)->handle($folder);
 
-        $content = app(GetFolderContentAction::class)->handle($folder);
+        $content = resolve(GetFolderContentAction::class)->handle($folder);
 
-        $folderTree = app(GetFolderTreeAction::class)->handle();
+        $folderTree = resolve(GetFolderTreeAction::class)->handle();
 
         return Inertia::render('Media::folders/index', [
             'isModalPage' => $request->hasHeader('x-inertiaui-modal'),
@@ -56,13 +55,13 @@ class FolderController extends Controller
         ]);
     }
 
-    public function store(CreateFolderRequest $request)
+    public function store(CreateFolderRequest $createFolderRequest)
     {
         Gate::authorize('create', Folder::class);
 
-        app(CreateFolderAction::class)->handle($request);
+        resolve(CreateFolderAction::class)->handle($createFolderRequest);
 
-        return Redirect::back()->with('success', 'Folder created!');
+        return back()->with('success', 'Folder created!');
     }
 
     public function edit(Folder $folder)
@@ -74,21 +73,21 @@ class FolderController extends Controller
         ]);
     }
 
-    public function update(UpdateFolderRequest $request, Folder $folder)
+    public function update(UpdateFolderRequest $updateFolderRequest, Folder $folder)
     {
         Gate::authorize('update', $folder);
 
-        app(UpdateFolderAction::class)->handle($request, $folder);
+        resolve(UpdateFolderAction::class)->handle($updateFolderRequest, $folder);
 
-        return Redirect::back()->with('success', 'Folder updated!');
+        return back()->with('success', 'Folder updated!');
     }
 
     public function destroy(Folder $folder)
     {
         Gate::authorize('delete', $folder);
 
-        app(DeleteFolderAction::class)->handle($folder);
+        resolve(DeleteFolderAction::class)->handle($folder);
 
-        return Redirect::back()->with('success', 'Folder deleted!');
+        return back()->with('success', 'Folder deleted!');
     }
 }
