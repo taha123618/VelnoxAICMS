@@ -3,9 +3,9 @@
 namespace Modules\Testimonial\Actions;
 
 use Illuminate\Http\Request;
-use Spatie\QueryBuilder\QueryBuilder;
-use Spatie\QueryBuilder\AllowedFilter;
 use Modules\Testimonial\Models\Testimonial;
+use Spatie\QueryBuilder\AllowedFilter;
+use Spatie\QueryBuilder\QueryBuilder;
 
 class SearchTestimonialsAction
 {

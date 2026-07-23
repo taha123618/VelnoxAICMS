@@ -19,9 +19,9 @@ class PreventDemoActions
 
         if (config('app.demo')) {
             if (
-                in_array($request->method(), ['POST', 'PUT', 'PATCH', 'DELETE']) 
-                && !$request->route()->named('admin.login') 
-                && !$request->route()->named('admin.logout')
+                in_array($request->method(), ['POST', 'PUT', 'PATCH', 'DELETE'])
+                && ! $request->route()->named('admin.login')
+                && ! $request->route()->named('admin.logout')
             ) {
                 if ($request->expectsJson() || $request->header('X-Inertia')) {
                     return Redirect::back()->with('error', 'This action is disabled in demo mode.');

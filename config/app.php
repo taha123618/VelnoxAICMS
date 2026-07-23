@@ -28,7 +28,6 @@ return [
 
     'env' => env('APP_ENV', 'production'),
 
-
     'demo' => env('APP_DEMO', false),
 
     /*

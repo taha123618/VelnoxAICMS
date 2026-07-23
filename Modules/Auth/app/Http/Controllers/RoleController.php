@@ -2,21 +2,20 @@
 
 namespace Modules\Auth\Http\Controllers;
 
-use Inertia\Inertia;
-use Illuminate\Support\Str;
-use Illuminate\Http\Request;
-use Modules\Auth\Models\Role;
-use Modules\Auth\Data\RoleData;
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Str;
+use Inertia\Inertia;
 use Modules\Auth\Actions\SearchRolesAction;
+use Modules\Auth\Data\RoleData;
 use Modules\Auth\Http\Requests\CreateRoleRequest;
 use Modules\Auth\Http\Requests\UpdateRoleRequest;
+use Modules\Auth\Models\Role;
 
 class RoleController extends Controller
 {
-
     public function index(Request $request)
     {
         $filters = $request->only(['search', 'sort']);
@@ -43,7 +42,7 @@ class RoleController extends Controller
         Role::create([
             'name' => Str::slug($request->name),
             'label' => $request->name,
-            'guard_name' => 'web'
+            'guard_name' => 'web',
         ]);
 
         return Redirect::back();
@@ -54,7 +53,7 @@ class RoleController extends Controller
         Gate::authorize('update', $role);
 
         return Inertia::render('Auth::roles/edit', [
-            'role' => RoleData::fromModel($role)
+            'role' => RoleData::fromModel($role),
         ]);
     }
 
@@ -63,12 +62,11 @@ class RoleController extends Controller
         Gate::authorize('update', $role);
 
         $role->update([
-            'label' => $request->label
+            'label' => $request->label,
         ]);
 
         return Redirect::back();
     }
-
 
     public function destroy(Role $role)
     {

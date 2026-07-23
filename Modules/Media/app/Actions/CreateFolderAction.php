@@ -12,8 +12,8 @@ class CreateFolderAction
 
         return Auth::user()->folders()->create([
             'name' => $request->name,
-            'parent_id' => $request->parent ?? null
+            'parent_id' => $request->parent ?? null,
         ]);
-        
+
     }
 }

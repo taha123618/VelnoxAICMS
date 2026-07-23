@@ -2,7 +2,7 @@
 
 use Modules\Visits\Visitor;
 
-if (!function_exists('visitor')) {
+if (! function_exists('visitor')) {
     /**
      * Access visitor through helper.
      *

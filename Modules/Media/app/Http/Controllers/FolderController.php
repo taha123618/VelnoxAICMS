@@ -2,26 +2,25 @@
 
 namespace Modules\Media\Http\Controllers;
 
-use Inertia\Inertia;
-use Illuminate\Http\Request;
-use Modules\Media\Models\Folder;
-use Modules\Media\Data\FolderData;
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Session;
+use Inertia\Inertia;
 use Modules\Media\Actions\CreateFolderAction;
 use Modules\Media\Actions\DeleteFolderAction;
-use Modules\Media\Actions\UpdateFolderAction;
-use Modules\Media\Actions\GetFolderTreeAction;
+use Modules\Media\Actions\GetFolderBreadcrumbsAction;
 use Modules\Media\Actions\GetFolderContentAction;
+use Modules\Media\Actions\GetFolderTreeAction;
+use Modules\Media\Actions\UpdateFolderAction;
+use Modules\Media\Data\FolderData;
 use Modules\Media\Http\Requests\CreateFolderRequest;
 use Modules\Media\Http\Requests\UpdateFolderRequest;
-use Modules\Media\Actions\GetFolderBreadcrumbsAction;
+use Modules\Media\Models\Folder;
 
 class FolderController extends Controller
 {
-
     public function index(Request $request)
     {
         $mode = $request->mode ?? 'single';
@@ -53,10 +52,9 @@ class FolderController extends Controller
         Gate::authorize('create', Folder::class);
 
         return Inertia::render('Media::folders/create', [
-            'parentFolder' => $request->parent ?? null
+            'parentFolder' => $request->parent ?? null,
         ]);
     }
-
 
     public function store(CreateFolderRequest $request)
     {
@@ -72,10 +70,9 @@ class FolderController extends Controller
         Gate::authorize('update', $folder);
 
         return Inertia::render('Media::folders/edit', [
-            'folder' => FolderData::fromModel($folder)
+            'folder' => FolderData::fromModel($folder),
         ]);
     }
-
 
     public function update(UpdateFolderRequest $request, Folder $folder)
     {

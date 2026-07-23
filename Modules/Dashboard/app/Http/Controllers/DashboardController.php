@@ -2,29 +2,26 @@
 
 namespace Modules\Dashboard\Http\Controllers;
 
-use Inertia\Inertia;
-use Modules\Page\Models\Page;
-use Modules\Visits\Models\Visit;
-use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 use Modules\Dashboard\Actions\GetVisitCountByCountryAction;
 use Modules\Dashboard\Actions\GetVisitCountByTimestampAction;
 use Modules\Dashboard\Actions\GetVisitsGroupedByDimensionAction;
 use Modules\Dashboard\Data\DashboardData;
 use Modules\Page\Actions\GetAllPagesWithUnpublishedChangesAction;
 use Modules\Page\Enums\PageType;
+use Modules\Page\Models\Page;
+use Modules\Visits\Models\Visit;
 
 class DashboardController extends Controller
 {
-
     public function __invoke(Request $request)
     {
 
-
         $visits_over_time = app(GetVisitCountByTimestampAction::class)->handle();
 
-        $count_by_country  = app(GetVisitCountByCountryAction::class)->handle();
+        $count_by_country = app(GetVisitCountByCountryAction::class)->handle();
 
         // unique views total
         $unique_visitors = Visit::query()->distinct('location_ip')->count('location_ip');
@@ -47,8 +44,8 @@ class DashboardController extends Controller
                     'total_posts' => Page::query()->posts()->count(),
                     'pending_pages' => count($pagesWithUnpublishedChanges),
                     'pending_posts' => count($postsWithUnpublishedChanges),
-                ]
-            ])
+                ],
+            ]),
         ]);
     }
 }

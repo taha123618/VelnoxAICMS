@@ -1,10 +1,10 @@
 <?php
 
 uses(Tests\TestCase::class);
-use Modules\Auth\Models\User;
-use Illuminate\Support\Facades\URL;
 use Illuminate\Auth\Events\Verified;
 use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Facades\URL;
+use Modules\Auth\Models\User;
 
 uses(\Illuminate\Foundation\Testing\RefreshDatabase::class);
 

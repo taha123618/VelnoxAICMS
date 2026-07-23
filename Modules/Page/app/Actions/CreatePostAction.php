@@ -2,9 +2,9 @@
 
 namespace Modules\Page\Actions;
 
-use Modules\Page\Models\Page;
 use Modules\Page\Enums\PageType;
 use Modules\Page\Http\Requests\CreatePostRequest;
+use Modules\Page\Models\Page;
 
 class CreatePostAction
 {
@@ -15,7 +15,7 @@ class CreatePostAction
             'category_id' => $request->category,
             'layout_id' => $request->layout,
             'content' => $request->content,
-            'type' => PageType::Post
+            'type' => PageType::Post,
         ]);
     }
 }

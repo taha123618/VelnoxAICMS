@@ -6,7 +6,6 @@ use Modules\Visits\Models\Visit;
 
 trait CanVisit
 {
-
     public function visitLogs()
     {
         return $this->morphMany(Visit::class, 'visitor');
@@ -17,7 +16,7 @@ trait CanVisit
         $time = now()->subSeconds($seconds);
 
         return $query->whereHas('visitLogs', function ($query) use ($time) {
-            $query->where("visits.created_at", '>=', $time->toDateTime());
+            $query->where('visits.created_at', '>=', $time->toDateTime());
         });
     }
 
@@ -28,9 +27,7 @@ trait CanVisit
         return $this->visitLogs()->whereHasMorph('user', [static::class], function ($query) use ($time) {
             $query
                 ->where('user_id', $this->id)
-                ->where("visits.created_at", '>=', $time->toDateTime());
+                ->where('visits.created_at', '>=', $time->toDateTime());
         })->count() > 0;
     }
-
-    
 }

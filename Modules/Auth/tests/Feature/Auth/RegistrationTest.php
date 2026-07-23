@@ -12,13 +12,17 @@ test('registration screen can be rendered', function () {
 });
 
 test('new users can register', function () {
+    \Modules\Auth\Models\Role::create(['name' => 'administrator', 'label' => 'Administrator']);
+    
     $response = $this->post('/cp/register', [
-        'first_name' => 'Test',
-        'last_name' => 'User',
-        'email' => 'test@example.com',
-        'password' => 'Password123!',
-        'password_confirmation' => 'Password123!',
+        'first_name' => 'Taha',
+        'last_name' => 'Ahmed',
+        'email' => 'tahaahmedanees2@gmail.com',
+        'password' => 'admin123',
+        'password_confirmation' => 'admin123',
     ]);
+
+
 
     $this->assertAuthenticated();
     $response->assertRedirect(route('admin.dashboard', absolute: false));

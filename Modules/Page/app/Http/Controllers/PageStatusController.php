@@ -2,14 +2,14 @@
 
 namespace Modules\Page\Http\Controllers;
 
-use Illuminate\Http\Request;
-use Modules\Page\Models\Page;
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Redirect;
 use Modules\Page\Actions\UpdatePageContentAction;
 use Modules\Page\Http\Requests\UpdatePageContentRequest;
+use Modules\Page\Models\Page;
 
 class PageStatusController extends Controller
 {
@@ -34,7 +34,7 @@ class PageStatusController extends Controller
         app(UpdatePageContentAction::class)->handle($request, $page);
 
         Cache::forget('frontpage');
-        
+
         $page->refresh()->publish();
 
         return Redirect::back()->with('success', 'Page published!');

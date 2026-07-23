@@ -12,7 +12,7 @@ class CreateCategoryAction
         return Category::create([
             'name' => $request->name,
             'description' => $request->description,
-            'parent_id' => $request->parent
+            'parent_id' => $request->parent,
         ]);
     }
 }

@@ -2,15 +2,13 @@
 
 namespace Modules\Visits\Providers;
 
-use Modules\Visits\Agent;
 use Illuminate\Support\ServiceProvider;
+use Modules\Visits\Agent;
 
 class AgentServiceProvider extends ServiceProvider
 {
-
-
     protected $defer = true;
-    
+
     /**
      * Register the service provider.
      */

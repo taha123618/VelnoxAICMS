@@ -3,23 +3,23 @@
 namespace Modules\Media\Models;
 
 use App\Models\BaseModel;
-use Modules\Auth\Models\User;
-use Spatie\MediaLibrary\HasMedia;
-use Illuminate\Support\Facades\Gate;
-use Modules\Media\Policies\FolderPolicy;
-use Spatie\MediaLibrary\InteractsWithMedia;
-use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Attributes\UsePolicy;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Gate;
+use Modules\Auth\Models\User;
+use Modules\Media\Policies\FolderPolicy;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
 use Staudenmeir\LaravelAdjacencyList\Eloquent\HasRecursiveRelationships;
+
 // use Modules\Media\Database\Factories\FolderFactory;
 #[UsePolicy(FolderPolicy::class)]
 class Folder extends BaseModel implements HasMedia
 {
     use HasRecursiveRelationships;
-    use SoftDeletes;
     use InteractsWithMedia;
-
+    use SoftDeletes;
 
     public function user(): BelongsTo
     {
@@ -30,9 +30,9 @@ class Folder extends BaseModel implements HasMedia
     {
         $folder = Folder::isRoot()->first();
 
-        if (!$folder) {
+        if (! $folder) {
             $folder = Folder::create([
-                "name" => "Home"
+                'name' => 'Home',
             ]);
         }
 
@@ -44,12 +44,12 @@ class Folder extends BaseModel implements HasMedia
         return $this->ancestorsAndSelf()->get()
             ->sortBy('depth')
             ->values()
-            ->map(fn($item) => [
+            ->map(fn ($item) => [
                 'id' => $item->id,
                 'icon' => is_null($item->parent_id) ? 'ph:house' : null,
                 'label' => $item->name,
                 'type' => 'breadcrumb',
-                'isLast' => $item->is($this)
+                'isLast' => $item->is($this),
             ]);
     }
 
@@ -57,7 +57,6 @@ class Folder extends BaseModel implements HasMedia
     {
         return count($this->media) + count($this->children);
     }
-
 
     public function registerMediaCollections(): void
     {
@@ -82,9 +81,7 @@ class Folder extends BaseModel implements HasMedia
     {
         return [
             'update' => Gate::allows('update', $this),
-            'delete' => Gate::allows('delete', $this)
+            'delete' => Gate::allows('delete', $this),
         ];
     }
-
-
 }

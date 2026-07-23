@@ -14,7 +14,7 @@ class CreateTestimonialAction
             'name' => $request->name,
             'avatar' => $request->avatar,
             'title' => $request->title,
-            'comment' => $request->comment
+            'comment' => $request->comment,
         ]);
     }
 }

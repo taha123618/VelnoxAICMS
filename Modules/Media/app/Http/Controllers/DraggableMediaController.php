@@ -2,20 +2,19 @@
 
 namespace Modules\Media\Http\Controllers;
 
-use Illuminate\Http\Request;
-use Modules\Media\Models\Folder;
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Redirect;
-use Modules\Media\Actions\UpdateDraggedMediaAction;
 use Modules\Media\Actions\UpdateDraggedFolderParentAction;
+use Modules\Media\Actions\UpdateDraggedMediaAction;
+use Modules\Media\Models\Folder;
 
 class DraggableMediaController extends Controller
 {
-
     public function update(Request $request)
     {
-        
+
         app(UpdateDraggedMediaAction::class)->handle($request);
 
         return Redirect::back();

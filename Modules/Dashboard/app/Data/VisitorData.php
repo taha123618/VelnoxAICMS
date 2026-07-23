@@ -10,7 +10,7 @@ class VisitorData extends Data
 {
     public function __construct(
         public string $id
-    ){}
+    ) {}
 
     /*
     public static function fromModel(Model $model): self

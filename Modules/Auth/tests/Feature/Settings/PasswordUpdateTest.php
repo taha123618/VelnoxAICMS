@@ -1,8 +1,8 @@
 <?php
 
 uses(Tests\TestCase::class);
-use Modules\Auth\Models\User;
 use Illuminate\Support\Facades\Hash;
+use Modules\Auth\Models\User;
 
 uses(\Illuminate\Foundation\Testing\RefreshDatabase::class);
 

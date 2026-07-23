@@ -2,11 +2,10 @@
 
 namespace Modules\Layout\Data;
 
-use App\Enums\Status;
-use Spatie\LaravelData\Data;
-use Spatie\LaravelData\Optional;
 use Modules\Layout\Models\Layout;
 use Modules\Page\Enums\PageType;
+use Spatie\LaravelData\Data;
+use Spatie\LaravelData\Optional;
 use Spatie\TypeScriptTransformer\Attributes\TypeScript;
 
 #[TypeScript()]

@@ -14,12 +14,12 @@ class UpdateRoleRequest extends FormRequest
     {
         return [
             'label' => [
-                'required', 
-                'string', 
-                'max:100', 
-                'min:3', 
-                Rule::unique('roles', 'label')->ignoreModel($this->role)
-            ]
+                'required',
+                'string',
+                'max:100',
+                'min:3',
+                Rule::unique('roles', 'label')->ignoreModel($this->role),
+            ],
         ];
     }
 

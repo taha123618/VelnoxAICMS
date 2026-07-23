@@ -2,8 +2,8 @@
 
 namespace Modules\Layout\Actions;
 
-use Modules\Layout\Models\Layout;
 use Modules\Layout\Http\Requests\CreateLayoutRequest;
+use Modules\Layout\Models\Layout;
 
 class CreateLayoutAction
 {
@@ -12,7 +12,7 @@ class CreateLayoutAction
 
         return Layout::create([
             'name' => $request->name,
-            'content' => $request->content
+            'content' => $request->content,
         ]);
     }
 }

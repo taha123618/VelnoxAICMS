@@ -29,10 +29,21 @@ export default class ZioraElement {
         this.canDrop = args.canDrop;
         this.isLayoutElement = args.isLayoutElement;
         this.type = args.type;
-        this.name = args.name;
-        this.icon = args.icon;
-        this.children = args.children;
-        this.props = deepCopy(args.props);
+        this.name = args.name || 'Element';
+        this.icon = args.icon || 'ph:placeholder';
+        this.children = args.children || [];
+        this.props = deepCopy(args.props) || {};
+        if (!this.props.styles) this.props.styles = {};
+        if (!this.props.styles.custom) this.props.styles.custom = {};
+        
+        ['desktop', 'tablet', 'mobile'].forEach((device) => {
+            if (!this.props.styles[device]) this.props.styles[device] = {};
+            ['default', 'hover', 'active'].forEach((state) => {
+                if (!this.props.styles[device][state]) {
+                    this.props.styles[device][state] = {};
+                }
+            });
+        });
     }
 
     setName(name: string) {
@@ -80,7 +91,7 @@ export default class ZioraElement {
     }
 
     getBackgroundStyles(deviceName: DeviceType, currentState: CurrentState) {
-        if (this.props.styles[deviceName][currentState] == undefined) {
+        if (this.props.styles?.[deviceName]?.[currentState] == undefined) {
             return {};
         }
 
@@ -90,6 +101,10 @@ export default class ZioraElement {
 
         if (bg == undefined) {
             return {};
+        }
+
+        if (typeof bg === 'string') {
+            return { 'background': bg };
         }
 
         if (bg.type == undefined) {
@@ -124,9 +139,9 @@ export default class ZioraElement {
         currentState: CurrentState,
     ): string {
         const fallbackStyles: Record<string, any> =
-            this.props.styles[DeviceType.Desktop]?.[currentState] || {};
+            this.props.styles?.[DeviceType.Desktop]?.[currentState] || {};
         const deviceStyles: Record<string, any> =
-            this.props.styles[deviceName]?.[currentState] || {};
+            this.props.styles?.[deviceName]?.[currentState] || {};
 
         let styles: Record<string, any> = {};
 
@@ -188,25 +203,25 @@ export default class ZioraElement {
                 }
             } else if (typeof value === 'object' && value.isFourWay == true) {
                 if (value.unit == undefined) {
-                    value.unit = fallbackStyles[key].unit;
+                    value.unit = fallbackStyles[key]?.unit || 'px';
                 }
                 if (value.value == undefined) {
-                    value.value = fallbackStyles[key].value;
+                    value.value = fallbackStyles[key]?.value || 0;
                 }
 
                 if (value.unit == 'custom' || !value.hasUnit) {
                     styles[casedKey] =
-                        `${value.top} ${value.right} ${value.bottom} ${value.left}`;
+                        `${value.top ?? 0} ${value.right ?? 0} ${value.bottom ?? 0} ${value.left ?? 0}`;
                 } else {
                     styles[casedKey] =
-                        `${value.top}${value.unit} ${value.right}${value.unit} ${value.bottom}${value.unit} ${value.left}${value.unit}`;
+                        `${value.top ?? 0}${value.unit} ${value.right ?? 0}${value.unit} ${value.bottom ?? 0}${value.unit} ${value.left ?? 0}${value.unit}`;
                 }
             } else if (typeof value === 'object') {
                 if (value.unit == undefined) {
-                    value.unit = fallbackStyles[key].unit;
+                    value.unit = fallbackStyles[key]?.unit || 'px';
                 }
                 if (value.value == undefined) {
-                    value.value = fallbackStyles[key].value;
+                    value.value = fallbackStyles[key]?.value || '';
                 }
 
                 if (value.unit == 'auto') {
@@ -289,7 +304,7 @@ export default class ZioraElement {
     }
 
     getStateStyle(device: DeviceType, state: CurrentState, property: string) {
-        const deviceStyles = this.props.styles[device]?.[state];
+        const deviceStyles = this.props.styles?.[device]?.[state];
         return getNestedProperty(deviceStyles, property) ?? null;
     }
 

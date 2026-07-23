@@ -2,10 +2,10 @@
 
 namespace Modules\Category\Data;
 
-use Spatie\LaravelData\Data;
-use Spatie\LaravelData\Lazy;
 use Illuminate\Support\Collection;
 use Modules\Category\Models\Category;
+use Spatie\LaravelData\Data;
+use Spatie\LaravelData\Lazy;
 use Spatie\LaravelData\Optional;
 use Spatie\TypeScriptTransformer\Attributes\TypeScript;
 
@@ -17,9 +17,9 @@ class CategoryData extends Data
         public string $name,
         public string $slug,
         public int $totalPosts,
-        public string|null $parentId,
-        public string|null $parentName,
-        public string|null $description,
+        public ?string $parentId,
+        public ?string $parentName,
+        public ?string $description,
         public Lazy|Collection|null $children,
         public Optional|array $can,
 
@@ -36,7 +36,7 @@ class CategoryData extends Data
             parentName: $category->parent?->name,
             description: $category->description,
             can: $category->authorization,
-            children: Lazy::whenLoaded('children', $category, fn() => CategoryData::collect($category->children)) ?? []
+            children: Lazy::whenLoaded('children', $category, fn () => CategoryData::collect($category->children)) ?? []
         );
     }
 }

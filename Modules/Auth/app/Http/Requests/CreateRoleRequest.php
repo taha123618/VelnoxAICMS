@@ -12,7 +12,7 @@ class CreateRoleRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['required', 'string', 'max:100', 'min:3', 'unique:roles,label']
+            'name' => ['required', 'string', 'max:100', 'min:3', 'unique:roles,label'],
         ];
     }
 

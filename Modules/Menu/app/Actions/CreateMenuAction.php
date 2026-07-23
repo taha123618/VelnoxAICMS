@@ -10,7 +10,7 @@ class CreateMenuAction
     public function handle(Request $request)
     {
         return Menu::create([
-            'name' => $request->name
+            'name' => $request->name,
         ]);
     }
 }

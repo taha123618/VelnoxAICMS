@@ -10,7 +10,7 @@ class MarkPageAsFrontPageAction
     {
         Page::where('id', '!=', $page->id)
             ->frontpage()->update([
-                'is_frontpage' => false
+                'is_frontpage' => false,
             ]);
 
         if (! $page->is_frontpage) {

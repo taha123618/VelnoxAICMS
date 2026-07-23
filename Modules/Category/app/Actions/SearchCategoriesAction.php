@@ -4,8 +4,8 @@ namespace Modules\Category\Actions;
 
 use Illuminate\Http\Request;
 use Modules\Category\Models\Category;
-use Spatie\QueryBuilder\QueryBuilder;
 use Spatie\QueryBuilder\AllowedFilter;
+use Spatie\QueryBuilder\QueryBuilder;
 
 class SearchCategoriesAction
 {
@@ -14,7 +14,7 @@ class SearchCategoriesAction
         return QueryBuilder::for(Category::class)
             ->defaultSort('name', '-created_at')
             ->allowedFilters([
-                AllowedFilter::partial('name')
+                AllowedFilter::partial('name'),
             ])
             ->allowedSorts('name', 'created_at')
             ->filter($request->only(['search', 'sort']))

@@ -3,26 +3,24 @@
 namespace App\Console\Commands;
 
 use Illuminate\Support\Str;
-use Illuminate\Console\Command;
-use Nwidart\Modules\Support\Stub;
-// use Illuminate\Console\GeneratorCommand;
 use Nwidart\Modules\Commands\Make\GeneratorCommand;
-use Nwidart\Modules\Traits\ModuleCommandTrait;
-use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Console\Input\InputArgument;
+// use Illuminate\Console\GeneratorCommand;
 use Nwidart\Modules\Support\Config\GenerateConfigReader;
+use Nwidart\Modules\Support\Stub;
+use Nwidart\Modules\Traits\ModuleCommandTrait;
+use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Input\InputOption;
 
 class DataMakeCommand extends GeneratorCommand
 {
     use ModuleCommandTrait;
-    
+
     protected $argumentName = 'name';
 
     protected $name = 'builder:make-data';
 
     protected $description = 'Create a new data class for the specified module.';
 
-    
     public function getDestinationFilePath(): string
     {
         $path = $this->laravel['modules']->getModulePath($this->getModuleName());

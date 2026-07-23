@@ -2,8 +2,8 @@
 
 namespace Modules\Page\Actions;
 
-use Modules\Page\Models\Page;
 use Modules\Page\Http\Requests\UpdatePageRequest;
+use Modules\Page\Models\Page;
 
 class UpdatePageMetadataAction
 {
@@ -14,7 +14,7 @@ class UpdatePageMetadataAction
             'slug' => $request->slug,
             'layout_id' => $request->layout,
             'description' => $request->description,
-            'data->keywords' => $request->keywords
+            'data->keywords' => $request->keywords,
         ]);
     }
 }

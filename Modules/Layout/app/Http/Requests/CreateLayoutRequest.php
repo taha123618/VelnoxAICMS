@@ -13,7 +13,7 @@ class CreateLayoutRequest extends FormRequest
     {
         return [
             'name' => ['required', 'unique:layouts,name'],
-            'content' => ['required']
+            'content' => ['required'],
         ];
     }
 

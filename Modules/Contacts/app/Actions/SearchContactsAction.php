@@ -4,8 +4,8 @@ namespace Modules\Contacts\Actions;
 
 use Illuminate\Http\Request;
 use Modules\Contacts\Models\Contact;
-use Spatie\QueryBuilder\QueryBuilder;
 use Spatie\QueryBuilder\AllowedFilter;
+use Spatie\QueryBuilder\QueryBuilder;
 
 class SearchContactsAction
 {

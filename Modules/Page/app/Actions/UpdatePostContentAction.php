@@ -2,8 +2,8 @@
 
 namespace Modules\Page\Actions;
 
-use Modules\Page\Models\Page;
 use Modules\Page\Http\Requests\UpdatePostContentRequest;
+use Modules\Page\Models\Page;
 
 class UpdatePostContentAction
 {
@@ -11,7 +11,7 @@ class UpdatePostContentAction
     {
 
         return tap($post)->update([
-            'content' => $request->content
+            'content' => $request->content,
         ]);
     }
 }

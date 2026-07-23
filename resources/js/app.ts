@@ -12,6 +12,7 @@ import { ZiggyVue } from 'ziggy-js';
 import 'animate.css';
 import '../css/app.css';
 import '../css/fonts.css';
+import './echo';
 
 // Extend ImportMeta interface for Vite...
 declare module 'vite/client' {

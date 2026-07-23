@@ -3,20 +3,20 @@
 namespace Modules\Category\Models;
 
 use App\Models\BaseModel;
+use Illuminate\Database\Eloquent\Attributes\UsePolicy;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Gate;
+use Modules\Category\Policies\CategoryPolicy;
 use Modules\Page\Models\Page;
 use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
-use Illuminate\Support\Facades\Gate;
-use Illuminate\Database\Eloquent\Builder;
-use Modules\Category\Policies\CategoryPolicy;
-use Illuminate\Database\Eloquent\Attributes\UsePolicy;
 use Staudenmeir\LaravelAdjacencyList\Eloquent\HasRecursiveRelationships;
+
 // use Modules\Category\Database\Factories\CategoryFactory;
 
 #[UsePolicy(CategoryPolicy::class)]
 class Category extends BaseModel
 {
-
     use HasRecursiveRelationships;
     use HasSlug;
 
@@ -30,7 +30,7 @@ class Category extends BaseModel
     {
 
         return route(name: 'categories.show', parameters: [
-            'category' => $this->slug
+            'category' => $this->slug,
         ], absolute: $absolute);
     }
 
@@ -60,7 +60,7 @@ class Category extends BaseModel
     {
         return [
             'update' => Gate::allows('update', $this),
-            'delete' => Gate::allows('delete', $this)
+            'delete' => Gate::allows('delete', $this),
         ];
     }
 }

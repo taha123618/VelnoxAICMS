@@ -2,8 +2,8 @@
 
 namespace Modules\Layout\Actions;
 
-use Modules\Layout\Models\Layout;
 use Modules\Layout\Http\Requests\UpdateLayoutRequest;
+use Modules\Layout\Models\Layout;
 
 class UpdateLayoutAction
 {
@@ -11,8 +11,8 @@ class UpdateLayoutAction
     {
 
         return tap($layout)->update([
-            'content' => $request->content
+            'content' => $request->content,
         ]);
-        
+
     }
 }

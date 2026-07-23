@@ -2,9 +2,9 @@
 
 namespace Modules\Auth\Data;
 
-use Spatie\LaravelData\Data;
-use Modules\Auth\Models\Role;
 use Illuminate\Support\Collection;
+use Modules\Auth\Models\Role;
+use Spatie\LaravelData\Data;
 use Spatie\LaravelData\Optional;
 use Spatie\TypeScriptTransformer\Attributes\TypeScript;
 

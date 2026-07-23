@@ -1,20 +1,20 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Modules\Auth\Http\Controllers\NewPasswordController;
-use Modules\Auth\Http\Controllers\RoleController;
-use Modules\Auth\Http\Controllers\UserController;
-use Modules\Auth\Http\Controllers\VerifyEmailController;
-use Modules\Auth\Http\Controllers\RegisteredUserController;
-use Modules\Auth\Http\Controllers\PasswordResetLinkController;
-use Modules\Auth\Http\Controllers\ConfirmablePasswordController;
 use Modules\Auth\Http\Controllers\AuthenticatedSessionController;
 use Modules\Auth\Http\Controllers\ChangePasswordController;
-use Modules\Auth\Http\Controllers\EmailVerificationPromptController;
+use Modules\Auth\Http\Controllers\ConfirmablePasswordController;
 use Modules\Auth\Http\Controllers\EmailVerificationNotificationController;
+use Modules\Auth\Http\Controllers\EmailVerificationPromptController;
+use Modules\Auth\Http\Controllers\NewPasswordController;
+use Modules\Auth\Http\Controllers\PasswordResetLinkController;
 use Modules\Auth\Http\Controllers\ProfileUpdateController;
+use Modules\Auth\Http\Controllers\RegisteredUserController;
+use Modules\Auth\Http\Controllers\RoleController;
 use Modules\Auth\Http\Controllers\RolePermissionsController;
+use Modules\Auth\Http\Controllers\UserController;
 use Modules\Auth\Http\Controllers\UserSendPasswordResetLinkController;
+use Modules\Auth\Http\Controllers\VerifyEmailController;
 
 Route::group(['as' => 'admin.', 'prefix' => 'cp'], function () {
     Route::middleware(['guest', 'demo.protect'])->group(function () {
@@ -41,7 +41,6 @@ Route::group(['as' => 'admin.', 'prefix' => 'cp'], function () {
         Route::post('reset-password', [NewPasswordController::class, 'store'])
             ->name('password.store');
     });
-
 
     Route::middleware(['auth', 'demo.protect'])->group(function () {
         Route::get('settings/profile', [ProfileUpdateController::class, 'edit'])

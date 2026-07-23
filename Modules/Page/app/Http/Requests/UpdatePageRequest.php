@@ -2,10 +2,8 @@
 
 namespace Modules\Page\Http\Requests;
 
-use App\Enums\Status;
-use Illuminate\Support\Str;
-use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UpdatePageRequest extends FormRequest
 {
@@ -17,16 +15,16 @@ class UpdatePageRequest extends FormRequest
         return [
             'title' => [
                 'required',
-                Rule::unique('pages', 'title')->ignoreModel($this->page)
+                Rule::unique('pages', 'title')->ignoreModel($this->page),
             ],
             'slug' => [
                 'required',
                 'regex:/^[a-zA-Z0-9\-]+$/',
-                Rule::unique('pages', 'slug')->ignoreModel($this->page)
+                Rule::unique('pages', 'slug')->ignoreModel($this->page),
             ],
             'layout' => ['required', 'exists:layouts,id'],
             'description' => ['nullable'],
-            'keywords' => ['required', 'array', 'min:0']
+            'keywords' => ['required', 'array', 'min:0'],
         ];
     }
 
@@ -41,7 +39,7 @@ class UpdatePageRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'slug.regex' => 'May only contain letters, numbers and dash'
+            'slug.regex' => 'May only contain letters, numbers and dash',
         ];
     }
 }

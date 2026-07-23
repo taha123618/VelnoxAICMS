@@ -2,8 +2,8 @@
 
 namespace Modules\Media\Actions;
 
-use Modules\Media\Models\Folder;
 use Modules\Media\Http\Requests\UpdateFolderRequest;
+use Modules\Media\Models\Folder;
 
 class UpdateFolderAction
 {
@@ -11,7 +11,7 @@ class UpdateFolderAction
     {
 
         return tap($folder)->update([
-            'name' => $request->name
+            'name' => $request->name,
         ]);
     }
 }

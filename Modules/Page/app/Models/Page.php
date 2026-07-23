@@ -4,33 +4,35 @@ namespace Modules\Page\Models;
 
 use App\Enums\Status;
 use App\Models\BaseModel;
-use Spatie\Sluggable\HasSlug;
-use Modules\Page\Enums\PageType;
-use Modules\Layout\Models\Layout;
-use Spatie\Sluggable\SlugOptions;
-use Illuminate\Support\Facades\Gate;
-use Modules\Visits\Traits\Visitable;
-use Modules\Category\Models\Category;
-use Modules\Page\Policies\PagePolicy;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Database\Eloquent\Casts\Attribute;
+use App\Traits\BelongsToTenant;
 use Illuminate\Database\Eloquent\Attributes\UsePolicy;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Gate;
+use Modules\Category\Models\Category;
+use Modules\Layout\Models\Layout;
 use Modules\Menu\Models\MenuItem;
+use Modules\Page\Enums\PageType;
+use Modules\Page\Policies\PagePolicy;
+use Modules\Visits\Traits\Visitable;
+use Spatie\Sluggable\HasSlug;
+use Spatie\Sluggable\SlugOptions;
 
 #[UsePolicy(PagePolicy::class)]
 class Page extends BaseModel
 {
+    use BelongsToTenant;
     use HasSlug;
-    use Visitable;
     use SoftDeletes;
+    use Visitable;
 
     protected $casts = [
         'published_at' => 'datetime',
         'content' => 'json',
         'data' => 'json',
         'type' => PageType::class,
-        'is_frontpage' => 'boolean'
+        'is_frontpage' => 'boolean',
     ];
 
     public function versions()
@@ -53,7 +55,7 @@ class Page extends BaseModel
     {
         $published = $this->published_version;
 
-        if (!$published) {
+        if (! $published) {
             return true;
         }
 
@@ -63,7 +65,7 @@ class Page extends BaseModel
             'data',
             'description',
             'excerpt',
-            'featured_image'
+            'featured_image',
         ]);
 
         $published = $published->only([
@@ -72,7 +74,7 @@ class Page extends BaseModel
             'data',
             'description',
             'excerpt',
-            'featured_image'
+            'featured_image',
         ]);
 
         return $current != $published;
@@ -82,7 +84,7 @@ class Page extends BaseModel
     {
         $published = $this->published_version;
 
-        if (!$published) {
+        if (! $published) {
             return $this;
         }
 
@@ -96,22 +98,22 @@ class Page extends BaseModel
                 'slug',
                 'published_at',
                 'created_at',
-                'updated_at'
+                'updated_at',
             ]),
             'title' => $published->title,
             'content' => $published->content,
             'data' => $published->data,
             'description' => $published->description,
             'excerpt' => $published->excerpt,
-            'featured_image' => $published->featured_image
+            'featured_image' => $published->featured_image,
         ]);
     }
 
     public function isPublished(): Attribute
     {
         return Attribute::make(
-            get: fn() => filled($this->published_at) && !is_null($this->published_version),
-            set: fn($value) => ['published_at' => $value ? now() : null]
+            get: fn () => filled($this->published_at) && ! is_null($this->published_version),
+            set: fn ($value) => ['published_at' => $value ? now() : null]
         );
     }
 
@@ -129,12 +131,12 @@ class Page extends BaseModel
                 'content' => $this->content,
                 'excerpt' => $this->excerpt,
                 'featured_image' => $this->featured_image,
-                'data' => $this->data
+                'data' => $this->data,
             ]);
         }
 
         $this->update([
-            'published_at' => now()
+            'published_at' => now(),
         ]);
     }
 
@@ -182,13 +184,13 @@ class Page extends BaseModel
         }
 
         return route(name: 'pages.show', parameters: [
-            'page' => $this->slug
+            'page' => $this->slug,
         ], absolute: $absolute);
     }
 
     public function getStatus(): Status
     {
-        return !is_null($this->published_at)
+        return ! is_null($this->published_at)
             ? Status::Published
             : Status::Draft;
     }
@@ -220,7 +222,7 @@ class Page extends BaseModel
     {
         return [
             'update' => Gate::allows('update_post', $this),
-            'delete' => Gate::allows('delete_post', $this)
+            'delete' => Gate::allows('delete_post', $this),
         ];
     }
 
@@ -228,7 +230,7 @@ class Page extends BaseModel
     {
         return [
             'update' => Gate::allows('update_page', $this),
-            'delete' => Gate::allows('delete_page', $this)
+            'delete' => Gate::allows('delete_page', $this),
         ];
     }
 }

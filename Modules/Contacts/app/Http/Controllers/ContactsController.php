@@ -15,7 +15,6 @@ use Modules\Contacts\Models\Contact;
 
 class ContactsController extends Controller
 {
-
     public function index(Request $request)
     {
         $filters = $request->only(['search', 'sort']);
@@ -24,14 +23,14 @@ class ContactsController extends Controller
 
         return Inertia::render('Contacts::index', [
             'data' => ContactData::collect($data),
-            'filters' => $filters
+            'filters' => $filters,
         ]);
     }
 
     public function show(Contact $contact)
     {
         return Inertia::render('Contacts::show', [
-            'contact' => ContactData::fromModel($contact)
+            'contact' => ContactData::fromModel($contact),
         ]);
     }
 

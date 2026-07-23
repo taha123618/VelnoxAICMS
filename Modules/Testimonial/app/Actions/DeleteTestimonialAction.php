@@ -10,6 +10,6 @@ class DeleteTestimonialAction
     {
 
         $testimonial->delete();
-        
+
     }
 }

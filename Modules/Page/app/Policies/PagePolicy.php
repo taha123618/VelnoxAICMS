@@ -2,9 +2,9 @@
 
 namespace Modules\Page\Policies;
 
+use Illuminate\Auth\Access\HandlesAuthorization;
 use Modules\Auth\Models\User;
 use Modules\Page\Models\Page;
-use Illuminate\Auth\Access\HandlesAuthorization;
 
 class PagePolicy
 {
@@ -39,6 +39,6 @@ class PagePolicy
     public function delete_page(User $user, Page $post): bool
     {
         return $user->can('delete_pages')
-            && $post->menu_items()->doesntExist();;
+            && $post->menu_items()->doesntExist();
     }
 }

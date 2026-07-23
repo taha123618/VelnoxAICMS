@@ -12,9 +12,9 @@ class GetPermissionsForEditAction
         return Permission::orderBy('name')
             ->get(['id', 'name', 'label', 'group'])
             ->groupBy('group')
-            ->map(fn($groupPermissions, $groupName) => [
+            ->map(fn ($groupPermissions, $groupName) => [
                 'name' => $groupName,
-                'permissions' => collect($groupPermissions)->map(fn($perm) =>  [
+                'permissions' => collect($groupPermissions)->map(fn ($perm) => [
                     'id' => $perm['id'],
                     'label' => $perm['label'],
                     'name' => $perm['name'],

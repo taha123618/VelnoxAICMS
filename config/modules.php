@@ -1,7 +1,7 @@
 <?php
 
-use App\Console\Commands\DataMakeCommand;
 use App\Console\Commands\BuilderMakeCommand;
+use App\Console\Commands\DataMakeCommand;
 use Nwidart\Modules\Activators\FileActivator;
 use Nwidart\Modules\Providers\ConsoleServiceProvider;
 
@@ -35,10 +35,10 @@ return [
             'scaffold/config' => 'config/config.php',
             'composer' => 'composer.json',
             // 'assets/js/app' => 'resources/js/app.ts',
-            //'views/index' => 'resources/views/index.blade.php',
+            // 'views/index' => 'resources/views/index.blade.php',
             // 'assets/js/app' => 'resources/assets/js/app.js',
             // 'assets/sass/app' => 'resources/assets/sass/app.scss',
-            //'views/master' => 'resources/views/components/layouts/master.blade.php',
+            // 'views/master' => 'resources/views/components/layouts/master.blade.php',
             // 'vite' => 'vite.config.js',
             // 'package' => 'package.json'
         ],
@@ -75,7 +75,7 @@ return [
                 'MODULE_NAMESPACE',
                 'PROVIDER_NAMESPACE',
                 'APP_FOLDER_NAME',
-            ]
+            ],
         ],
         'gitkeep' => true,
     ],
@@ -236,7 +236,7 @@ return [
     'commands' => ConsoleServiceProvider::defaultCommands()
         ->merge([
             DataMakeCommand::class,
-            BuilderMakeCommand::class
+            BuilderMakeCommand::class,
             // New commands go here
         ])->toArray(),
 

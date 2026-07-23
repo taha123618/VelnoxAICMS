@@ -15,7 +15,7 @@ class GetVisitCountByCountryAction
                 ->pluck('count', 'country_code')
                 ->toArray();
         }
-        
+
         return DB::table('visits')
             ->select(DB::raw('count(*) as total, country_code'))
             ->groupBy('country_code')

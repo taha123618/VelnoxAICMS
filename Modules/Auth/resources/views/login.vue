@@ -77,9 +77,9 @@
                 >
                     <Link
                         :tabindex="6"
-                        :href="route('home')"
+                        :href="route('admin.register')"
                     >
-                    Go to website
+                    Create Account
                     <UIcon name="ph:arrow-right" />
                     </Link>
                 </UButton>

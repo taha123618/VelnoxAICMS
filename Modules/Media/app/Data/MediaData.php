@@ -2,9 +2,9 @@
 
 namespace Modules\Media\Data;
 
-use Spatie\LaravelData\Data;
 use Illuminate\Support\Number;
 use Modules\Media\Models\Media;
+use Spatie\LaravelData\Data;
 use Spatie\LaravelData\Optional;
 use Spatie\TypeScriptTransformer\Attributes\TypeScript;
 
