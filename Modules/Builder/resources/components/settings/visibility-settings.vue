@@ -42,7 +42,7 @@ import BuilderSelect from '@modules/Builder/resources/components/form/builder-se
 import { useElement } from '@modules/Builder/resources/scripts/use-element';
 
 
-const { element } = defineProps<{ element: ZioraElement, options: Record<string, any> }>();
+const { element } = defineProps<{ element: ZioraElement, options?: Record<string, any> }>();
 
 const { getStyle,hasChanged, deleteHoverStyle, setStyle } = useElement(element);
 
