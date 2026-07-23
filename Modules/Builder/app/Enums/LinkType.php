@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Modules\Builder\Enums;
 
 use Spatie\TypeScriptTransformer\Attributes\TypeScript;
