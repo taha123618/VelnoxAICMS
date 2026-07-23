@@ -6,10 +6,31 @@ use Illuminate\Contracts\JsonSchema\JsonSchema;
 use Laravel\Ai\Contracts\Agent;
 use Laravel\Ai\Contracts\HasStructuredOutput;
 use Laravel\Ai\Promptable;
+use PromptPHP\Intercept\InjectionGuard\PromptInjectionGuard;
+use PromptPHP\Intercept\PIIRedactor\PIIRedactor;
 
 class PageSectionGenerator implements Agent, HasStructuredOutput
 {
     use Promptable;
+
+    public function middleware(): array
+    {
+        return [
+            // production
+            new PromptInjectionGuard(
+                action: 'block',
+            ),
+
+            new PIIRedactor(
+                action: 'redact',
+                blockEntities: [
+                    'credit_card',
+                    'api_key',
+                    'bearer_token',
+                ],
+            ),
+        ];
+    }
 
     public function instructions(): string
     {

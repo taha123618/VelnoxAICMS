@@ -5,6 +5,8 @@ namespace Modules\Ai\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Modules\Ai\Agents\PageSectionGenerator;
+use PromptPHP\Intercept\Exceptions\InterceptException;
+use PromptPHP\Intercept\InjectionGuard\Exceptions\PromptInjectionGuardException;
 
 class AiController extends Controller
 {
@@ -24,10 +26,10 @@ class AiController extends Controller
             return response()->json([
                 'elements' => $response['elements'] ?? [],
             ]);
-        } catch (\Exception $e) {
+        } catch (PromptInjectionGuardException|InterceptException $e) {
             return response()->json([
-                'error' => 'Failed to generate section: '.$e->getMessage(),
-            ], 500);
+                'message' => 'Your message could not be processed because it appears to contain unsafe prompt instructions.',
+            ], 422);
         }
     }
 

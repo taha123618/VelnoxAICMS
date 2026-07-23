@@ -7,6 +7,8 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Modules\Ai\Services\AiGenerationService;
 use Modules\Builder\Agents\PageSectionGenerator;
+use PromptPHP\Intercept\Exceptions\InterceptException;
+use PromptPHP\Intercept\InjectionGuard\Exceptions\PromptInjectionGuardException;
 
 class AiSectionGeneratorController extends Controller
 {
@@ -40,10 +42,10 @@ class AiSectionGeneratorController extends Controller
             return response()->json([
                 'elements' => $response['elements'] ?? [],
             ]);
-        } catch (\Exception $e) {
+        } catch (PromptInjectionGuardException|InterceptException $e) {
             return response()->json([
-                'error' => $e->getMessage(),
-            ], 500);
+                'message' => 'Your message could not be processed because it appears to contain unsafe prompt instructions.',
+            ], 422);
         }
     }
 }

@@ -4,12 +4,34 @@ namespace Modules\Builder\Agents;
 
 use Illuminate\Contracts\JsonSchema\JsonSchema;
 use Laravel\Ai\Contracts\Agent;
+use Laravel\Ai\Contracts\HasMiddleware;
 use Laravel\Ai\Contracts\HasStructuredOutput;
 use Laravel\Ai\Promptable;
+use PromptPHP\Intercept\InjectionGuard\PromptInjectionGuard;
+use PromptPHP\Intercept\PIIRedactor\PIIRedactor;
 
-class PageSectionGenerator implements Agent, HasStructuredOutput
+class PageSectionGenerator implements Agent, HasMiddleware, HasStructuredOutput
 {
     use Promptable;
+
+    public function middleware(): array
+    {
+        return [
+            // production
+            new PromptInjectionGuard(
+                action: 'block',
+            ),
+
+            new PIIRedactor(
+                action: 'redact',
+                blockEntities: [
+                    'credit_card',
+                    'api_key',
+                    'bearer_token',
+                ],
+            ),
+        ];
+    }
 
     public function instructions(): string
     {
@@ -73,7 +95,7 @@ Example Element:
                     )->description('Child elements')->required(),
                     'props' => $schema->object([])->description('Element properties, including flat camelCase CSS styles directly on this object')->required(),
                 ])
-            )->description('The generated root-level elements (usually just one wrapper section)')->required()
+            )->description('The generated root-level elements (usually just one wrapper section)')->required(),
         ];
     }
 }

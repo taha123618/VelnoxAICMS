@@ -15,7 +15,10 @@
     "mcp": true,
     "nightwatch": true,
     "packages": [
-        "spatie/laravel-medialibrary"
+        "spatie/laravel-medialibrary",
+        "spatie/laravel-activitylog",
+        "spatie/laravel-permission",
+        "spatie/laravel-translatable"
     ],
     "sail": false,
     "skills": [
@@ -25,8 +28,11 @@
         "configure-nightwatch",
         "pest-testing",
         "inertia-vue-development",
+        "echo-development",
         "tailwindcss-development",
         "medialibrary-development",
+        "laravel-permission-development",
+        "translatable-development",
         "deploying-laravel-cloud"
     ]
 }
