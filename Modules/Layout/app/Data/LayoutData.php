@@ -12,7 +12,7 @@ use Spatie\TypeScriptTransformer\Attributes\TypeScript;
 class LayoutData extends Data
 {
     public function __construct(
-        public string $id,
+        public int|string $id,
         public string $name,
         public string $totalPages,
         public string $totalPosts,
@@ -29,13 +29,13 @@ class LayoutData extends Data
         return new self(
             id: $layout->id,
             name: $layout->name,
-            statusColor: $layout->getStatus()->getColor(),
-            created: $layout->created_at,
-            updated: $layout->updated_at,
-            content: $layout->content ?? null,
-            can: $layout->authorization,
             totalPages: $layout->pages()->where('type', PageType::Page)->count(),
             totalPosts: $layout->pages()->where('type', PageType::Post)->count(),
+            created: $layout->created_at,
+            updated: $layout->updated_at,
+            statusColor: $layout->getStatus()->getColor(),
+            content: $layout->content ?? null,
+            can: $layout->authorization,
         );
     }
 }

@@ -7,14 +7,14 @@ use Modules\Auth\Models\User;
 
 class CreateUserAction
 {
-    public function handle(CreateUserRequest $request)
+    public function handle(CreateUserRequest $createUserRequest)
     {
 
         return User::create([
-            'first_name' => $request->first_name,
-            'last_name' => $request->last_name,
-            'email' => $request->email,
-            'password' => bcrypt($request->password),
+            'first_name' => $createUserRequest->first_name,
+            'last_name' => $createUserRequest->last_name,
+            'email' => $createUserRequest->email,
+            'password' => bcrypt($createUserRequest->password),
         ]);
     }
 }

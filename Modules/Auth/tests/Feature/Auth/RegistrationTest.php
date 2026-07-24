@@ -1,19 +1,20 @@
 <?php
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Modules\Auth\Models\Role;
+use Tests\TestCase;
 
-uses(Tests\TestCase::class);
-uses(RefreshDatabase::class);
+uses(TestCase::class, RefreshDatabase::class);
 
-test('registration screen can be rendered', function () {
+test('registration screen can be rendered', function (): void {
     $response = $this->get('/cp/register');
 
     $response->assertStatus(200);
 });
 
-test('new users can register', function () {
-    \Modules\Auth\Models\Role::create(['name' => 'administrator', 'label' => 'Administrator']);
-    
+test('new users can register', function (): void {
+    Role::create(['name' => 'administrator', 'label' => 'Administrator']);
+
     $response = $this->post('/cp/register', [
         'first_name' => 'Taha',
         'last_name' => 'Ahmed',
@@ -21,8 +22,6 @@ test('new users can register', function () {
         'password' => 'admin123',
         'password_confirmation' => 'admin123',
     ]);
-
-
 
     $this->assertAuthenticated();
     $response->assertRedirect(route('admin.dashboard', absolute: false));

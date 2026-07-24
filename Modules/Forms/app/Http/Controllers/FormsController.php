@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Modules\Forms\Models\Form;
-use Modules\Forms\Models\FormSubmission;
 
 class FormsController extends Controller
 {
@@ -16,6 +15,7 @@ class FormsController extends Controller
     public function index()
     {
         $forms = Form::withCount('submissions')->latest()->get();
+
         return Inertia::render('Forms::index', [
             'forms' => $forms,
         ]);
@@ -27,18 +27,18 @@ class FormsController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'slug' => 'required|string|unique:forms,slug|max:255',
-            'description' => 'nullable|string',
-            'schema' => 'nullable|array',
-            'is_active' => 'boolean',
-            'success_message' => 'nullable|string|max:255',
-            'redirect_url' => 'nullable|url',
+            'name' => ['required', 'string', 'max:255'],
+            'slug' => ['required', 'string', 'unique:forms,slug', 'max:255'],
+            'description' => ['nullable', 'string'],
+            'schema' => ['nullable', 'array'],
+            'is_active' => ['boolean'],
+            'success_message' => ['nullable', 'string', 'max:255'],
+            'redirect_url' => ['nullable', 'url'],
         ]);
 
         Form::create($validated);
 
-        return redirect()->back()->with('success', 'Form created successfully.');
+        return back()->with('success', 'Form created successfully.');
     }
 
     /**
@@ -46,7 +46,7 @@ class FormsController extends Controller
      */
     public function show($id)
     {
-        $form = Form::with(['submissions' => function($q) {
+        $form = Form::with(['submissions' => function ($q): void {
             $q->latest();
         }])->findOrFail($id);
 
@@ -63,18 +63,18 @@ class FormsController extends Controller
         $form = Form::findOrFail($id);
 
         $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'slug' => 'required|string|max:255|unique:forms,slug,' . $form->id,
-            'description' => 'nullable|string',
-            'schema' => 'nullable|array',
-            'is_active' => 'boolean',
-            'success_message' => 'nullable|string|max:255',
-            'redirect_url' => 'nullable|url',
+            'name' => ['required', 'string', 'max:255'],
+            'slug' => 'required|string|max:255|unique:forms,slug,'.$form->id,
+            'description' => ['nullable', 'string'],
+            'schema' => ['nullable', 'array'],
+            'is_active' => ['boolean'],
+            'success_message' => ['nullable', 'string', 'max:255'],
+            'redirect_url' => ['nullable', 'url'],
         ]);
 
         $form->update($validated);
 
-        return redirect()->back()->with('success', 'Form updated successfully.');
+        return back()->with('success', 'Form updated successfully.');
     }
 
     /**
@@ -83,6 +83,7 @@ class FormsController extends Controller
     public function destroy($id)
     {
         Form::findOrFail($id)->delete();
-        return redirect()->route('admin.forms.index')->with('success', 'Form deleted successfully.');
+
+        return to_route('admin.forms.index')->with('success', 'Form deleted successfully.');
     }
 }

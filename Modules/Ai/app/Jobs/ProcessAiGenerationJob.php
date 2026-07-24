@@ -22,9 +22,10 @@ class ProcessAiGenerationJob implements ShouldQueue
     public int $tries = 3;
 
     public int $backoff = 5;
+
     public int $timeout = 60;
 
-    public function __construct(public string $jobId)
+    public function __construct(public int|string $jobId)
     {
         $this->onQueue('ai-generation');
     }
@@ -76,50 +77,50 @@ class ProcessAiGenerationJob implements ShouldQueue
         }
     }
 
-    protected function safeBroadcast(AiGenerationJob $job): void
+    protected function safeBroadcast(AiGenerationJob $aiGenerationJob): void
     {
         try {
-            event(new AiJobStatusUpdated($job));
+            event(new AiJobStatusUpdated($aiGenerationJob));
         } catch (Throwable $e) {
-            Log::warning("WebSocket broadcast failed for AiGenerationJob {$job->id} (Reverb server down or unreachable): ".$e->getMessage());
+            Log::warning("WebSocket broadcast failed for AiGenerationJob {$aiGenerationJob->id} (Reverb server down or unreachable): ".$e->getMessage());
         }
     }
 
     protected function generateSection(string $prompt): array
     {
-        $agent = new PageSectionGenerator;
-        $response = $agent->prompt($prompt);
+        $pageSectionGenerator = new PageSectionGenerator;
+        $agentResponse = $pageSectionGenerator->prompt($prompt);
 
         return [
-            'elements' => $response['elements'] ?? [],
+            'elements' => $agentResponse['elements'] ?? [],
         ];
     }
 
     protected function generateContent(string $prompt): array
     {
-        $agent = new ContentGenerator;
-        $response = $agent->prompt($prompt);
+        $contentGenerator = new ContentGenerator;
+        $agentResponse = $contentGenerator->prompt($prompt);
 
         return [
-            'content' => $response->text ?? '',
+            'content' => $agentResponse->text ?? '',
         ];
     }
 
     protected function generateSeo(string $prompt): array
     {
-        $agent = new SeoOptimizer;
-        $response = $agent->prompt($prompt);
+        $seoOptimizer = new SeoOptimizer;
+        $agentResponse = $seoOptimizer->prompt($prompt);
 
         return [
-            'meta' => $response ?? [],
+            'meta' => $agentResponse ?? [],
         ];
     }
 
-    public function failed(Throwable $exception): void
+    public function failed(Throwable $throwable): void
     {
         $job = AiGenerationJob::find($this->jobId);
         if ($job && $job->status !== AiGenerationJob::STATUS_COMPLETED) {
-            $job->markAsFailed($exception->getMessage());
+            $job->markAsFailed($throwable->getMessage());
             $this->safeBroadcast($job);
         }
     }

@@ -7,11 +7,11 @@ use Modules\Media\Models\Folder;
 
 class UpdateFolderAction
 {
-    public function handle(UpdateFolderRequest $request, Folder $folder)
+    public function handle(UpdateFolderRequest $updateFolderRequest, Folder $folder)
     {
 
         return tap($folder)->update([
-            'name' => $request->name,
+            'name' => $updateFolderRequest->name,
         ]);
     }
 }

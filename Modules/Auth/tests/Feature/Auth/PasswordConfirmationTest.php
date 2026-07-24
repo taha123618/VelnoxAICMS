@@ -1,11 +1,12 @@
 <?php
 
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Modules\Auth\Models\User;
+use Tests\TestCase;
 
-uses(Tests\TestCase::class);
-uses(\Illuminate\Foundation\Testing\RefreshDatabase::class);
+uses(TestCase::class, RefreshDatabase::class);
 
-test('confirm password screen can be rendered', function () {
+test('confirm password screen can be rendered', function (): void {
     $user = User::factory()->create();
 
     $response = $this->actingAs($user)->get('/cp/confirm-password');
@@ -13,7 +14,7 @@ test('confirm password screen can be rendered', function () {
     $response->assertStatus(200);
 });
 
-test('password can be confirmed', function () {
+test('password can be confirmed', function (): void {
     $user = User::factory()->create();
 
     $response = $this->actingAs($user)->post('/cp/confirm-password', [
@@ -24,7 +25,7 @@ test('password can be confirmed', function () {
     $response->assertSessionHasNoErrors();
 });
 
-test('password is not confirmed with invalid password', function () {
+test('password is not confirmed with invalid password', function (): void {
     $user = User::factory()->create();
 
     $response = $this->actingAs($user)->post('/cp/confirm-password', [

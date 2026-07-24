@@ -3,8 +3,8 @@
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Modules\Auth\Models\User;
 use Modules\Builder\Agents\PageSectionGenerator;
+
 use function Pest\Laravel\actingAs;
-use function Pest\Laravel\postJson;
 
 uses(RefreshDatabase::class);
 
@@ -102,7 +102,7 @@ dataset('ai_generation_scenarios', [
     'Dynamic Layout Generation' => ['A dynamic layout that adapts based on content length'],
 ]);
 
-it('successfully processes various ai generation requests', function (string $prompt) {
+it('successfully processes various ai generation requests', function (string $prompt): void {
     // Fake the AI response to simulate a successful generation without hitting the actual API
     PageSectionGenerator::fake([
         [
@@ -122,24 +122,24 @@ it('successfully processes various ai generation requests', function (string $pr
                             'props' => [
                                 'tag' => 'h2',
                                 'content' => ['innerText' => 'Mocked AI Content'],
-                            ]
-                        ]
+                            ],
+                        ],
                     ],
                     'props' => [
-                        'padding' => '20px'
-                    ]
-                ]
-            ]
-        ]
+                        'padding' => '20px',
+                    ],
+                ],
+            ],
+        ],
     ]);
 
     $user = User::factory()->create();
 
-    $response = actingAs($user, 'sanctum')->postJson('/api/builder/ai/generate-section', [
+    $testResponse = actingAs($user, 'sanctum')->postJson('/api/builder/ai/generate-section', [
         'prompt' => $prompt,
     ]);
 
-    $response->assertStatus(200)
+    $testResponse->assertStatus(200)
         ->assertJsonStructure([
             'elements' => [
                 '*' => [
@@ -148,21 +148,21 @@ it('successfully processes various ai generation requests', function (string $pr
                     'isLayoutElement',
                     'canDrop',
                     'children',
-                    'props'
-                ]
-            ]
+                    'props',
+                ],
+            ],
         ]);
-        
-    expect($response->json('elements.0.type'))->toBe('wrapper');
+
+    expect($testResponse->json('elements.0.type'))->toBe('wrapper');
 })->with('ai_generation_scenarios');
 
-it('validates the prompt input', function () {
+it('validates the prompt input', function (): void {
     $user = User::factory()->create();
 
-    $response = actingAs($user, 'sanctum')->postJson('/api/builder/ai/generate-section', [
+    $testResponse = actingAs($user, 'sanctum')->postJson('/api/builder/ai/generate-section', [
         'prompt' => '', // Empty prompt
     ]);
 
-    $response->assertStatus(422)
+    $testResponse->assertStatus(422)
         ->assertJsonValidationErrors(['prompt']);
 });

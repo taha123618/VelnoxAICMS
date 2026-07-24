@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Gate;
-use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 use Modules\Layout\Actions\CreateLayoutAction;
 use Modules\Layout\Actions\DeleteLayoutAction;
@@ -26,7 +25,7 @@ class LayoutController extends Controller
     {
         $filters = $request->only(['search', 'sort']);
 
-        $data = app(SearchLayoutsAction::class)->handle($request);
+        $data = resolve(SearchLayoutsAction::class)->handle($request);
 
         return Inertia::render('Layout::index', [
             'data' => LayoutData::collect($data),
@@ -41,16 +40,16 @@ class LayoutController extends Controller
         return Inertia::render('Layout::create');
     }
 
-    public function store(CreateLayoutRequest $request)
+    public function store(CreateLayoutRequest $createLayoutRequest)
     {
 
         Gate::authorize('create', Layout::class);
 
         Cache::forget('frontpage');
 
-        app(CreateLayoutAction::class)->handle($request);
+        resolve(CreateLayoutAction::class)->handle($createLayoutRequest);
 
-        return Redirect::back()->with('success', 'Layout created!');
+        return back()->with('success', 'Layout created!');
     }
 
     public function edit(Layout $layout)
@@ -59,21 +58,21 @@ class LayoutController extends Controller
 
         return Inertia::render('Layout::edit', [
             'layout' => LayoutData::fromModel($layout),
-            'menus' => MenuData::collect(app(GetAllMenusAction::class)->handle()),
+            'menus' => MenuData::collect(resolve(GetAllMenusAction::class)->handle()),
         ]);
     }
 
-    public function update(UpdateLayoutRequest $request, Layout $layout)
+    public function update(UpdateLayoutRequest $updateLayoutRequest, Layout $layout)
     {
         Gate::authorize('update', $layout);
 
         Cache::forget('frontpage');
 
-        app(UpdateLayoutAction::class)->handle($request, $layout);
+        resolve(UpdateLayoutAction::class)->handle($updateLayoutRequest, $layout);
 
-        broadcast(new LayoutContentUpdated($layout->id, $request->input('content', []), auth()->id()))->toOthers();
+        broadcast(new LayoutContentUpdated($layout->id, $updateLayoutRequest->input('content', []), auth()->id()))->toOthers();
 
-        return Redirect::back()->with('success', 'Layout updated!');
+        return back()->with('success', 'Layout updated!');
     }
 
     public function destroy(Layout $layout)
@@ -81,8 +80,8 @@ class LayoutController extends Controller
 
         Gate::authorize('delete', $layout);
 
-        app(DeleteLayoutAction::class)->handle($layout);
+        resolve(DeleteLayoutAction::class)->handle($layout);
 
-        return Redirect::back()->with('success', 'Category deleted!');
+        return back()->with('success', 'Category deleted!');
     }
 }

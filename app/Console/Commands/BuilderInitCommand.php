@@ -2,6 +2,8 @@
 
 namespace App\Console\Commands;
 
+use Illuminate\Console\Attributes\Description;
+use Illuminate\Console\Attributes\Signature;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules\Password;
@@ -13,13 +15,11 @@ use function Laravel\Prompts\info;
 use function Laravel\Prompts\password;
 use function Laravel\Prompts\text;
 
+#[Description('Initialize Builder with roles and an admin user')]
+#[Signature('builder:init')]
 class BuilderInitCommand extends Command
 {
-    protected $signature = 'builder:init';
-
-    protected $description = 'Initialize Builder with roles and an admin user';
-
-    public function handle()
+    public function handle(): int
     {
         info('Seeding roles and permissions...');
 

@@ -7,13 +7,13 @@ use Modules\Auth\Models\User;
 
 class UpdateUserAction
 {
-    public function handle(UpdateUserRequest $request, User $user)
+    public function handle(UpdateUserRequest $updateUserRequest, User $user)
     {
 
         return tap($user)->update([
-            'first_name' => $request->first_name,
-            'last_name' => $request->last_name,
-            'email' => $request->email,
+            'first_name' => $updateUserRequest->first_name,
+            'last_name' => $updateUserRequest->last_name,
+            'email' => $updateUserRequest->email,
         ]);
     }
 }

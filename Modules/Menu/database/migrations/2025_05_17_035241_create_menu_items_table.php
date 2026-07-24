@@ -11,16 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('menu_items', function (Blueprint $table) {
-            $table->ulid('id')->primary();
-            $table->foreignUlid('menu_id')->constrained();
-            $table->string('parent_id')->nullable();
-            $table->string('type');
-            $table->string('label');
-            $table->string('path')->nullable(); // page id or post id or external url
-            $table->string('target')->nullable();
-            $table->integer('sort_order')->default(0);
-            $table->timestamps();
+        Schema::create('menu_items', function (Blueprint $blueprint): void {
+            $blueprint->ulid('id')->primary();
+            $blueprint->foreignUlid('menu_id')->constrained();
+            $blueprint->string('parent_id')->nullable();
+            $blueprint->string('type');
+            $blueprint->string('label');
+            $blueprint->string('path')->nullable(); // page id or post id or external url
+            $blueprint->string('target')->nullable();
+            $blueprint->integer('sort_order')->default(0);
+            $blueprint->timestamps();
         });
     }
 

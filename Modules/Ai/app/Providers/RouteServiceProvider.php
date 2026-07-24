@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Modules\Ai\Providers;
 
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
@@ -14,6 +16,7 @@ class RouteServiceProvider extends ServiceProvider
      *
      * Register any model bindings or pattern based filters.
      */
+    #[\Override]
     public function boot(): void
     {
         parent::boot();

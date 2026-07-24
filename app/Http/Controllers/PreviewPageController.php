@@ -18,7 +18,7 @@ class PreviewPageController extends Controller
         return Inertia::render('page', [
             'page' => $page->type == PageType::Post ? PostData::fromModel($page) : PageData::fromModel($page),
             'layout' => LayoutData::fromModel($page->layout),
-            'menus' => MenuData::collect(app(GetAllMenusAction::class)->handle()),
+            'menus' => MenuData::collect(resolve(GetAllMenusAction::class)->handle()),
         ]);
     }
 }

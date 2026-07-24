@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use Illuminate\Support\Facades\Route;
 use Modules\Settings\Http\Controllers\SettingsController;
 
@@ -14,7 +16,7 @@ use Modules\Settings\Http\Controllers\SettingsController;
 |
 */
 
-Route::middleware(['auth', 'verified'])->prefix('admin')->group(function () {
+Route::middleware(['auth', 'verified'])->prefix('admin')->group(function (): void {
     Route::get('settings', [SettingsController::class, 'index'])->name('settings.index');
     Route::post('settings', [SettingsController::class, 'store'])->name('settings.store');
 });

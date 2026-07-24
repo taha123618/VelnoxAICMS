@@ -9,14 +9,14 @@ class GetCategoryApiResponseAction
 {
     public function handle(Request $request)
     {
-        $categories = Category::query();
+        $builder = Category::query();
 
         if ($request->orderBy == 'random') {
-            $categories->inRandomOrder();
+            $builder->inRandomOrder();
         } else {
-            $categories->orderBy($request->orderBy, $request->orderDir);
+            $builder->orderBy($request->orderBy, $request->orderDir);
         }
 
-        return $categories->limit($request->perPage)->get();
+        return $builder->limit($request->perPage)->get();
     }
 }

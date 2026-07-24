@@ -1,15 +1,17 @@
 <?php
 
+declare(strict_types=1);
+
 use Modules\Visits\Visitor;
 
 if (! function_exists('visitor')) {
     /**
      * Access visitor through helper.
      *
-     * @return \Modules\Visits\Visitor
+     * @return Visitor
      */
     function visitor()
     {
-        return app('ziora-visitor');
+        return resolve('ziora-visitor');
     }
 }

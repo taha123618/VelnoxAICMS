@@ -16,6 +16,7 @@ class HandleInertiaRequests extends Middleware
      *
      * @var string
      */
+    #[\Override]
     protected $rootView = 'app';
 
     /**
@@ -23,6 +24,7 @@ class HandleInertiaRequests extends Middleware
      *
      * @see https://inertiajs.com/asset-versioning
      */
+    #[\Override]
     public function version(Request $request): ?string
     {
         return parent::version($request);
@@ -35,6 +37,7 @@ class HandleInertiaRequests extends Middleware
      *
      * @return array<string, mixed>
      */
+    #[\Override]
     public function share(Request $request): array
     {
 
@@ -47,12 +50,10 @@ class HandleInertiaRequests extends Middleware
                     ? AuthenticatedUserData::fromModel($request->user())
                     : null,
             ],
-            'flash' => function () use ($request) {
-                return [
-                    'success' => $request->session()->get('success'),
-                    'error' => $request->session()->get('error'),
-                ];
-            },
+            'flash' => fn (): array => [
+                'success' => $request->session()->get('success'),
+                'error' => $request->session()->get('error'),
+            ],
             'ziggy' => [
                 ...(new Ziggy)->toArray(),
                 'location' => $request->url(),

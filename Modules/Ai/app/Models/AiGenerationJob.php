@@ -2,11 +2,21 @@
 
 namespace Modules\Ai\Models;
 
+use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Modules\Auth\Models\User;
 
+#[Fillable([
+    'user_id',
+    'type',
+    'prompt',
+    'status',
+    'progress',
+    'result',
+    'error',
+])]
 class AiGenerationJob extends Model
 {
     use HasUlids;
@@ -21,16 +31,7 @@ class AiGenerationJob extends Model
 
     public const STATUS_CANCELLED = 'cancelled';
 
-    protected $fillable = [
-        'user_id',
-        'type',
-        'prompt',
-        'status',
-        'progress',
-        'result',
-        'error',
-    ];
-
+    #[\Override]
     protected function casts(): array
     {
         return [

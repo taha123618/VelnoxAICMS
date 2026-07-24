@@ -7,14 +7,14 @@ use Modules\Page\Models\Page;
 
 class UpdatePageMetadataAction
 {
-    public function handle(UpdatePageRequest $request, Page $page)
+    public function handle(UpdatePageRequest $updatePageRequest, Page $page)
     {
         return tap($page)->update([
-            'title' => $request->title,
-            'slug' => $request->slug,
-            'layout_id' => $request->layout,
-            'description' => $request->description,
-            'data->keywords' => $request->keywords,
+            'title' => $updatePageRequest->title,
+            'slug' => $updatePageRequest->slug,
+            'layout_id' => $updatePageRequest->layout,
+            'description' => $updatePageRequest->description,
+            'data->keywords' => $updatePageRequest->keywords,
         ]);
     }
 }

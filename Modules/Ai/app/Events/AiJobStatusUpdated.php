@@ -29,16 +29,16 @@ class AiJobStatusUpdated implements ShouldBroadcastNow
 
     public string $prompt;
 
-    public function __construct(AiGenerationJob $job)
+    public function __construct(AiGenerationJob $aiGenerationJob)
     {
-        $this->jobId = $job->id;
-        $this->userId = $job->user_id;
-        $this->type = $job->type;
-        $this->status = $job->status;
-        $this->progress = $job->progress;
-        $this->result = $job->result;
-        $this->error = $job->error;
-        $this->prompt = $job->prompt;
+        $this->jobId = $aiGenerationJob->id;
+        $this->userId = $aiGenerationJob->user_id;
+        $this->type = $aiGenerationJob->type;
+        $this->status = $aiGenerationJob->status;
+        $this->progress = $aiGenerationJob->progress;
+        $this->result = $aiGenerationJob->result;
+        $this->error = $aiGenerationJob->error;
+        $this->prompt = $aiGenerationJob->prompt;
     }
 
     public function broadcastOn(): array

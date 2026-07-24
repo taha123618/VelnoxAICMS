@@ -4,7 +4,6 @@ namespace Modules\Page\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Gate;
-use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 use Modules\Category\Actions\GetCategoryDropdownOptionsAction;
 use Modules\Layout\Actions\GetAllLayoutsAction;
@@ -16,25 +15,25 @@ use Modules\Page\Models\Page;
 
 class PostMetaController extends Controller
 {
-    public function edit(Page $post)
+    public function edit(Page $page)
     {
-        Gate::authorize('update_post', $post);
+        Gate::authorize('update_post', $page);
 
-        $categories = app(GetCategoryDropdownOptionsAction::class)->handle();
+        $categories = resolve(GetCategoryDropdownOptionsAction::class)->handle();
 
         return Inertia::render('Page::posts/edit-metadata', [
-            'post' => PostData::fromModel($post),
-            'layouts' => LayoutData::collect(app(GetAllLayoutsAction::class)->handle()),
+            'post' => PostData::fromModel($page),
+            'layouts' => LayoutData::collect(resolve(GetAllLayoutsAction::class)->handle()),
             'categories' => $categories,
         ]);
     }
 
-    public function update(UpdatePostRequest $request, Page $post)
+    public function update(UpdatePostRequest $updatePostRequest, Page $page)
     {
-        Gate::authorize('update_post', $post);
+        Gate::authorize('update_post', $page);
 
-        app(UpdatePostMetadataAction::class)->handle($request, $post);
+        resolve(UpdatePostMetadataAction::class)->handle($updatePostRequest, $page);
 
-        return Redirect::back()->with('success', 'Post updated!');
+        return back()->with('success', 'Post updated!');
     }
 }

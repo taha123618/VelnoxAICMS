@@ -21,7 +21,7 @@ class AiJobController extends Controller
             'type' => ['nullable', 'string', 'in:section,content,seo'],
         ]);
 
-        $job = $this->service->dispatchJob(
+        $aiGenerationJob = $this->service->dispatchJob(
             prompt: $validated['prompt'],
             type: $validated['type'] ?? 'section',
             userId: $request->user()?->id
@@ -29,7 +29,7 @@ class AiJobController extends Controller
 
         return response()->json([
             'message' => 'AI generation job queued successfully.',
-            'job' => $job,
+            'job' => $aiGenerationJob,
         ], 202);
     }
 
@@ -38,10 +38,10 @@ class AiJobController extends Controller
      */
     public function show(Request $request, string $id): JsonResponse
     {
-        $job = $this->service->getJob($id, $request->user()?->id);
+        $aiGenerationJob = $this->service->getJob($id, $request->user()?->id);
 
         return response()->json([
-            'job' => $job,
+            'job' => $aiGenerationJob,
         ]);
     }
 
@@ -50,11 +50,11 @@ class AiJobController extends Controller
      */
     public function retry(Request $request, string $id): JsonResponse
     {
-        $job = $this->service->retryJob($id, $request->user()?->id);
+        $aiGenerationJob = $this->service->retryJob($id, $request->user()?->id);
 
         return response()->json([
             'message' => 'AI generation job retried successfully.',
-            'job' => $job,
+            'job' => $aiGenerationJob,
         ], 202);
     }
 
@@ -63,11 +63,11 @@ class AiJobController extends Controller
      */
     public function cancel(Request $request, string $id): JsonResponse
     {
-        $job = $this->service->cancelJob($id, $request->user()?->id);
+        $aiGenerationJob = $this->service->cancelJob($id, $request->user()?->id);
 
         return response()->json([
             'message' => 'AI generation job cancelled successfully.',
-            'job' => $job,
+            'job' => $aiGenerationJob,
         ]);
     }
 }

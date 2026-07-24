@@ -10,7 +10,7 @@ use Spatie\TypeScriptTransformer\Attributes\TypeScript;
 class ContactData extends Data
 {
     public function __construct(
-        public string $id,
+        public int|string $id,
         public string $name,
         public string $email,
         public string $subject,
@@ -20,17 +20,17 @@ class ContactData extends Data
         public string $updated_at
     ) {}
 
-    public static function fromModel(Contact $model): self
+    public static function fromModel(Contact $contact): self
     {
         return new self(
-            id: $model->id,
-            name: $model->name,
-            email: $model->email,
-            subject: $model->subject,
-            body: $model->body,
-            isSubscribed: $model->subscribe_to_mail,
-            created_at: $model->created_at,
-            updated_at: $model->updated_at,
+            id: $contact->id,
+            name: $contact->name,
+            email: $contact->email,
+            subject: $contact->subject,
+            body: $contact->body,
+            isSubscribed: $contact->subscribe_to_mail,
+            created_at: $contact->created_at,
+            updated_at: $contact->updated_at,
         );
     }
 }

@@ -10,8 +10,8 @@ use function Pest\Laravel\actingAs;
 
 uses(RefreshDatabase::class);
 
-it('successfully creates a page even if user current_tenant_id is unassigned', function () {
-    Gate::before(fn () => true);
+it('successfully creates a page even if user current_tenant_id is unassigned', function (): void {
+    Gate::before(fn (): true => true);
 
     $tenant = Tenant::create([
         'name' => 'Default Workspace',
@@ -28,7 +28,7 @@ it('successfully creates a page even if user current_tenant_id is unassigned', f
         'content' => [],
     ]);
 
-    $response = actingAs($user)->post('/cp/pages', [
+    $testResponse = actingAs($user)->post('/cp/pages', [
         'title' => 'New Test Page',
         'layout' => $layout->id,
         'content' => [
@@ -42,7 +42,7 @@ it('successfully creates a page even if user current_tenant_id is unassigned', f
         ],
     ]);
 
-    $response->assertSessionHasNoErrors();
+    $testResponse->assertSessionHasNoErrors();
 
     $this->assertDatabaseHas('pages', [
         'title' => 'New Test Page',

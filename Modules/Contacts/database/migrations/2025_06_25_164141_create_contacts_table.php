@@ -11,14 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('contacts', function (Blueprint $table) {
-            $table->ulid('id')->primary();
-            $table->string('name');
-            $table->string('subject');
-            $table->string('email');
-            $table->longText('body');
-            $table->boolean('subscribe_to_mail')->default(true);
-            $table->timestamps();
+        Schema::create('contacts', function (Blueprint $blueprint): void {
+            $blueprint->ulid('id')->primary();
+            $blueprint->string('name');
+            $blueprint->string('subject');
+            $blueprint->string('email');
+            $blueprint->longText('body');
+            $blueprint->boolean('subscribe_to_mail')->default(true);
+            $blueprint->timestamps();
         });
     }
 

@@ -11,7 +11,7 @@ use Spatie\TypeScriptTransformer\Attributes\TypeScript;
 class FolderData extends Data
 {
     public function __construct(
-        public string $id,
+        public int|string $id,
         public string $name,
         public array|Optional $can
     ) {}

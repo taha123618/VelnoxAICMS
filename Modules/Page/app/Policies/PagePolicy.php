@@ -15,15 +15,15 @@ class PagePolicy
         return $user->can('create_posts');
     }
 
-    public function update_post(User $user, Page $post)
+    public function update_post(User $user, Page $page)
     {
         return $user->can('edit_posts');
     }
 
-    public function delete_post(User $user, Page $post): bool
+    public function delete_post(User $user, Page $page): bool
     {
         return $user->can('delete_posts')
-            && $post->menu_items()->doesntExist();
+            && $page->menu_items()->doesntExist();
     }
 
     public function create_page(User $user)
@@ -31,14 +31,14 @@ class PagePolicy
         return $user->can('create_pages');
     }
 
-    public function update_page(User $user, Page $post)
+    public function update_page(User $user, Page $page)
     {
         return $user->can('edit_pages');
     }
 
-    public function delete_page(User $user, Page $post): bool
+    public function delete_page(User $user, Page $page): bool
     {
         return $user->can('delete_pages')
-            && $post->menu_items()->doesntExist();
+            && $page->menu_items()->doesntExist();
     }
 }

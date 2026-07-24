@@ -27,6 +27,7 @@ class Page extends BaseModel
     use SoftDeletes;
     use Visitable;
 
+    #[\Override]
     protected $casts = [
         'published_at' => 'datetime',
         'content' => 'json',
@@ -80,7 +81,7 @@ class Page extends BaseModel
         return $current != $published;
     }
 
-    public function getPublishedModel()
+    public function getPublishedModel(): self
     {
         $published = $this->published_version;
 
@@ -88,7 +89,7 @@ class Page extends BaseModel
             return $this;
         }
 
-        return Page::make([
+        return new Page([
             ...$this->only([
                 'id',
                 'category_id',
@@ -109,20 +110,20 @@ class Page extends BaseModel
         ]);
     }
 
-    public function isPublished(): Attribute
+    protected function isPublished(): Attribute
     {
         return Attribute::make(
-            get: fn () => filled($this->published_at) && ! is_null($this->published_version),
-            set: fn ($value) => ['published_at' => $value ? now() : null]
+            get: fn (): bool => filled($this->published_at) && ! is_null($this->published_version),
+            set: fn ($value): array => ['published_at' => $value ? now() : null]
         );
     }
 
-    public function togglePublish()
+    public function togglePublish(): void
     {
         $this->is_published ? $this->unpublish() : $this->publish();
     }
 
-    public function publish()
+    public function publish(): void
     {
         if ($this->isDifferentFromPublishedVersion()) {
             $this->versions()->create([
@@ -140,31 +141,31 @@ class Page extends BaseModel
         ]);
     }
 
-    public function unpublish()
+    public function unpublish(): void
     {
         $this->update(['published_at' => null]);
     }
 
-    public function scopePublished(Builder $query): void
+    protected function scopePublished(Builder $builder): void
     {
-        $query->whereNotNull('published_at')
+        $builder->whereNotNull('published_at')
             ->has('published_version');
     }
 
-    public function scopePages(Builder $query): void
+    protected function scopePages(Builder $builder): void
     {
-        $query->where('type', PageType::Page);
+        $builder->where('type', PageType::Page);
     }
 
-    public function scopeFrontpage(Builder $query): void
+    protected function scopeFrontpage(Builder $builder): void
     {
-        $query->where('type', PageType::Page)
+        $builder->where('type', PageType::Page)
             ->where('is_frontpage', true);
     }
 
-    public function scopePosts(Builder $query): void
+    protected function scopePosts(Builder $builder): void
     {
-        $query->where('type', PageType::Post);
+        $builder->where('type', PageType::Post);
     }
 
     public function layout()
@@ -177,7 +178,7 @@ class Page extends BaseModel
         return $this->belongsTo(Category::class);
     }
 
-    public function getUrl(bool $absolute = true)
+    public function getUrl(bool $absolute = true): string
     {
         if ($this->is_frontpage) {
             return route('home', absolute: false);
@@ -190,9 +191,9 @@ class Page extends BaseModel
 
     public function getStatus(): Status
     {
-        return ! is_null($this->published_at)
-            ? Status::Published
-            : Status::Draft;
+        return is_null($this->published_at)
+            ? Status::Draft
+            : Status::Published;
     }
 
     public function getSlugOptions(): SlugOptions
@@ -205,11 +206,11 @@ class Page extends BaseModel
             ->usingSeparator('-');
     }
 
-    public function scopeFilter(Builder $query, array $filters)
+    protected function scopeFilter(Builder $builder, array $filters): void
     {
-        $query->when($filters['search'] ?? null, function ($query, $search) {
+        $builder->when($filters['search'] ?? null, function ($query, $search): void {
             $query->where('title', 'like', "%$search%");
-        })->when($filters['trashed'] ?? null, function ($query, $trashed) {
+        })->when($filters['trashed'] ?? null, function ($query, $trashed): void {
             if ($trashed === 'with') {
                 $query->withTrashed();
             } elseif ($trashed === 'only') {
@@ -218,7 +219,7 @@ class Page extends BaseModel
         });
     }
 
-    public function getPostAuthorizationAttribute()
+    protected function getPostAuthorizationAttribute(): array
     {
         return [
             'update' => Gate::allows('update_post', $this),
@@ -226,7 +227,7 @@ class Page extends BaseModel
         ];
     }
 
-    public function getPageAuthorizationAttribute()
+    protected function getPageAuthorizationAttribute(): array
     {
         return [
             'update' => Gate::allows('update_page', $this),

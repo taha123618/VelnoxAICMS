@@ -4,8 +4,8 @@ namespace Modules\Localization\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Modules\Localization\Models\Language;
 use Inertia\Inertia;
+use Modules\Localization\Models\Language;
 
 class LanguageController extends Controller
 {
@@ -15,8 +15,9 @@ class LanguageController extends Controller
     public function index()
     {
         $languages = Language::latest()->paginate(10);
+
         return Inertia::render('Localization::index', [
-            'languages' => $languages
+            'languages' => $languages,
         ]);
     }
 
@@ -26,11 +27,11 @@ class LanguageController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'code' => 'required|string|max:10|unique:languages,code',
-            'name' => 'required|string|max:255',
-            'native_name' => 'nullable|string|max:255',
-            'is_default' => 'boolean',
-            'is_active' => 'boolean',
+            'code' => ['required', 'string', 'max:10', 'unique:languages,code'],
+            'name' => ['required', 'string', 'max:255'],
+            'native_name' => ['nullable', 'string', 'max:255'],
+            'is_default' => ['boolean'],
+            'is_active' => ['boolean'],
         ]);
 
         if ($validated['is_default'] ?? false) {
@@ -39,7 +40,7 @@ class LanguageController extends Controller
 
         Language::create($validated);
 
-        return redirect()->back()->with('success', 'Language added successfully.');
+        return back()->with('success', 'Language added successfully.');
     }
 
     /**
@@ -48,11 +49,11 @@ class LanguageController extends Controller
     public function update(Request $request, Language $language)
     {
         $validated = $request->validate([
-            'code' => 'required|string|max:10|unique:languages,code,' . $language->id,
-            'name' => 'required|string|max:255',
-            'native_name' => 'nullable|string|max:255',
-            'is_default' => 'boolean',
-            'is_active' => 'boolean',
+            'code' => 'required|string|max:10|unique:languages,code,'.$language->id,
+            'name' => ['required', 'string', 'max:255'],
+            'native_name' => ['nullable', 'string', 'max:255'],
+            'is_default' => ['boolean'],
+            'is_active' => ['boolean'],
         ]);
 
         if ($validated['is_default'] ?? false) {
@@ -61,7 +62,7 @@ class LanguageController extends Controller
 
         $language->update($validated);
 
-        return redirect()->back()->with('success', 'Language updated successfully.');
+        return back()->with('success', 'Language updated successfully.');
     }
 
     /**
@@ -70,10 +71,10 @@ class LanguageController extends Controller
     public function destroy(Language $language)
     {
         if ($language->is_default) {
-            return redirect()->back()->withErrors(['message' => 'Cannot delete the default language.']);
+            return back()->withErrors(['message' => 'Cannot delete the default language.']);
         }
         $language->delete();
 
-        return redirect()->back()->with('success', 'Language deleted successfully.');
+        return back()->with('success', 'Language deleted successfully.');
     }
 }

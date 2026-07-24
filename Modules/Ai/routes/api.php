@@ -1,11 +1,12 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
+declare(strict_types=1);
 
+use Illuminate\Support\Facades\Route;
 use Modules\Ai\Http\Controllers\AiController;
 use Modules\Ai\Http\Controllers\AiJobController;
 
-Route::middleware(['auth:sanctum'])->prefix('ai')->group(function () {
+Route::middleware(['auth:sanctum'])->prefix('ai')->group(function (): void {
     Route::post('/generate-section', [AiController::class, 'generateSection']);
     Route::post('/generate-content', [AiController::class, 'generateContent']);
     Route::post('/optimize-seo', [AiController::class, 'optimizeSeo']);
@@ -15,8 +16,3 @@ Route::middleware(['auth:sanctum'])->prefix('ai')->group(function () {
     Route::post('/jobs/{id}/retry', [AiJobController::class, 'retry']);
     Route::post('/jobs/{id}/cancel', [AiJobController::class, 'cancel']);
 });
-
-
-
-
-

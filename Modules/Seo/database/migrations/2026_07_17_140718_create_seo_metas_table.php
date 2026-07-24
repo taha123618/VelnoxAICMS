@@ -11,16 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('seo_metas', function (Blueprint $table) {
-            $table->id();
-            $table->morphs('seoable');
-            $table->string('title')->nullable();
-            $table->text('description')->nullable();
-            $table->string('keywords')->nullable();
-            $table->string('canonical_url')->nullable();
-            $table->string('og_image')->nullable();
-            $table->string('robots')->default('index, follow');
-            $table->timestamps();
+        Schema::create('seo_metas', function (Blueprint $blueprint): void {
+            $blueprint->id();
+            $blueprint->morphs('seoable');
+            $blueprint->string('title')->nullable();
+            $blueprint->text('description')->nullable();
+            $blueprint->string('keywords')->nullable();
+            $blueprint->string('canonical_url')->nullable();
+            $blueprint->string('og_image')->nullable();
+            $blueprint->string('robots')->default('index, follow');
+            $blueprint->timestamps();
         });
     }
 

@@ -4,7 +4,6 @@ namespace Modules\Page\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Gate;
-use Illuminate\Support\Facades\Redirect;
 use Modules\Page\Actions\UpdatePostContentAction;
 use Modules\Page\Events\PageContentUpdated;
 use Modules\Page\Http\Requests\UpdatePostContentRequest;
@@ -12,15 +11,15 @@ use Modules\Page\Models\Page;
 
 class PostContentController extends Controller
 {
-    public function __invoke(UpdatePostContentRequest $request, Page $post)
+    public function __invoke(UpdatePostContentRequest $updatePostContentRequest, Page $page)
     {
 
-        Gate::authorize('update_post', $post);
+        Gate::authorize('update_post', $page);
 
-        app(UpdatePostContentAction::class)->handle($request, $post);
+        resolve(UpdatePostContentAction::class)->handle($updatePostContentRequest, $page);
 
-        broadcast(new PageContentUpdated($post->id, $request->input('content', []), auth()->id()))->toOthers();
+        broadcast(new PageContentUpdated($page->id, $updatePostContentRequest->input('content', []), auth()->id()))->toOthers();
 
-        return Redirect::back()->with('success', 'Post updated!');
+        return back()->with('success', 'Post updated!');
     }
 }

@@ -7,11 +7,11 @@ use Modules\Layout\Models\Layout;
 
 class UpdateLayoutAction
 {
-    public function handle(UpdateLayoutRequest $request, Layout $layout)
+    public function handle(UpdateLayoutRequest $updateLayoutRequest, Layout $layout)
     {
 
         return tap($layout)->update([
-            'content' => $request->content,
+            'content' => $updateLayoutRequest->content,
         ]);
 
     }

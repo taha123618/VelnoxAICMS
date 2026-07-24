@@ -4,8 +4,8 @@ namespace Modules\Automation\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Modules\Automation\Models\Webhook;
 use Inertia\Inertia;
+use Modules\Automation\Models\Webhook;
 
 class WebhookController extends Controller
 {
@@ -15,8 +15,9 @@ class WebhookController extends Controller
     public function index()
     {
         $webhooks = Webhook::latest()->paginate(10);
+
         return Inertia::render('Automation::index', [
-            'webhooks' => $webhooks
+            'webhooks' => $webhooks,
         ]);
     }
 
@@ -26,16 +27,16 @@ class WebhookController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'url' => 'required|url',
-            'events' => 'required|array',
-            'secret' => 'nullable|string|max:255',
-            'is_active' => 'boolean',
+            'name' => ['required', 'string', 'max:255'],
+            'url' => ['required', 'url'],
+            'events' => ['required', 'array'],
+            'secret' => ['nullable', 'string', 'max:255'],
+            'is_active' => ['boolean'],
         ]);
 
         Webhook::create($validated);
 
-        return redirect()->back()->with('success', 'Webhook created successfully.');
+        return back()->with('success', 'Webhook created successfully.');
     }
 
     /**
@@ -44,16 +45,16 @@ class WebhookController extends Controller
     public function update(Request $request, Webhook $webhook)
     {
         $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'url' => 'required|url',
-            'events' => 'required|array',
-            'secret' => 'nullable|string|max:255',
-            'is_active' => 'boolean',
+            'name' => ['required', 'string', 'max:255'],
+            'url' => ['required', 'url'],
+            'events' => ['required', 'array'],
+            'secret' => ['nullable', 'string', 'max:255'],
+            'is_active' => ['boolean'],
         ]);
 
         $webhook->update($validated);
 
-        return redirect()->back()->with('success', 'Webhook updated successfully.');
+        return back()->with('success', 'Webhook updated successfully.');
     }
 
     /**
@@ -63,6 +64,6 @@ class WebhookController extends Controller
     {
         $webhook->delete();
 
-        return redirect()->back()->with('success', 'Webhook deleted successfully.');
+        return back()->with('success', 'Webhook deleted successfully.');
     }
 }

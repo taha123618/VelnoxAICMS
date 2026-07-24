@@ -4,29 +4,28 @@ namespace Modules\Visits\Drivers;
 
 use Illuminate\Http\Request;
 use Modules\Visits\Contracts\UserAgentParser;
+use UAParser\Exception\FileNotFoundException;
 use UAParser\Parser;
+use UAParser\Result\Client;
 
 class UAParser implements UserAgentParser
 {
     /**
-     * Request container.
-     */
-    protected Request $request;
-
-    /**
      * Agent parser.
      */
-    protected \UAParser\Result\Client $parser;
+    protected Client $parser;
 
     /**
      * UAParser constructor.
      *
      *
-     * @throws \UAParser\Exception\FileNotFoundException
+     * @throws FileNotFoundException
      */
-    public function __construct(Request $request)
+    public function __construct(/**
+     * Request container.
+     */
+        protected Request $request)
     {
-        $this->request = $request;
         $this->parser = $this->initParser();
     }
 
@@ -61,8 +60,8 @@ class UAParser implements UserAgentParser
     {
         $languages = [];
 
-        if (! empty($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
-            $lang = substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2);
+        if (! empty(\Illuminate\Support\Facades\Request::server('HTTP_ACCEPT_LANGUAGE'))) {
+            $lang = substr(\Illuminate\Support\Facades\Request::server('HTTP_ACCEPT_LANGUAGE'), 0, 2);
             $languages[] = $lang;
         }
 
@@ -72,9 +71,9 @@ class UAParser implements UserAgentParser
     /**
      * Initialize userAgent parser.
      *
-     * @throws \UAParser\Exception\FileNotFoundException
+     * @throws FileNotFoundException
      */
-    protected function initParser(): \UAParser\Result\Client
+    protected function initParser(): Client
     {
         return Parser::create()->parse($this->request->userAgent());
     }

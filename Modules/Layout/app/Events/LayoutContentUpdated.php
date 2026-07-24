@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Modules\Layout\Events;
 
 use Illuminate\Broadcasting\InteractsWithSockets;
@@ -12,21 +14,10 @@ class LayoutContentUpdated implements ShouldBroadcastNow
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public string $layoutId;
-
-    public array $content;
-
-    public string $userId;
-
     /**
      * Create a new event instance.
      */
-    public function __construct(string $layoutId, array $content, string $userId)
-    {
-        $this->layoutId = $layoutId;
-        $this->content = $content;
-        $this->userId = $userId;
-    }
+    public function __construct(public int|string $layoutId, public array $content, public int|string $userId) {}
 
     /**
      * Get the channels the event should be broadcast on.

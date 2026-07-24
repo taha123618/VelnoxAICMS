@@ -26,7 +26,7 @@ class Category extends BaseModel
             ->posts();
     }
 
-    public function getUrl(bool $absolute = true)
+    public function getUrl(bool $absolute = true): string
     {
 
         return route(name: 'categories.show', parameters: [
@@ -43,11 +43,11 @@ class Category extends BaseModel
             ->usingSeparator('-');
     }
 
-    public function scopeFilter(Builder $query, array $filters)
+    protected function scopeFilter(Builder $builder, array $filters): void
     {
-        $query->when($filters['search'] ?? null, function ($query, $search) {
+        $builder->when($filters['search'] ?? null, function ($query, $search): void {
             $query->where('name', 'like', "%$search%");
-        })->when($filters['trashed'] ?? null, function ($query, $trashed) {
+        })->when($filters['trashed'] ?? null, function ($query, $trashed): void {
             if ($trashed === 'with') {
                 $query->withTrashed();
             } elseif ($trashed === 'only') {
@@ -56,7 +56,7 @@ class Category extends BaseModel
         });
     }
 
-    public function getAuthorizationAttribute()
+    protected function getAuthorizationAttribute(): array
     {
         return [
             'update' => Gate::allows('update', $this),

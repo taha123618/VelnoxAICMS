@@ -8,8 +8,8 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Http;
-use Modules\Automation\Models\Webhook;
 use Illuminate\Support\Facades\Log;
+use Modules\Automation\Models\Webhook;
 
 class FireWebhookJob implements ShouldQueue
 {
@@ -43,7 +43,7 @@ class FireWebhookJob implements ShouldQueue
             Http::withHeaders($headers)
                 ->post($this->webhook->url, $this->payload);
         } catch (\Exception $e) {
-            Log::error('Webhook firing failed: ' . $e->getMessage(), [
+            Log::error('Webhook firing failed: '.$e->getMessage(), [
                 'webhook_id' => $this->webhook->id,
                 'event' => $this->event,
             ]);

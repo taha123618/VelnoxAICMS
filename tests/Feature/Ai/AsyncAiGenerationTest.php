@@ -13,24 +13,24 @@ use function Pest\Laravel\actingAs;
 
 uses(RefreshDatabase::class);
 
-it('queues an ai generation job via API endpoint', function () {
+it('queues an ai generation job via API endpoint', function (): void {
     Queue::fake();
     Event::fake();
 
     $user = User::factory()->create();
 
-    $response = actingAs($user, 'sanctum')->postJson('/api/ai/jobs', [
+    $testResponse = actingAs($user, 'sanctum')->postJson('/api/ai/jobs', [
         'prompt' => 'A modern hero section with headline and CTA button',
         'type' => 'section',
     ]);
 
-    $response->assertStatus(202);
-    $response->assertJsonStructure([
+    $testResponse->assertStatus(202);
+    $testResponse->assertJsonStructure([
         'message',
         'job' => ['id', 'status', 'progress', 'prompt', 'type'],
     ]);
 
-    $jobId = $response->json('job.id');
+    $jobId = $testResponse->json('job.id');
 
     $this->assertDatabaseHas('ai_generation_jobs', [
         'id' => $jobId,
@@ -39,12 +39,10 @@ it('queues an ai generation job via API endpoint', function () {
         'type' => 'section',
     ]);
 
-    Queue::assertPushed(ProcessAiGenerationJob::class, function ($job) use ($jobId) {
-        return $job->jobId === $jobId;
-    });
+    Queue::assertPushed(ProcessAiGenerationJob::class, fn ($job): bool => $job->jobId === $jobId);
 });
 
-it('prevents duplicate active job submissions for the same user and type', function () {
+it('prevents duplicate active job submissions for the same user and type', function (): void {
     $user = User::factory()->create();
 
     AiGenerationJob::create([
@@ -55,16 +53,16 @@ it('prevents duplicate active job submissions for the same user and type', funct
         'progress' => 30,
     ]);
 
-    $response = actingAs($user, 'sanctum')->postJson('/api/ai/jobs', [
+    $testResponse = actingAs($user, 'sanctum')->postJson('/api/ai/jobs', [
         'prompt' => 'Second prompt while first is running',
         'type' => 'section',
     ]);
 
-    $response->assertStatus(422);
-    $response->assertJsonValidationErrors(['prompt']);
+    $testResponse->assertStatus(422);
+    $testResponse->assertJsonValidationErrors(['prompt']);
 });
 
-it('fetches job status via API', function () {
+it('fetches job status via API', function (): void {
     $user = User::factory()->create();
 
     $job = AiGenerationJob::create([
@@ -75,10 +73,10 @@ it('fetches job status via API', function () {
         'progress' => 50,
     ]);
 
-    $response = actingAs($user, 'sanctum')->getJson("/api/ai/jobs/{$job->id}");
+    $testResponse = actingAs($user, 'sanctum')->getJson("/api/ai/jobs/{$job->id}");
 
-    $response->assertStatus(200);
-    $response->assertJson([
+    $testResponse->assertStatus(200);
+    $testResponse->assertJson([
         'job' => [
             'id' => $job->id,
             'status' => 'processing',
@@ -87,7 +85,7 @@ it('fetches job status via API', function () {
     ]);
 });
 
-it('can retry a failed job', function () {
+it('can retry a failed job', function (): void {
     Queue::fake();
     Event::fake();
 
@@ -102,9 +100,9 @@ it('can retry a failed job', function () {
         'progress' => 20,
     ]);
 
-    $response = actingAs($user, 'sanctum')->postJson("/api/ai/jobs/{$job->id}/retry");
+    $testResponse = actingAs($user, 'sanctum')->postJson("/api/ai/jobs/{$job->id}/retry");
 
-    $response->assertStatus(202);
+    $testResponse->assertStatus(202);
 
     $this->assertDatabaseHas('ai_generation_jobs', [
         'id' => $job->id,
@@ -117,7 +115,7 @@ it('can retry a failed job', function () {
     Event::assertDispatched(AiJobStatusUpdated::class);
 });
 
-it('can cancel an active job', function () {
+it('can cancel an active job', function (): void {
     Event::fake();
 
     $user = User::factory()->create();
@@ -130,9 +128,9 @@ it('can cancel an active job', function () {
         'progress' => 30,
     ]);
 
-    $response = actingAs($user, 'sanctum')->postJson("/api/ai/jobs/{$job->id}/cancel");
+    $testResponse = actingAs($user, 'sanctum')->postJson("/api/ai/jobs/{$job->id}/cancel");
 
-    $response->assertStatus(200);
+    $testResponse->assertStatus(200);
 
     $this->assertDatabaseHas('ai_generation_jobs', [
         'id' => $job->id,
@@ -142,24 +140,24 @@ it('can cancel an active job', function () {
     Event::assertDispatched(AiJobStatusUpdated::class);
 });
 
-it('processes the background job and marks it completed', function () {
+it('processes the background job and marks it completed', function (): void {
     Event::fake();
 
     $user = User::factory()->create();
 
     $service = new AiGenerationService;
-    $job = $service->dispatchJob('Simple heading section', 'section', $user->id);
+    $aiGenerationJob = $service->dispatchJob('Simple heading section', 'section', $user->id);
 
     // Synchronously execute job
-    $processor = new ProcessAiGenerationJob($job->id);
+    $processor = new ProcessAiGenerationJob($aiGenerationJob->id);
     $processor->handle();
 
-    $job->refresh();
+    $aiGenerationJob->refresh();
 
-    expect($job->status)->toBe('completed');
-    expect($job->progress)->toBe(100);
-    expect($job->result)->toBeArray();
-    expect($job->result)->toHaveKey('elements');
+    expect($aiGenerationJob->status)->toBe('completed');
+    expect($aiGenerationJob->progress)->toBe(100);
+    expect($aiGenerationJob->result)->toBeArray();
+    expect($aiGenerationJob->result)->toHaveKey('elements');
 
     Event::assertDispatched(AiJobStatusUpdated::class);
 });

@@ -13,9 +13,9 @@ use Spatie\TypeScriptTransformer\Attributes\TypeScript;
 class PostData extends Data
 {
     public function __construct(
-        public string $id,
+        public int|string $id,
         public string|Optional $type,
-        public string $layoutId,
+        public int|string $layoutId,
         public string $layoutName,
         public string $categoryName,
         public string $categoryId,
@@ -35,29 +35,29 @@ class PostData extends Data
         public array|Optional $can
     ) {}
 
-    public static function fromModel(Page $model): self
+    public static function fromModel(Page $page): self
     {
         return new self(
-            id: $model->id,
+            id: $page->id,
             type: PageType::Post->value,
-            categoryId: $model->category->id,
-            categoryName: $model->category->name,
-            layoutName: $model->layout->name,
-            layoutId: $model->layout_id,
-            slug: $model->slug,
-            title: $model->title,
-            status: $model->getStatus(),
-            statusColor: $model->getStatus()->getColor(),
-            url: $model->getUrl(false),
-            description: $model->description,
-            excerpt: $model->excerpt,
-            featuredImage: $model->featured_image ?? '/images/no-image.png',
-            content: $model->content,
-            isPublished: $model->is_published,
-            keywords: $model->data['keywords'] ?? [],
-            created_at: $model->created_at,
-            isDifferentFromPublishedVersion: $model->isDifferentFromPublishedVersion(),
-            can: $model->post_authorization,
+            layoutId: $page->layout_id,
+            layoutName: $page->layout->name,
+            categoryName: $page->category->name,
+            categoryId: $page->category->id,
+            slug: $page->slug,
+            title: $page->title,
+            status: $page->getStatus(),
+            statusColor: $page->getStatus()->getColor(),
+            url: $page->getUrl(false),
+            isPublished: $page->is_published,
+            description: $page->description,
+            excerpt: $page->excerpt,
+            featuredImage: $page->featured_image ?? '/images/no-image.png',
+            content: $page->content,
+            keywords: $page->data['keywords'] ?? [],
+            created_at: $page->created_at,
+            isDifferentFromPublishedVersion: $page->isDifferentFromPublishedVersion(),
+            can: $page->post_authorization,
         );
     }
 }

@@ -11,14 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('folders', function (Blueprint $table) {
-            $table->ulid('id')->primary();
-            $table->foreignUlid('user_id')->nullable()->constrained('users');
-            $table->foreignUlid('parent_id')->nullable()->constrained('folders');
-            $table->string('name');
-            $table->integer('order_column')->default(0);
-            $table->softDeletes();
-            $table->timestamps();
+        Schema::create('folders', function (Blueprint $blueprint): void {
+            $blueprint->ulid('id')->primary();
+            $blueprint->foreignUlid('user_id')->nullable()->constrained('users');
+            $blueprint->foreignUlid('parent_id')->nullable()->constrained('folders');
+            $blueprint->string('name');
+            $blueprint->integer('order_column')->default(0);
+            $blueprint->softDeletes();
+            $blueprint->timestamps();
         });
     }
 

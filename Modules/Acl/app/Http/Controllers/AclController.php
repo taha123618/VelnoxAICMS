@@ -4,9 +4,9 @@ namespace Modules\Acl\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Spatie\Permission\Models\Role;
-use Spatie\Permission\Models\Permission;
 use Inertia\Inertia;
+use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
 
 class AclController extends Controller
 {
@@ -27,18 +27,18 @@ class AclController extends Controller
     public function storeRole(Request $request)
     {
         $validated = $request->validate([
-            'name' => 'required|string|unique:roles,name',
-            'permissions' => 'nullable|array',
-            'permissions.*' => 'string|exists:permissions,name',
+            'name' => ['required', 'string', 'unique:roles,name'],
+            'permissions' => ['nullable', 'array'],
+            'permissions.*' => ['string', 'exists:permissions,name'],
         ]);
 
         $role = Role::create(['name' => $validated['name']]);
-        
-        if (!empty($validated['permissions'])) {
+
+        if (! empty($validated['permissions'])) {
             $role->syncPermissions($validated['permissions']);
         }
 
-        return redirect()->back()->with('success', 'Role created successfully.');
+        return back()->with('success', 'Role created successfully.');
     }
 
     /**
@@ -49,20 +49,20 @@ class AclController extends Controller
         $role = Role::findOrFail($id);
 
         $validated = $request->validate([
-            'name' => 'required|string|unique:roles,name,' . $role->id,
-            'permissions' => 'nullable|array',
-            'permissions.*' => 'string|exists:permissions,name',
+            'name' => 'required|string|unique:roles,name,'.$role->id,
+            'permissions' => ['nullable', 'array'],
+            'permissions.*' => ['string', 'exists:permissions,name'],
         ]);
 
         $role->update(['name' => $validated['name']]);
-        
+
         if (isset($validated['permissions'])) {
             $role->syncPermissions($validated['permissions']);
         } else {
             $role->syncPermissions([]);
         }
 
-        return redirect()->back()->with('success', 'Role updated successfully.');
+        return back()->with('success', 'Role updated successfully.');
     }
 
     /**
@@ -73,6 +73,6 @@ class AclController extends Controller
         $role = Role::findOrFail($id);
         $role->delete();
 
-        return redirect()->back()->with('success', 'Role deleted successfully.');
+        return back()->with('success', 'Role deleted successfully.');
     }
 }

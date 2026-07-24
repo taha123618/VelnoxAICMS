@@ -17,9 +17,7 @@ class PageController extends Controller
     public function index()
     {
 
-        $page = Cache::rememberForever('frontpage', function () {
-            return Page::query()->frontpage()->with('layout')->first();
-        });
+        $page = Cache::rememberForever('frontpage', fn () => Page::query()->frontpage()->with('layout')->first());
 
         if ($page) {
             visitor()->visit($page);
@@ -27,7 +25,7 @@ class PageController extends Controller
             return Inertia::render('page', [
                 'page' => PageData::fromModel($page->getPublishedModel()),
                 'layout' => LayoutData::fromModel($page->layout),
-                'menus' => MenuData::collect(app(GetAllMenusAction::class)->handle()),
+                'menus' => MenuData::collect(resolve(GetAllMenusAction::class)->handle()),
             ]);
         }
 
@@ -46,7 +44,7 @@ class PageController extends Controller
         return Inertia::render('page', [
             'page' => $page->type == PageType::Post ? PostData::fromModel($page) : PageData::fromModel($page),
             'layout' => LayoutData::fromModel($page->layout),
-            'menus' => MenuData::collect(app(GetAllMenusAction::class)->handle()),
+            'menus' => MenuData::collect(resolve(GetAllMenusAction::class)->handle()),
         ]);
     }
 }

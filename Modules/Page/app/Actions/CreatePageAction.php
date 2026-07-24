@@ -8,13 +8,13 @@ use Modules\Page\Models\Page;
 
 class CreatePageAction
 {
-    public function handle(CreatePageRequest $request)
+    public function handle(CreatePageRequest $createPageRequest)
     {
 
         return Page::create([
-            'title' => $request->title,
-            'layout_id' => $request->layout,
-            'content' => $request->content,
+            'title' => $createPageRequest->title,
+            'layout_id' => $createPageRequest->layout,
+            'content' => $createPageRequest->content,
             'type' => PageType::Page,
         ]);
     }

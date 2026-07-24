@@ -9,26 +9,26 @@ trait Publishable
     /**
      * Scope a query to only include published models.
      */
-    public function scopePublished(Builder $query)
+    protected function scopePublished(Builder $builder)
     {
-        return $query->where('status', 'published')
-                     ->where('published_at', '<=', now());
+        return $builder->where('status', 'published')
+            ->where('published_at', '<=', now());
     }
 
     /**
      * Scope a query to only include drafted models.
      */
-    public function scopeDrafted(Builder $query)
+    protected function scopeDrafted(Builder $builder)
     {
-        return $query->where('status', 'draft');
+        return $builder->where('status', 'draft');
     }
 
     /**
      * Scope a query to only include models in review.
      */
-    public function scopeInReview(Builder $query)
+    protected function scopeInReview(Builder $builder)
     {
-        return $query->where('status', 'review');
+        return $builder->where('status', 'review');
     }
 
     /**

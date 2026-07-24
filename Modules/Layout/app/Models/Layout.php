@@ -13,6 +13,7 @@ use Modules\Page\Models\Page;
 #[UsePolicy(LayoutPolicy::class)]
 class Layout extends BaseModel
 {
+    #[\Override]
     protected $casts = [
         'published_at' => 'datetime',
         'content' => 'json',
@@ -25,16 +26,16 @@ class Layout extends BaseModel
 
     public function getStatus(): Status
     {
-        return ! is_null($this->published_at)
-            ? Status::Published
-            : Status::Draft;
+        return is_null($this->published_at)
+            ? Status::Draft
+            : Status::Published;
     }
 
-    public function scopeFilter(Builder $query, array $filters)
+    protected function scopeFilter(Builder $builder, array $filters): void
     {
-        $query->when($filters['search'] ?? null, function ($query, $search) {
+        $builder->when($filters['search'] ?? null, function ($query, $search): void {
             $query->where('name', 'like', "%$search%");
-        })->when($filters['trashed'] ?? null, function ($query, $trashed) {
+        })->when($filters['trashed'] ?? null, function ($query, $trashed): void {
             if ($trashed === 'with') {
                 $query->withTrashed();
             } elseif ($trashed === 'only') {
@@ -43,7 +44,7 @@ class Layout extends BaseModel
         });
     }
 
-    public function getAuthorizationAttribute()
+    protected function getAuthorizationAttribute(): array
     {
         return [
             'update' => Gate::allows('update', $this),

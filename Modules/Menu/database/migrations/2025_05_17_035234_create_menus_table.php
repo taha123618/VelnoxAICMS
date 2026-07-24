@@ -11,10 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('menus', function (Blueprint $table) {
-            $table->ulid('id')->primary();
-            $table->string('name')->unique();
-            $table->timestamps();
+        Schema::create('menus', function (Blueprint $blueprint): void {
+            $blueprint->ulid('id')->primary();
+            $blueprint->string('name')->unique();
+            $blueprint->timestamps();
         });
     }
 

@@ -7,13 +7,13 @@ use Modules\Category\Models\Category;
 
 class UpdateCategoryAction
 {
-    public function handle(UpdateCategoryRequest $request, Category $category)
+    public function handle(UpdateCategoryRequest $updateCategoryRequest, Category $category)
     {
 
         return tap($category)->update([
-            'name' => $request->name,
-            'description' => $request->description,
-            'parent_id' => $request->parent,
+            'name' => $updateCategoryRequest->name,
+            'description' => $updateCategoryRequest->description,
+            'parent_id' => $updateCategoryRequest->parent,
         ]);
 
     }

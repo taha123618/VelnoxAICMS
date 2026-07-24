@@ -11,13 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('form_submissions', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('form_id')->constrained()->onDelete('cascade');
-            $table->json('data'); // Key-value pairs of submission
-            $table->string('ip_address')->nullable();
-            $table->string('user_agent')->nullable();
-            $table->timestamps();
+        Schema::create('form_submissions', function (Blueprint $blueprint): void {
+            $blueprint->id();
+            $blueprint->foreignId('form_id')->constrained()->onDelete('cascade');
+            $blueprint->json('data'); // Key-value pairs of submission
+            $blueprint->string('ip_address')->nullable();
+            $blueprint->string('user_agent')->nullable();
+            $blueprint->timestamps();
         });
     }
 

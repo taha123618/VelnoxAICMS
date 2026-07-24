@@ -14,7 +14,7 @@ class DispatchWebhooksListener
     public function handle(string $eventName, array $payload): void
     {
         // Prevent infinite loops and issues during Eloquent model booting
-        if (str_starts_with($eventName, 'eloquent.booting') || 
+        if (str_starts_with($eventName, 'eloquent.booting') ||
             str_starts_with($eventName, 'eloquent.booted') ||
             str_starts_with($eventName, 'eloquent.retrieved') ||
             str_starts_with($eventName, 'eloquent.creating') ||
@@ -39,7 +39,7 @@ class DispatchWebhooksListener
         foreach ($webhooks as $webhook) {
             $subscribedEvents = $webhook->events ?? [];
             if (in_array('*', $subscribedEvents) || in_array($eventName, $subscribedEvents)) {
-                DispatchWebhook::dispatch($webhook, $eventName, $payload);
+                dispatch(new DispatchWebhook($webhook, $eventName, $payload));
             }
         }
     }

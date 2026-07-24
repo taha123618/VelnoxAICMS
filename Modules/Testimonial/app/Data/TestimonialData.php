@@ -12,7 +12,7 @@ use Spatie\TypeScriptTransformer\Attributes\TypeScript;
 class TestimonialData extends Data
 {
     public function __construct(
-        public string $id,
+        public int|string $id,
         public string $name,
         public ?string $avatar,
         public ?string $title,

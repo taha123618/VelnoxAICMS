@@ -28,7 +28,7 @@ class LinkPickerController extends Controller
             ->orderBy('title')
             ->get();
 
-        return $pages->map(fn (Page $page) => ([
+        return $pages->map(fn (Page $page): array => ([
             'id' => $page->id,
             'label' => $page->title,
             'value' => $page->getUrl(false),
@@ -42,10 +42,10 @@ class LinkPickerController extends Controller
             ->orderBy('title')
             ->get();
 
-        return $posts->map(fn (Page $post) => ([
-            'id' => $post->id,
-            'label' => $post->title,
-            'value' => $post->getUrl(false),
+        return $posts->map(fn (Page $page): array => ([
+            'id' => $page->id,
+            'label' => $page->title,
+            'value' => $page->getUrl(false),
         ]));
     }
 }

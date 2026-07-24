@@ -2,21 +2,22 @@
 
 namespace Modules\Forms\Models;
 
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
+#[Fillable([
+    'form_id',
+    'data',
+    'ip_address',
+    'user_agent',
+])]
 class FormSubmission extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        'form_id',
-        'data',
-        'ip_address',
-        'user_agent'
-    ];
-
+    #[\Override]
     protected $casts = [
         'data' => 'array',
     ];

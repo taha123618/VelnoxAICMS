@@ -11,15 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('entries', function (Blueprint $table) {
-            $table->ulid('id')->primary();
-            $table->foreignUlid('tenant_id')->constrained('tenants')->cascadeOnDelete();
-            $table->foreignUlid('collection_id')->constrained('collections')->cascadeOnDelete();
-            $table->foreignUlid('user_id')->nullable()->constrained('users')->nullOnDelete();
-            $table->jsonb('data');
-            $table->string('status')->default('draft');
-            $table->timestamp('published_at')->nullable();
-            $table->timestamps();
+        Schema::create('entries', function (Blueprint $blueprint): void {
+            $blueprint->ulid('id')->primary();
+            $blueprint->foreignUlid('tenant_id')->constrained('tenants')->cascadeOnDelete();
+            $blueprint->foreignUlid('collection_id')->constrained('collections')->cascadeOnDelete();
+            $blueprint->foreignUlid('user_id')->nullable()->constrained('users')->nullOnDelete();
+            $blueprint->jsonb('data');
+            $blueprint->string('status')->default('draft');
+            $blueprint->timestamp('published_at')->nullable();
+            $blueprint->timestamps();
         });
     }
 

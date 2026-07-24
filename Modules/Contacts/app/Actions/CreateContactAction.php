@@ -7,14 +7,14 @@ use Modules\Contacts\Models\Contact;
 
 class CreateContactAction
 {
-    public function handle(CreateContactRequest $request)
+    public function handle(CreateContactRequest $createContactRequest)
     {
         return Contact::create([
-            'name' => $request->name,
-            'subject' => $request->subject,
-            'email' => $request->email,
-            'body' => $request->body,
-            'subscribe_to_mail' => $request->subscribe_to_mail,
+            'name' => $createContactRequest->name,
+            'subject' => $createContactRequest->subject,
+            'email' => $createContactRequest->email,
+            'body' => $createContactRequest->body,
+            'subscribe_to_mail' => $createContactRequest->subscribe_to_mail,
         ]);
     }
 }

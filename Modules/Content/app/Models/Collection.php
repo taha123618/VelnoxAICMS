@@ -4,20 +4,21 @@ namespace Modules\Content\Models;
 
 use App\Models\BaseModel;
 use App\Traits\BelongsToTenant;
+use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
+#[Fillable([
+    'tenant_id',
+    'name',
+    'slug',
+    'description',
+    'is_publishable',
+])]
 class Collection extends BaseModel
 {
     use BelongsToTenant;
 
-    protected $fillable = [
-        'tenant_id',
-        'name',
-        'slug',
-        'description',
-        'is_publishable',
-    ];
-
+    #[\Override]
     protected function casts(): array
     {
         return [

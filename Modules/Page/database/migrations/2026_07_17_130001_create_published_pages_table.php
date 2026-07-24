@@ -11,16 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('published_pages', function (Blueprint $table) {
-            $table->ulid('id')->primary();
-            $table->foreignUlid('page_id')->constrained('pages')->cascadeOnDelete();
-            $table->string('title');
-            $table->string('description')->nullable();
-            $table->json('content')->nullable();
-            $table->text('excerpt')->nullable();
-            $table->string('featured_image')->nullable();
-            $table->json('data')->nullable();
-            $table->timestamps();
+        Schema::create('published_pages', function (Blueprint $blueprint): void {
+            $blueprint->ulid('id')->primary();
+            $blueprint->foreignUlid('page_id')->constrained('pages')->cascadeOnDelete();
+            $blueprint->string('title');
+            $blueprint->string('description')->nullable();
+            $blueprint->json('content')->nullable();
+            $blueprint->text('excerpt')->nullable();
+            $blueprint->string('featured_image')->nullable();
+            $blueprint->json('data')->nullable();
+            $blueprint->timestamps();
         });
     }
 

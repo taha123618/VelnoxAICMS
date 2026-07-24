@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Enums;
 
 use Spatie\TypeScriptTransformer\Attributes\TypeScript;
@@ -10,7 +12,7 @@ enum Status: string
     case Published = 'Published';
     case Draft = 'Draft';
 
-    public function getColor()
+    public function getColor(): string
     {
         return match ($this) {
             self::Published => 'success',

@@ -18,7 +18,8 @@
         "spatie/laravel-medialibrary",
         "spatie/laravel-activitylog",
         "spatie/laravel-permission",
-        "spatie/laravel-translatable"
+        "spatie/laravel-translatable",
+        "inertiaui/modal"
     ],
     "sail": false,
     "skills": [
@@ -30,6 +31,7 @@
         "inertia-vue-development",
         "echo-development",
         "tailwindcss-development",
+        "inertia-modal-development",
         "medialibrary-development",
         "laravel-permission-development",
         "translatable-development",

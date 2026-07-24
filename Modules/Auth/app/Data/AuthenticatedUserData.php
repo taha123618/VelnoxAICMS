@@ -10,7 +10,7 @@ use Spatie\TypeScriptTransformer\Attributes\TypeScript;
 class AuthenticatedUserData extends Data
 {
     public function __construct(
-        public string $id,
+        public int|string $id,
         public string $first_name,
         public string $last_name,
         public string $name,

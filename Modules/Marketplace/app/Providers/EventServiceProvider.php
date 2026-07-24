@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Modules\Marketplace\Providers;
 
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -13,11 +15,13 @@ class EventServiceProvider extends ServiceProvider
      *
      * @var array<string, array<int, string>>
      */
+    #[\Override]
     protected $listen = [];
 
     /**
      * Register any events for your application.
      */
+    #[\Override]
     public function boot(): void
     {
         // Intercept Eloquent events to dispatch webhooks.

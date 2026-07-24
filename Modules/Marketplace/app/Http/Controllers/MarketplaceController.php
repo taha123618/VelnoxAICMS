@@ -16,7 +16,7 @@ class MarketplaceController extends Controller
         $formattedThemes = [];
 
         foreach ($modules as $module) {
-            $isTheme = str_contains(strtolower($module->getName()), 'theme') || str_contains(strtolower($module->getDescription()), 'theme');
+            $isTheme = str_contains(strtolower((string) $module->getName()), 'theme') || str_contains(strtolower((string) $module->getDescription()), 'theme');
 
             $formattedData = [
                 'name' => $module->getName(),
@@ -72,26 +72,26 @@ class MarketplaceController extends Controller
     public function install(Request $request)
     {
         $request->validate([
-            'plugin' => 'required|file|mimes:zip|max:50000',
+            'plugin' => ['required', 'file', 'mimes:zip', 'max:50000'],
         ]);
 
         $zipPath = $request->file('plugin')->getRealPath();
-        $zip = new \ZipArchive;
+        $zipArchive = new \ZipArchive;
 
-        if ($zip->open($zipPath) === true) {
+        if ($zipArchive->open($zipPath) === true) {
             // Find the module name from the root folder inside the zip
             // In a real scenario, we should extract to a temp dir, read module.json, and rename if necessary.
             // For now, we will just extract it to the Modules directory.
             $destination = base_path('Modules');
-            $zip->extractTo($destination);
-            $zip->close();
+            $zipArchive->extractTo($destination);
+            $zipArchive->close();
 
             // Reload modules
             \Artisan::call('module:optimize');
 
             return back()->with('success', 'Plugin installed successfully!');
-        } else {
-            return back()->with('error', 'Failed to open the zip file.');
         }
+
+        return back()->with('error', 'Failed to open the zip file.');
     }
 }
