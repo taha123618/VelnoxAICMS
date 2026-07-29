@@ -5,6 +5,17 @@
 
         <div class="grid grid-cols-6 gap-4">
             <div class="col-span-2">
+                <div class="mb-4">
+                    <UButton
+                        color="primary"
+                        variant="soft"
+                        icon="ph:sparkle-duotone"
+                        class="w-full justify-center"
+                        @click="showAiModal = true"
+                    >
+                        Generate Category Taxonomy with AI
+                    </UButton>
+                </div>
                 <CreateCategoryForm :categories="data.data" />
             </div>
 
@@ -73,10 +84,22 @@
             @cancel="cancel"
             @confirm="confirm"
         />
+
+        <AiPromptModal
+            v-model:isOpen="showAiModal"
+            title="AI Category Taxonomy Generator"
+            description="Generate category hierarchies, descriptions, and taxonomy structures using AI."
+            endpoint="/api/category/generate-taxonomy"
+            placeholder="Generate an e-commerce taxonomy for apparel and accessories..."
+            :suggestions="['E-commerce Product Categories', 'Tech Blog Content Taxonomies', 'SaaS Documentation Sections']"
+            @success="handleAiSuccess"
+        />
     </AdminLayout>
 </template>
 
 <script setup lang="ts">
+import { ref } from 'vue';
+import { router } from '@inertiajs/vue3';
 import AdminLayout from '@modules/Dashboard/resources/layouts/AdminLayout.vue';
 import type { BreadcrumbItem, DropdownMenuItem } from '@nuxt/ui';
 import { visitModal } from '@inertiaui/modal-vue';
@@ -85,6 +108,15 @@ import { ITableData } from '@/types/types';
 import { useDatatable } from '@/composables/use-datatable';
 import CreateCategoryForm from '@modules/Category/resources/components/CreateCategoryForm.vue';
 import BasePagination from '@/components/BasePagination.vue';
+import AiPromptModal from '@/components/AiPromptModal.vue';
+
+const showAiModal = ref(false);
+
+function handleAiSuccess(result: any) {
+    if (result.taxonomy || result) {
+        router.reload();
+    }
+}
 
 const breadcrumbs: BreadcrumbItem[] = [
     {

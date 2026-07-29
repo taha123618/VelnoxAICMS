@@ -2,6 +2,7 @@
 
 namespace Modules\Ai\Events;
 
+use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
@@ -44,6 +45,7 @@ class AiJobStatusUpdated implements ShouldBroadcastNow
     public function broadcastOn(): array
     {
         $channels = [
+            new Channel("ai-jobs.{$this->jobId}"),
             new PrivateChannel("ai-job.{$this->jobId}"),
         ];
 

@@ -1,121 +1,196 @@
 <template>
     <AdminLayout :breadcrumbs="breadcrumbs">
         <Head title="Localization & Languages" />
-        <BaseTableWrapper>
-            <template #actions>
-                <UButton
-                    color="primary"
-                    variant="solid"
-                    @click.prevent="() => { showCreateModal = true; }"
-                    class="flex gap-1.5 items-center"
-                >
-                    <UIcon name="ph:plus-circle" class="w-5 h-5 shrink-0" />
-                    Add Language
-                </UButton>
-            </template>
-            <UTable
-                :columns="columns"
-                :data="languages.data"
-                class="flex-1"
-            >
-                <template #name-cell="{ row }">
-                    <div class="font-medium text-gray-900 dark:text-white">{{ row.original.name }}</div>
-                    <div class="text-sm text-gray-500 dark:text-gray-400">{{ row.original.native_name }}</div>
-                </template>
-                <template #code-cell="{ row }">
-                    <span class="uppercase font-mono text-gray-500 dark:text-gray-400">{{ row.original.code }}</span>
-                </template>
-                <template #status-cell="{ row }">
-                    <div class="flex gap-2">
-                        <UBadge
-                            v-if="row.original.is_default"
-                            size="md"
-                            variant="subtle"
-                            color="primary"
-                        >
-                            Default
-                        </UBadge>
-                        <UBadge
-                            size="md"
-                            variant="subtle"
-                            :color="row.original.is_active ? 'success' : 'neutral'"
-                        >
-                            {{ row.original.is_active ? 'Active' : 'Inactive' }}
-                        </UBadge>
-                    </div>
-                </template>
-                <template #action-cell="{ row }">
-                    <UDropdownMenu
-                        arrow
-                        :content="{ align: 'end' }"
-                        :items="getDropdownItems(row.original)"
+
+        <div class="px-4 sm:px-6 lg:px-8 py-8 space-y-6">
+
+            <!-- Header -->
+            <div class="sm:flex sm:items-center sm:justify-between">
+                <div>
+                    <h1 class="text-2xl font-bold text-white tracking-wide">Localization & Languages</h1>
+                    <p class="mt-1 text-sm text-neutral-400">
+                        Manage system locales, active languages, and default translation settings.
+                    </p>
+                </div>
+                <div class="mt-4 sm:mt-0">
+                    <UButton
+                        color="primary"
+                        icon="ph:plus-circle"
+                        @click.prevent="openCreateModal"
                     >
-                        <UButton
-                            icon="i-lucide:ellipsis-vertical"
-                            color="neutral"
-                            variant="ghost"
-                        />
-                    </UDropdownMenu>
+                        Add Language
+                    </UButton>
+                </div>
+            </div>
+
+            <!-- Stats -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div class="p-5 rounded-2xl bg-neutral-900/80 border border-neutral-800 space-y-2">
+                    <div class="flex items-center justify-between text-xs text-neutral-400">
+                        <span>Total Languages</span>
+                        <UIcon name="ph:translate" class="text-indigo-400 w-5 h-5" />
+                    </div>
+                    <div class="text-2xl font-bold text-white">{{ languages?.total ?? languages?.data?.length ?? 0 }}</div>
+                </div>
+                <div class="p-5 rounded-2xl bg-neutral-900/80 border border-neutral-800 space-y-2">
+                    <div class="flex items-center justify-between text-xs text-neutral-400">
+                        <span>Default Language</span>
+                        <UIcon name="ph:star" class="text-amber-400 w-5 h-5" />
+                    </div>
+                    <div class="text-lg font-semibold text-white">
+                        {{ defaultLanguageName }}
+                    </div>
+                </div>
+                <div class="p-5 rounded-2xl bg-neutral-900/80 border border-neutral-800 space-y-2">
+                    <div class="flex items-center justify-between text-xs text-neutral-400">
+                        <span>Active Locales</span>
+                        <UIcon name="ph:check-circle" class="text-emerald-400 w-5 h-5" />
+                    </div>
+                    <div class="text-2xl font-bold text-white">
+                        {{ activeLanguagesCount }}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Table -->
+            <BaseTableWrapper>
+                <UTable
+                    :columns="columns"
+                    :data="languages?.data ?? []"
+                    class="flex-1"
+                >
+                    <template #name-cell="{ row }">
+                        <div>
+                            <div class="font-medium text-white">{{ row.original.name }}</div>
+                            <div class="text-xs text-neutral-400">{{ row.original.native_name }}</div>
+                        </div>
+                    </template>
+                    <template #code-cell="{ row }">
+                        <UBadge color="neutral" variant="subtle" size="xs" class="font-mono uppercase">
+                            {{ row.original.code }}
+                        </UBadge>
+                    </template>
+                    <template #status-cell="{ row }">
+                        <div class="flex gap-2">
+                            <UBadge
+                                v-if="row.original.is_default"
+                                size="xs"
+                                variant="solid"
+                                color="primary"
+                            >
+                                Default
+                            </UBadge>
+                            <UBadge
+                                size="xs"
+                                variant="subtle"
+                                :color="row.original.is_active ? 'success' : 'neutral'"
+                            >
+                                {{ row.original.is_active ? 'Active' : 'Inactive' }}
+                            </UBadge>
+                        </div>
+                    </template>
+                    <template #action-cell="{ row }">
+                        <UDropdownMenu
+                            arrow
+                            :content="{ align: 'end' }"
+                            :items="getDropdownItems(row.original)"
+                        >
+                            <UButton
+                                icon="i-lucide:ellipsis-vertical"
+                                color="neutral"
+                                variant="ghost"
+                            />
+                        </UDropdownMenu>
+                    </template>
+                </UTable>
+
+                <template #footer>
+                    <BasePagination :data="languages" />
                 </template>
-            </UTable>
-        </BaseTableWrapper>
+            </BaseTableWrapper>
+
+        </div>
 
         <!-- Create/Edit Modal -->
-        <UModal v-model="showCreateModal">
-            <UCard :ui="{ ring: '', divide: 'divide-y divide-gray-100 dark:divide-gray-800' }">
-                <template #header>
-                    <div class="flex items-center justify-between">
-                        <h3 class="text-base font-semibold leading-6 text-gray-900 dark:text-white">
-                            {{ editingId ? 'Edit Language' : 'Add Language' }}
-                        </h3>
-                        <UButton color="neutral" variant="ghost" icon="ph:x-bold" class="-my-1" @click="closeModal" />
-                    </div>
-                </template>
+        <UModal v-model:open="showCreateModal">
+            <template #content>
+                <UCard class="border border-neutral-800 bg-neutral-900">
+                    <template #header>
+                        <div class="flex items-center justify-between">
+                            <h3 class="text-base font-semibold text-white flex items-center gap-2">
+                                <UIcon name="ph:translate" class="text-primary-400" />
+                                {{ editingId ? 'Edit Language' : 'Add Language' }}
+                            </h3>
+                            <UButton
+                                color="neutral"
+                                variant="ghost"
+                                icon="ph:x"
+                                class="-my-1"
+                                @click.prevent="closeModal"
+                            />
+                        </div>
+                    </template>
 
-                <UForm :state="form" @submit="submit" class="space-y-4">
-                    <UFormField label="Name (e.g., English)" name="name" required>
-                        <UInput v-model="form.name" />
-                    </UFormField>
-                    
-                    <UFormField label="Native Name (e.g., English)" name="native_name">
-                        <UInput v-model="form.native_name" />
-                    </UFormField>
+                    <UForm :state="form" @submit="submit" class="space-y-4">
+                        <UFormField label="Name (e.g. English)" name="name" required :error="form.errors.name">
+                            <UInput v-model="form.name" placeholder="English" class="w-full" />
+                        </UFormField>
+                        
+                        <UFormField label="Native Name (e.g. English, Español)" name="native_name" :error="form.errors.native_name">
+                            <UInput v-model="form.native_name" placeholder="English" class="w-full" />
+                        </UFormField>
 
-                    <UFormField label="Code (e.g., en, fr, es-MX)" name="code" required>
-                        <UInput v-model="form.code" />
-                    </UFormField>
+                        <UFormField label="Code (e.g. en, fr, es-MX)" name="code" required :error="form.errors.code">
+                            <UInput v-model="form.code" placeholder="en" class="w-full" />
+                        </UFormField>
 
-                    <UCheckbox v-model="form.is_active" label="Active" />
-                    <UCheckbox v-model="form.is_default" label="Set as Default Language" />
+                        <div class="space-y-3 pt-2">
+                            <div class="flex items-center gap-3">
+                                <UCheckbox id="is_active" v-model="form.is_active" />
+                                <label for="is_active" class="text-sm text-neutral-300 cursor-pointer">
+                                    Active language
+                                </label>
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <UCheckbox id="is_default" v-model="form.is_default" />
+                                <label for="is_default" class="text-sm text-neutral-300 cursor-pointer">
+                                    Set as default system language
+                                </label>
+                            </div>
+                        </div>
 
-                    <div class="flex justify-end gap-3 mt-6">
-                        <UButton color="neutral" variant="soft" @click="closeModal">Cancel</UButton>
-                        <UButton type="submit" color="primary" :loading="form.processing">Save</UButton>
-                    </div>
-                </UForm>
-            </UCard>
+                        <div class="flex justify-end gap-3 pt-4">
+                            <UButton color="neutral" variant="ghost" @click="closeModal">Cancel</UButton>
+                            <UButton type="submit" color="primary" :loading="form.processing">
+                                {{ editingId ? 'Update Language' : 'Create Language' }}
+                            </UButton>
+                        </div>
+                    </UForm>
+                </UCard>
+            </template>
         </UModal>
+
     </AdminLayout>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import { useForm, router, Head } from '@inertiajs/vue3';
 import AdminLayout from '@modules/Dashboard/resources/layouts/AdminLayout.vue';
 import BaseTableWrapper from '@/components/BaseTableWrapper.vue';
-import type { DropdownMenuItem } from '@nuxt/ui';
+import BasePagination from '@/components/BasePagination.vue';
+import type { BreadcrumbItem, DropdownMenuItem } from '@nuxt/ui';
 
-const breadcrumbs = [
-    { label: 'Settings', icon: 'ph:gear' },
-    { label: 'Localization & Languages' },
+const breadcrumbs: BreadcrumbItem[] = [
+    { label: 'Localization & Languages', icon: 'ph:translate' },
 ];
 
-const props = defineProps({
-    languages: Object as any,
-});
+const props = defineProps<{
+    languages?: any;
+}>();
 
 const showCreateModal = ref(false);
-const editingId = ref(null);
+const editingId = ref<number | null>(null);
 
 const form = useForm({
     name: '',
@@ -125,23 +200,40 @@ const form = useForm({
     is_active: true,
 });
 
-const closeModal = () => {
+const defaultLanguageName = computed(() => {
+    const list = props.languages?.data ?? [];
+    const def = list.find((l: any) => l.is_default);
+    return def ? def.name : 'English';
+});
+
+const activeLanguagesCount = computed(() => {
+    const list = props.languages?.data ?? [];
+    return list.filter((l: any) => l.is_active).length;
+});
+
+function openCreateModal() {
+    editingId.value = null;
+    form.reset();
+    showCreateModal.value = true;
+}
+
+function closeModal() {
     showCreateModal.value = false;
     form.reset();
     editingId.value = null;
-};
+}
 
-const editLanguage = (language: any) => {
+function editLanguage(language: any) {
     editingId.value = language.id;
     form.name = language.name;
-    form.native_name = language.native_name;
+    form.native_name = language.native_name || '';
     form.code = language.code;
-    form.is_default = language.is_default;
-    form.is_active = language.is_active;
+    form.is_default = Boolean(language.is_default);
+    form.is_active = Boolean(language.is_active);
     showCreateModal.value = true;
-};
+}
 
-const submit = () => {
+function submit() {
     if (editingId.value) {
         form.put(route('admin.languages.update', editingId.value), {
             onSuccess: () => closeModal(),
@@ -151,30 +243,30 @@ const submit = () => {
             onSuccess: () => closeModal(),
         });
     }
-};
+}
 
 function getDropdownItems(row: any): DropdownMenuItem[] {
     const items: DropdownMenuItem[] = [
         {
             label: 'Edit',
             icon: 'ph:note-pencil',
-            onSelect: () => editLanguage(row)
-        }
+            onSelect: () => editLanguage(row),
+        },
     ];
 
     if (!row.is_default) {
         items.push({
-            type: 'separator'
+            type: 'separator',
         });
         items.push({
             label: 'Delete',
             icon: 'ph:trash',
             color: 'error',
             onSelect: () => {
-                if (confirm('Are you sure you want to delete this language?')) {
+                if (confirm(`Delete language "${row.name}"?`)) {
                     router.delete(route('admin.languages.destroy', row.id));
                 }
-            }
+            },
         });
     }
     return items;
@@ -187,3 +279,5 @@ const columns = [
     { id: 'action' },
 ];
 </script>
+
+<style scoped></style>

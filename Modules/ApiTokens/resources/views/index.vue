@@ -1,117 +1,250 @@
 <script setup lang="ts">
+import { ref } from 'vue';
 import { Head, useForm, usePage } from '@inertiajs/vue3';
 import AdminLayout from '@modules/Dashboard/resources/layouts/AdminLayout.vue';
-import { ref } from 'vue';
 import dayjs from 'dayjs';
+import relativeTime from 'dayjs/plugin/relativeTime';
+import type { BreadcrumbItem } from '@nuxt/ui';
 import type { SharedData } from '@/types';
 
-const props = defineProps<{
-    tokens: any[]
-}>();
+dayjs.extend(relativeTime);
+
+const props = withDefaults(defineProps<{
+    tokens?: any[] | null;
+}>(), {
+    tokens: () => [],
+});
 
 const page = usePage<SharedData>();
+const showNewToken = ref(false);
+const newTokenSecret = ref<string | null>(null);
+
+const breadcrumbs: BreadcrumbItem[] = [
+    { label: 'API Tokens', icon: 'ph:key' },
+];
 
 const form = useForm({
     name: '',
 });
 
-const createToken = () => {
+function createToken() {
     form.post(route('api-tokens.store'), {
         preserveScroll: true,
-        onSuccess: () => form.reset('name'),
+        onSuccess: () => {
+            form.reset('name');
+            showNewToken.value = false;
+            // Read the token secret from shared flash props after the Inertia redirect
+            const flash = (usePage().props as any).flash;
+            newTokenSecret.value = flash?.token ?? null;
+        },
     });
-};
+}
 
-const revokeToken = (id: number) => {
-    if (confirm('Are you sure you want to revoke this token?')) {
+function revokeToken(id: number) {
+    if (confirm('Are you sure? Revoking this token will immediately invalidate all requests using it.')) {
         useForm({}).delete(route('api-tokens.destroy', id), {
             preserveScroll: true,
         });
     }
-};
+}
 
-const formatDate = (dateString: string) => {
+function formatDate(dateString: string) {
     return dayjs(dateString).format('MMM D, YYYY h:mm A');
-};
+}
 
+function formatRelative(dateString: string | null) {
+    if (!dateString) return 'Never';
+    return dayjs(dateString).fromNow();
+}
+
+function copyToClipboard(text: string) {
+    navigator.clipboard.writeText(text).then(() => {
+        useToast().add({ title: 'Copied!', description: 'Token copied to clipboard.', color: 'success' });
+    });
+}
+
+function parseAbilities(abilities: string | string[] | null): string[] {
+    if (!abilities) return ['*'];
+    if (Array.isArray(abilities)) return abilities;
+    try {
+        const parsed = JSON.parse(abilities);
+        return Array.isArray(parsed) ? parsed : ['*'];
+    } catch {
+        return ['*'];
+    }
+}
 </script>
 
 <template>
     <Head title="API Tokens" />
 
-    <AdminLayout>
-        <template #header>
-            <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-                API Tokens
-            </h2>
-        </template>
+    <AdminLayout :breadcrumbs="breadcrumbs">
+        <div class="px-4 sm:px-6 lg:px-8 py-8 space-y-6">
 
-        <div class="py-12">
-            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
-                
-                <!-- Display New Token (if just created) -->
-                <div v-if="page.props.flash?.token" class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert">
-                    <strong class="font-bold">Token Created!</strong>
-                    <span class="block sm:inline ml-2">{{ page.props.flash?.message }}</span>
-                    <div class="mt-4 p-4 bg-white dark:bg-gray-800 rounded font-mono text-sm break-all text-gray-900 dark:text-gray-100 border">
-                        {{ page.props.flash?.token }}
-                    </div>
+            <!-- Header -->
+            <div class="sm:flex sm:items-center sm:justify-between">
+                <div>
+                    <h1 class="text-2xl font-bold text-white tracking-wide">API Tokens</h1>
+                    <p class="mt-1 text-sm text-neutral-400">
+                        Create and manage personal API tokens for programmatic access to the ZioraCMS API.
+                    </p>
                 </div>
-
-                <!-- Create Token Form -->
-                <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg p-6">
-                    <h3 class="text-lg font-medium text-gray-900 dark:text-gray-100 mb-4">Create New Token</h3>
-                    <form @submit.prevent="createToken" class="flex items-end gap-4">
-                        <div class="flex-1">
-                            <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Token Name</label>
-                            <input type="text" id="name" v-model="form.name" required class="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 dark:border-gray-600 dark:bg-gray-700 rounded-md focus:ring-blue-500 focus:border-blue-500 text-gray-900 dark:text-gray-100">
-                            <p v-if="form.errors.name" class="mt-2 text-sm text-red-600">{{ form.errors.name }}</p>
-                        </div>
-                        <button type="submit" :disabled="form.processing" class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50">
-                            Create Token
-                        </button>
-                    </form>
+                <div class="mt-4 sm:mt-0">
+                    <UButton
+                        color="primary"
+                        icon="ph:plus-circle"
+                        @click.prevent="() => { showNewToken = true; }"
+                    >
+                        Create Token
+                    </UButton>
                 </div>
-
-                <!-- Existing Tokens List -->
-                <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-                    <div class="p-6 text-gray-900 dark:text-gray-100">
-                        <h3 class="text-lg font-medium mb-4">Active Tokens</h3>
-                        <div class="overflow-x-auto">
-                            <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-                                <thead class="bg-gray-50 dark:bg-gray-700">
-                                    <tr>
-                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Name</th>
-                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Last Used</th>
-                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Created At</th>
-                                        <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
-                                    <tr v-for="token in (tokens || [])" :key="token.id">
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-gray-100">{{ token.name }}</td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
-                                            {{ token.last_used_at ? formatDate(token.last_used_at) : 'Never' }}
-                                        </td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
-                                            {{ formatDate(token.created_at) }}
-                                        </td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                            <button @click="revokeToken(token.id)" class="text-red-600 hover:text-red-900 dark:hover:text-red-400">Revoke</button>
-                                        </td>
-                                    </tr>
-                                    <tr v-if="!tokens || tokens.length === 0">
-                                        <td colspan="4" class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400 text-center">
-                                            No active API tokens found.
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-
             </div>
+
+            <!-- Stats -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div class="p-5 rounded-2xl bg-neutral-900/80 border border-neutral-800 space-y-2">
+                    <div class="flex items-center justify-between text-xs text-neutral-400">
+                        <span>Active Tokens</span>
+                        <UIcon name="ph:key" class="text-indigo-400 w-5 h-5" />
+                    </div>
+                    <div class="text-2xl font-bold text-white">{{ tokens?.length ?? 0 }}</div>
+                </div>
+                <div class="p-5 rounded-2xl bg-neutral-900/80 border border-neutral-800 space-y-2">
+                    <div class="flex items-center justify-between text-xs text-neutral-400">
+                        <span>Last Used</span>
+                        <UIcon name="ph:clock" class="text-amber-400 w-5 h-5" />
+                    </div>
+                    <div class="text-lg font-semibold text-white">
+                        {{ tokens?.length ? formatRelative(tokens[0]?.last_used_at) : 'N/A' }}
+                    </div>
+                </div>
+                <div class="p-5 rounded-2xl bg-neutral-900/80 border border-neutral-800 space-y-2">
+                    <div class="flex items-center justify-between text-xs text-neutral-400">
+                        <span>API Security</span>
+                        <UIcon name="ph:shield-check" class="text-emerald-400 w-5 h-5" />
+                    </div>
+                    <div class="text-sm font-semibold text-emerald-400">Sanctum Protected</div>
+                </div>
+            </div>
+
+            <!-- New Token Secret Banner -->
+            <div v-if="newTokenSecret" class="p-4 rounded-xl border border-amber-500/30 bg-amber-500/10 flex items-start gap-4">
+                <UIcon name="ph:warning-circle" class="text-amber-400 w-5 h-5 flex-shrink-0 mt-0.5" />
+                <div class="flex-1 min-w-0">
+                    <p class="text-sm font-semibold text-amber-300">Save your new token now. It won't be shown again!</p>
+                    <code class="block mt-2 text-xs bg-neutral-950 rounded-lg p-3 text-emerald-400 break-all font-mono">
+                        {{ newTokenSecret }}
+                    </code>
+                </div>
+                <UButton size="xs" color="neutral" variant="ghost" icon="ph:copy" @click="copyToClipboard(newTokenSecret!)" />
+                <UButton size="xs" color="neutral" variant="ghost" icon="ph:x" @click="() => { newTokenSecret = null; }" />
+            </div>
+
+            <!-- Create Token Form -->
+            <UCard v-if="showNewToken" class="border border-primary-800 bg-neutral-900/60">
+                <template #header>
+                    <h3 class="text-sm font-semibold text-white flex items-center gap-2">
+                        <UIcon name="ph:plus-circle" class="text-primary-400" />
+                        New API Token
+                    </h3>
+                </template>
+                <div class="flex gap-3 items-end">
+                    <UFormField label="Token Name" class="flex-1" :error="form.errors.name">
+                        <UInput
+                            v-model="form.name"
+                            placeholder="e.g. Production Deploy Key"
+                            class="w-full"
+                            @keyup.enter="createToken"
+                        />
+                    </UFormField>
+                    <UButton color="primary" :loading="form.processing" @click="createToken">
+                        Generate
+                    </UButton>
+                    <UButton color="neutral" variant="ghost" @click.prevent="() => { showNewToken = false; }">
+                        Cancel
+                    </UButton>
+                </div>
+            </UCard>
+
+            <!-- Tokens List -->
+            <UCard class="border border-neutral-800 bg-neutral-900/60 shadow-xl">
+                <template #header>
+                    <div class="flex items-center justify-between">
+                        <h3 class="text-base font-semibold text-white flex items-center gap-2">
+                            <UIcon name="ph:key" class="text-indigo-400" />
+                            Your Tokens
+                        </h3>
+                        <UBadge color="neutral" variant="subtle" size="xs">
+                            {{ (tokens ?? []).length }} token{{ (tokens ?? []).length !== 1 ? 's' : '' }}
+                        </UBadge>
+                    </div>
+                </template>
+
+                <div v-if="!tokens || tokens.length === 0" class="text-center py-16 text-neutral-500">
+                    <UIcon name="ph:key" class="w-12 h-12 mx-auto mb-3 opacity-20" />
+                    <p class="text-sm font-medium">No API tokens yet.</p>
+                    <p class="text-xs mt-1 text-neutral-600">Create a token above to get started.</p>
+                </div>
+
+                <div v-else class="divide-y divide-neutral-800/50">
+                    <div
+                        v-for="token in (tokens ?? [])"
+                        :key="token.id"
+                        class="grid grid-cols-[auto_1fr_auto] gap-4 items-center px-4 py-4 hover:bg-white/[0.02] transition-colors group"
+                    >
+                        <!-- Icon -->
+                        <div class="w-10 h-10 rounded-xl bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center flex-shrink-0">
+                            <UIcon name="ph:key" class="text-indigo-400 w-4 h-4" />
+                        </div>
+
+                        <!-- Info -->
+                        <div class="min-w-0 space-y-1">
+                            <div class="flex items-center gap-2 flex-wrap">
+                                <span class="text-sm font-semibold text-white">{{ token.name }}</span>
+                                <UBadge
+                                    v-for="ability in parseAbilities(token.abilities)"
+                                    :key="ability"
+                                    size="xs"
+                                    variant="subtle"
+                                    :color="ability === '*' ? 'warning' : 'primary'"
+                                >
+                                    {{ ability === '*' ? 'Full Access' : ability }}
+                                </UBadge>
+                            </div>
+                            <div class="flex items-center gap-3 text-xs flex-wrap">
+                                <span class="flex items-center gap-1 text-neutral-500">
+                                    <UIcon name="ph:calendar-blank" class="w-3 h-3" />
+                                    Created {{ formatDate(token.created_at) }}
+                                </span>
+                                <span class="text-neutral-700">•</span>
+                                <span
+                                    class="flex items-center gap-1"
+                                    :class="token.last_used_at ? 'text-emerald-500' : 'text-neutral-500'"
+                                >
+                                    <UIcon name="ph:clock" class="w-3 h-3" />
+                                    {{ token.last_used_at ? 'Last used ' + formatRelative(token.last_used_at) : 'Never used' }}
+                                </span>
+                            </div>
+                        </div>
+
+                        <!-- Actions (reveal on hover) -->
+                        <div class="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                            <UButton
+                                size="sm"
+                                color="error"
+                                variant="soft"
+                                icon="ph:trash"
+                                @click="revokeToken(token.id)"
+                            >
+                                Revoke
+                            </UButton>
+                        </div>
+                    </div>
+                </div>
+            </UCard>
+
         </div>
     </AdminLayout>
 </template>
+
+<style scoped></style>

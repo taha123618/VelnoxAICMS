@@ -12,16 +12,26 @@
                 />
             </template>
             <template #actions>
-                <UButton
-                    color="primary"
-                    variant="solid"
-                    as-child
-                >
-                    <Link :href="route('admin.collections.entries.create', collection.id)" class="flex gap-1.5 items-center">
-                        <UIcon name="ph:plus-circle" class="w-5 h-5 shrink-0" />
-                        New {{ collection.name.replace(/s$/, '') }}
-                    </Link>
-                </UButton>
+                <div class="flex gap-2">
+                    <UButton
+                        color="primary"
+                        variant="soft"
+                        icon="ph:sparkle-duotone"
+                        @click.prevent="() => { showAiModal = true }"
+                    >
+                        Generate Article with AI
+                    </UButton>
+                    <UButton
+                        color="primary"
+                        variant="solid"
+                        as-child
+                    >
+                        <Link :href="route('admin.collections.entries.create', collection.id)" class="flex gap-1.5 items-center">
+                            <UIcon name="ph:plus-circle" class="w-5 h-5 shrink-0" />
+                            New {{ collection.name.replace(/s$/, '') }}
+                        </Link>
+                    </UButton>
+                </div>
             </template>
             <UTable
                 :columns="columns"
@@ -56,6 +66,16 @@
                 </template>
             </UTable>
         </BaseTableWrapper>
+
+        <AiPromptModal
+            v-model:isOpen="showAiModal"
+            title="AI Article & Content Generator"
+            description="Generate high-quality structured articles and blog posts using AI."
+            endpoint="/api/content/generate-article"
+            placeholder="Write a blog post about modern web architecture trends..."
+            :suggestions="['Modern Web Architecture Trends', 'Top 10 CMS Features for 2026', 'AI-Driven Content Management Guide']"
+            @success="handleAiSuccess"
+        />
     </AdminLayout>
 </template>
 
@@ -65,13 +85,21 @@ import BaseTableWrapper from '@/components/BaseTableWrapper.vue';
 import { ref, computed } from 'vue';
 import { router, Link } from '@inertiajs/vue3';
 import type { BreadcrumbItem, DropdownMenuItem } from '@nuxt/ui';
+import AiPromptModal from '@/components/AiPromptModal.vue';
 
 const props = defineProps<{
     collection: any;
     entries: any[];
 }>();
 
+const showAiModal = ref(false);
 const search = ref('');
+
+function handleAiSuccess(result: any) {
+    if (result.article || result) {
+        router.reload();
+    }
+}
 
 const filteredEntries = computed(() => {
     if (!search.value) return props.entries;

@@ -43,33 +43,33 @@
                                 <UFormField 
                                     :required="field.is_required" 
                                     :label="field.name" 
-                                    :error="form.errors[`data.${field.handle}`]"
+                                    :error="getFieldError(field.handle)"
                                 >
                                     <!-- Dynamic Inputs based on type -->
                                     <UInput 
                                         v-if="field.type === 'text' || field.type === 'number'" 
                                         :type="field.type === 'number' ? 'number' : 'text'"
-                                        v-model="form.data[field.handle]" 
+                                        v-model="form.entry_data[field.handle]" 
                                         class="w-full" 
                                     />
                                     
                                     <UTextarea 
                                         v-else-if="field.type === 'textarea'" 
-                                        v-model="form.data[field.handle]" 
+                                        v-model="form.entry_data[field.handle]" 
                                         class="w-full" 
-                                        rows="4" 
+                                        :rows="4" 
                                     />
                                     
                                     <UCheckbox 
                                         v-else-if="field.type === 'boolean'" 
-                                        v-model="form.data[field.handle]" 
+                                        v-model="form.entry_data[field.handle]" 
                                         :label="field.name" 
                                     />
                                     
                                     <!-- Fallback -->
                                     <UInput 
                                         v-else 
-                                        v-model="form.data[field.handle]" 
+                                        v-model="form.entry_data[field.handle]" 
                                         class="w-full" 
                                         :placeholder="`Type: ${field.type}`"
                                     />
@@ -139,11 +139,20 @@ const form = useForm({
     title: props.entry.title,
     slug: props.entry.slug,
     status: props.entry.status,
-    data: initialData,
+    entry_data: initialData,
 });
 
+function getFieldError(handle: string): string | undefined {
+    return (form.errors as Record<string, string | undefined>)[`data.${handle}`];
+}
+
 function submit() {
-    form.put(route('admin.collections.entries.update', [props.collection.id, props.entry.id]));
+    form.transform((data) => ({
+        title: data.title,
+        slug: data.slug,
+        status: data.status,
+        data: data.entry_data,
+    })).put(route('admin.collections.entries.update', [props.collection.id, props.entry.id]));
 }
 
 function deleteEntry() {

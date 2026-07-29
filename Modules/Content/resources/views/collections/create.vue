@@ -42,7 +42,7 @@
                 <UTextarea
                     v-model="form.description"
                     class="w-full"
-                    rows="3"
+                    :rows="3"
                 />
             </UFormField>
 
@@ -59,8 +59,8 @@
             <div class="flex justify-end gap-2 pt-2">
                 <UButton
                     color="neutral"
-                    variant="ghost"
-                    @click="showModal = false"
+                    variant="soft"
+                    @click.prevent="() => { showModal = false; }"
                 >
                     Cancel
                 </UButton>

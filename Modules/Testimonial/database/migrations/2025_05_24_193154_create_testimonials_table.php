@@ -16,7 +16,7 @@ return new class extends Migration
             $blueprint->string('name');
             $blueprint->string('avatar')->nullable();
             $blueprint->string('title')->nullable();
-            $blueprint->string('comment');
+            $blueprint->text('comment');
             $blueprint->datetime('published_at')->nullable();
             $blueprint->timestamps();
         });

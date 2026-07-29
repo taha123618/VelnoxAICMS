@@ -201,7 +201,7 @@ const columns = [
     {
         accessorKey: 'status',
         header: 'Status',
-        cell: ({ row }) => {
+        cell: ({ row }: { row: any }) => {
             return h(
                 UBadge,
                 {

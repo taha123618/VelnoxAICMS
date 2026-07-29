@@ -3,19 +3,8 @@
 declare(strict_types=1);
 
 use Illuminate\Support\Facades\Route;
-
-/*
 use Modules\Workflow\Http\Controllers\WorkflowController;
-*/
 
-/*
-Route::middleware(['auth', 'verified'])->group(function () {
-    Route::resource('workflows', WorkflowController::class)->names('workflow');
+Route::middleware(['web', 'auth', 'verified'])->prefix('admin')->group(function (): void {
+    Route::resource('workflows', WorkflowController::class)->names('admin.workflows');
 });
-*/
-
-/*
-Route::group(['middleware' => ['auth', 'verified'], 'as' => 'admin.', 'prefix' => 'cp'], function () {
-    Route::get('workflows', WorkflowController::class)->name('workflow');
-});
-*/

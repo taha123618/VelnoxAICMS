@@ -104,6 +104,21 @@ class AiGenerationService
         return $aiGenerationJob;
     }
 
+    /**
+     * Record a synchronous completed AI generation job into the database.
+     */
+    public function recordCompletedJob(string $prompt, string $type, array $result, int|string|null $userId = null): AiGenerationJob
+    {
+        return AiGenerationJob::create([
+            'user_id' => $userId,
+            'type' => $type,
+            'prompt' => $prompt,
+            'status' => AiGenerationJob::STATUS_COMPLETED,
+            'progress' => 100,
+            'result' => $result,
+        ]);
+    }
+
     protected function safeBroadcast(AiGenerationJob $aiGenerationJob): void
     {
         try {

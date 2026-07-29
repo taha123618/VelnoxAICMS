@@ -218,6 +218,27 @@ const mainNavItems = computed<NavigationMenuItem[]>(() => [
         ],
     },
     {
+        label: 'Automation & Workflows',
+        type: 'label',
+        trailingIcon: 'ph:minus',
+        icon: 'ph:lightning',
+        open: true,
+        children: [
+            {
+                label: 'Workflows',
+                icon: 'ph:git-fork',
+                active: route().current('admin.workflows*'),
+                onSelect: () => router.visit(route('admin.workflows.index')),
+            },
+            {
+                label: 'Webhooks & Automation',
+                icon: 'ph:plugs-connected',
+                active: route().current('admin.webhooks*'),
+                onSelect: () => router.visit(route('admin.webhooks.index')),
+            },
+        ],
+    },
+    {
         label: 'Marketplace',
         icon: 'ph:storefront',
         active: route().current('marketplace.*'),
@@ -263,12 +284,7 @@ const mainNavItems = computed<NavigationMenuItem[]>(() => [
                 label: 'Languages',
                 active: route().current('admin.languages*'),
                 onSelect: () => router.visit(route('admin.languages.index')),
-            },
-            {
-                label: 'Webhooks',
-                active: route().current('admin.webhooks*'),
-                onSelect: () => router.visit(route('admin.webhooks.index')),
-            },
+            }
         ],
     },
 ]);

@@ -10,6 +10,14 @@
                 
                 <div class="flex gap-2">
                     <UButton
+                        color="primary"
+                        variant="ghost"
+                        icon="ph:sparkle"
+                        @click.prevent="() => { showAiModal = true; }"
+                    >
+                        Generate with AI
+                    </UButton>
+                    <UButton
                         color="neutral"
                         variant="soft"
                         as-child
@@ -44,33 +52,33 @@
                                 <UFormField 
                                     :required="field.is_required" 
                                     :label="field.name" 
-                                    :error="form.errors[`data.${field.handle}`]"
+                                    :error="getFieldError(field.handle)"
                                 >
                                     <!-- Dynamic Inputs based on type -->
                                     <UInput 
                                         v-if="field.type === 'text' || field.type === 'number'" 
                                         :type="field.type === 'number' ? 'number' : 'text'"
-                                        v-model="form.data[field.handle]" 
+                                        v-model="form.entry_data[field.handle]" 
                                         class="w-full" 
                                     />
                                     
                                     <UTextarea 
                                         v-else-if="field.type === 'textarea'" 
-                                        v-model="form.data[field.handle]" 
+                                        v-model="form.entry_data[field.handle]" 
                                         class="w-full" 
-                                        rows="4" 
+                                        :rows="4" 
                                     />
                                     
                                     <UCheckbox 
                                         v-else-if="field.type === 'boolean'" 
-                                        v-model="form.data[field.handle]" 
+                                        v-model="form.entry_data[field.handle]" 
                                         :label="field.name" 
                                     />
                                     
                                     <!-- Fallback -->
                                     <UInput 
                                         v-else 
-                                        v-model="form.data[field.handle]" 
+                                        v-model="form.entry_data[field.handle]" 
                                         class="w-full" 
                                         :placeholder="`Type: ${field.type}`"
                                     />
@@ -106,6 +114,16 @@
                 </div>
             </div>
         </div>
+
+        <AiPromptModal
+            v-model:isOpen="showAiModal"
+            title="AI Content Assistant"
+            description="Describe what article or entry you want to write and let AI generate content for you."
+            endpoint="/api/content/generate-article"
+            placeholder="Write a blog post about modern CMS features with AI automation..."
+            :suggestions="['Write a SaaS product launch blog post', 'Draft a technical tutorial on API integrations']"
+            @success="handleAiSuccess"
+        />
     </AdminLayout>
 </template>
 
@@ -115,10 +133,13 @@ import { useForm, Link } from '@inertiajs/vue3';
 import { ref } from 'vue';
 import type { BreadcrumbItem } from '@nuxt/ui';
 import BaseSelect from '@/components/BaseSelect.vue';
+import AiPromptModal from '@/components/AiPromptModal.vue';
 
 const props = defineProps<{
     collection: any;
 }>();
+
+const showAiModal = ref(false);
 
 const breadcrumbs: BreadcrumbItem[] = [
     { label: 'Content', icon: 'ph:database', to: route('admin.collections.index') },
@@ -138,8 +159,30 @@ const form = useForm({
     title: '',
     slug: '',
     status: props.collection.is_publishable ? 'draft' : 'published',
-    data: initialData,
+    entry_data: initialData,
 });
+
+function getFieldError(handle: string): string | undefined {
+    return (form.errors as Record<string, string | undefined>)[`data.${handle}`];
+}
+
+function handleAiSuccess(result: any) {
+    if (result.article) {
+        if (result.article.title) {
+            form.title = result.article.title;
+            generateSlug(result.article.title);
+        }
+        if (result.article.slug && slugModified.value) {
+            form.slug = result.article.slug;
+        }
+        // Fill content or excerpt field if available
+        if (result.article.content && 'content' in form.entry_data) {
+            form.entry_data.content = result.article.content;
+        } else if (result.article.content && 'body' in form.entry_data) {
+            form.entry_data.body = result.article.content;
+        }
+    }
+}
 
 function slugify(text: string) {
     return text.toString().toLowerCase()
@@ -159,6 +202,11 @@ function generateSlug(value: string) {
 }
 
 function submit() {
-    form.post(route('admin.collections.entries.store', props.collection.id));
+    form.transform((data) => ({
+        title: data.title,
+        slug: data.slug,
+        status: data.status,
+        data: data.entry_data,
+    })).post(route('admin.collections.entries.store', props.collection.id));
 }
 </script>

@@ -51,7 +51,7 @@
                                             page: page.id,
                                         })"
                                     >
-                                        {{ page.title }}
+                                        {{ (page as any).title || (page as any).name }}
                                     </Link>
                                 </UButton>
                             </BaseTooltip>
@@ -139,12 +139,12 @@ const currentLayout = computed<Modules.Layout.Data.LayoutData>(
     () => page.props.layout as Modules.Layout.Data.LayoutData,
 );
 
-const layouts = computed<Modules.Layout.Data.LayoutData>(
-    () => page.props.layouts as Modules.Layout.Data.LayoutData,
+const layouts = computed<any[]>(
+    () => (page.props.layouts as any[]) || [],
 );
 
-const pages = computed<Modules.Page.Data.PageData>(
-    () => page.props.pages as Modules.Page.Data.PageData,
+const pages = computed<any[]>(
+    () => (page.props.pages as any[]) || [],
 );
 </script>
 

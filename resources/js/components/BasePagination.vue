@@ -22,7 +22,7 @@ const { data } = defineProps<{
     data: ITableData;
 }>();
 
-const model = defineModel<number | unknown>();
+const model = defineModel<number>();
 </script>
 
 <style scoped></style>

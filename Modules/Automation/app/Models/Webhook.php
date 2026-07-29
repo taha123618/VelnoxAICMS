@@ -17,8 +17,11 @@ use Illuminate\Database\Eloquent\Model;
 class Webhook extends Model
 {
     #[\Override]
-    protected $casts = [
-        'events' => 'array',
-        'is_active' => 'boolean',
-    ];
+    protected function casts(): array
+    {
+        return [
+            'events' => 'array',
+            'is_active' => 'boolean',
+        ];
+    }
 }

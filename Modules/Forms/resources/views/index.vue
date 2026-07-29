@@ -8,7 +8,14 @@
             A list of all the forms in your account including their name, slug, and submission count.
           </p>
         </div>
-        <div class="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
+        <div class="mt-4 sm:ml-16 sm:mt-0 sm:flex-none flex gap-2">
+          <button
+            @click="showAiModal = true"
+            type="button"
+            class="block rounded-md bg-purple-600 px-3 py-2 text-center text-sm font-semibold text-white hover:bg-purple-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-purple-500 flex items-center gap-1.5"
+          >
+            Generate Form with AI
+          </button>
           <button
             @click="isCreateModalOpen = true"
             type="button"
@@ -37,19 +44,19 @@
                   </tr>
                 </thead>
                 <tbody class="divide-y divide-white/5 bg-gray-900">
-                  <tr v-for="form in forms" :key="form.id">
+                  <tr v-for="formItem in forms" :key="formItem.id">
                     <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-white sm:pl-6">
-                      {{ form.name }}
+                      {{ formItem.name }}
                     </td>
-                    <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-400">{{ form.slug }}</td>
+                    <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-400">{{ formItem.slug }}</td>
                     <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-400">
-                      <span v-if="form.is_active" class="inline-flex items-center rounded-md bg-green-500/10 px-2 py-1 text-xs font-medium text-green-400 ring-1 ring-inset ring-green-500/20">Active</span>
+                      <span v-if="formItem.is_active" class="inline-flex items-center rounded-md bg-green-500/10 px-2 py-1 text-xs font-medium text-green-400 ring-1 ring-inset ring-green-500/20">Active</span>
                       <span v-else class="inline-flex items-center rounded-md bg-red-500/10 px-2 py-1 text-xs font-medium text-red-400 ring-1 ring-inset ring-red-500/20">Inactive</span>
                     </td>
-                    <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-400">{{ form.submissions_count }}</td>
+                    <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-400">{{ formItem.submissions_count }}</td>
                     <td class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
-                      <button @click="openEditModal(form)" class="text-indigo-400 hover:text-indigo-300 mr-4">Edit</button>
-                      <button @click="deleteForm(form)" class="text-red-400 hover:text-red-300">Delete</button>
+                      <button @click="openEditModal(formItem)" class="text-indigo-400 hover:text-indigo-300 mr-4">Edit</button>
+                      <button @click="deleteForm(formItem)" class="text-red-400 hover:text-red-300">Delete</button>
                     </td>
                   </tr>
                 </tbody>
@@ -60,58 +67,15 @@
       </div>
     </div>
 
-    <!-- Create/Edit Modal -->
-    <div v-if="isCreateModalOpen" class="relative z-10" aria-labelledby="modal-title" role="dialog" aria-modal="true">
-      <div class="fixed inset-0 bg-gray-900/75 transition-opacity"></div>
-
-      <div class="fixed inset-0 z-10 w-screen overflow-y-auto">
-        <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
-          <div class="relative transform overflow-hidden rounded-lg bg-gray-800 px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg sm:p-6">
-            <div>
-              <div class="mt-3 text-center sm:mt-5">
-                <h3 class="text-base font-semibold leading-6 text-white" id="modal-title">
-                  {{ editingForm ? 'Edit Form' : 'Create Form' }}
-                </h3>
-                <div class="mt-2 text-left">
-                  <form @submit.prevent="submitForm">
-                    <div class="space-y-4">
-                      <div>
-                        <label for="name" class="block text-sm font-medium text-white">Name</label>
-                        <input type="text" v-model="form.name" id="name" class="mt-1 block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6" />
-                      </div>
-                      <div>
-                        <label for="slug" class="block text-sm font-medium text-white">Slug</label>
-                        <input type="text" v-model="form.slug" id="slug" class="mt-1 block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6" />
-                      </div>
-                      <div>
-                        <label for="success_message" class="block text-sm font-medium text-white">Success Message</label>
-                        <input type="text" v-model="form.success_message" id="success_message" class="mt-1 block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6" />
-                      </div>
-                      <div>
-                        <label for="redirect_url" class="block text-sm font-medium text-white">Redirect URL</label>
-                        <input type="text" v-model="form.redirect_url" id="redirect_url" class="mt-1 block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6" />
-                      </div>
-                      <div class="flex items-center">
-                        <input id="is_active" v-model="form.is_active" type="checkbox" class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600" />
-                        <label for="is_active" class="ml-2 block text-sm text-gray-300">Active</label>
-                      </div>
-                    </div>
-                    <div class="mt-5 sm:mt-6 sm:grid sm:grid-flow-row-dense sm:grid-cols-2 sm:gap-3">
-                      <button type="submit" class="inline-flex w-full justify-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 sm:col-start-2">
-                        {{ editingForm ? 'Update' : 'Create' }}
-                      </button>
-                      <button @click="closeModal" type="button" class="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:col-start-1 sm:mt-0">
-                        Cancel
-                      </button>
-                    </div>
-                  </form>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+    <AiPromptModal
+      v-model:isOpen="showAiModal"
+      title="AI Form Schema Architect"
+      description="Generate form fields, validation rules, input types, and labels with AI."
+      endpoint="/api/forms/generate-form"
+      placeholder="Generate a customer feedback survey form with rating and comments..."
+      :suggestions="['User registration & profile form', 'Event registration form with ticket options']"
+      @success="handleAiSuccess"
+    />
   </AdminLayout>
 </template>
 
@@ -119,12 +83,14 @@
 import { ref } from 'vue';
 import { useForm, router } from '@inertiajs/vue3';
 import AdminLayout from '@modules/Dashboard/resources/layouts/AdminLayout.vue';
+import AiPromptModal from '@/components/AiPromptModal.vue';
 
 const props = defineProps({
   forms: Array,
 });
 
 const isCreateModalOpen = ref(false);
+const showAiModal = ref(false);
 const editingForm = ref(null);
 
 const form = useForm({
@@ -134,6 +100,12 @@ const form = useForm({
   redirect_url: '',
   is_active: true,
 });
+
+function handleAiSuccess(result) {
+  if (result.form || result) {
+    router.reload();
+  }
+}
 
 const openEditModal = (formToEdit) => {
   editingForm.value = formToEdit;

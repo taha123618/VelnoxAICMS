@@ -53,22 +53,22 @@ createServer((page) =>
         setup({ App, props, plugin }) {
             const app = createSSRApp({ render: () => h(App, props) });
 
-            // Configure Ziggy for SSR...
+            const ziggy = (page.props as any).ziggy;
             const ziggyConfig = {
-                ...page.props.ziggy,
-                location: new URL(page.props.ziggy.location),
+                ...ziggy,
+                location: new URL(ziggy?.location || 'http://localhost'),
             };
 
             // Create route function...
             const route = (name: string, params?: any, absolute?: boolean) =>
-                ziggyRoute(name, params, absolute, ziggyConfig);
+                ziggyRoute(name, params, absolute, ziggyConfig as any);
 
             // Make route function available globally...
-            app.config.globalProperties.route = route;
+            app.config.globalProperties.route = route as any;
 
             // Make route function available globally for SSR...
             if (typeof window === 'undefined') {
-                global.route = route;
+                (globalThis as any).route = route;
             }
 
             app.component('InertiaLink', Link)

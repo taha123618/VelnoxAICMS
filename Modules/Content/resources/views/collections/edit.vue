@@ -66,7 +66,7 @@
                                 <UTextarea
                                     v-model="form.description"
                                     class="w-full"
-                                    rows="3"
+                                    :rows="3"
                                 />
                             </UFormField>
                         </div>
