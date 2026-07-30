@@ -287,6 +287,20 @@ const mainNavItems = computed<NavigationMenuItem[]>(() => [
             }
         ],
     },
+    ...(user.value.isAdmin ? [{
+        label: 'System',
+        type: 'label' as const,
+        icon: 'ph:terminal-window',
+        trailingIcon: 'ph:minus',
+        open: true,
+        children: [
+            {
+                label: 'Horizon',
+                icon: 'ph:queue',
+                onSelect: () => { window.location.href = '/horizon'; },
+            },
+        ],
+    }] : []),
 ]);
 
 const userMenuItems = ref<DropdownMenuItem[]>([

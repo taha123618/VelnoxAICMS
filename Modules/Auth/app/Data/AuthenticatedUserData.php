@@ -17,6 +17,7 @@ class AuthenticatedUserData extends Data
         public string $email,
         public bool $isVerified,
         public ?string $avatar,
+        public bool $isAdmin,
         public AuthorizationData $can
     ) {}
 
@@ -30,6 +31,7 @@ class AuthenticatedUserData extends Data
             email: $user->email,
             isVerified: $user->hasVerifiedEmail(),
             avatar: null,
+            isAdmin: $user->hasRole('admin'),
             can: AuthorizationData::fromModel($user)
         );
     }

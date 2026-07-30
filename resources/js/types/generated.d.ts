@@ -10,6 +10,7 @@ name: string;
 email: string;
 isVerified: boolean;
 avatar: string | null;
+isAdmin: boolean;
 can: Modules.Auth.Data.AuthorizationData;
 };
 export type AuthorizationData = {

@@ -273,3 +273,44 @@ Available events: `RoleAttachedEvent`, `RoleDetachedEvent`, `PermissionAttachedE
 - Permissions are cached automatically. The cache is flushed when roles/permissions change via package methods.
 - After direct DB operations, flush manually: `app()[\Spatie\Permission\PermissionRegistrar::class]->forgetCachedPermissions()`
 - For bulk seeding, use `Permission::insert()` for speed, but flush the cache afterward.
+
+## Project Patterns (VelnoxAICMS)
+
+### Exposing Role Checks to the Frontend via DTOs
+
+Never pass raw role names to the frontend. Instead, expose a computed boolean on the shared `AuthenticatedUserData` DTO:
+
+```php
+// Modules/Auth/app/Data/AuthenticatedUserData.php
+public bool $isAdmin,
+
+// fromModel:
+isAdmin: $user->hasRole('admin'),
+```
+
+After changing any `#[TypeScript]` DTO, always regenerate TypeScript types:
+
+```bash
+php artisan typescript:transform
+```
+
+This keeps `resources/js/types/generated.d.ts` in sync. The frontend then accesses it via `user.value.isAdmin` through the `useAuth()` composable.
+
+### Gate Authorization Pattern (Horizon / Admin-Only Routes)
+
+Use a **typed `User` parameter** for gate definitions — the Gate automatically denies unauthenticated users before the closure runs:
+
+```php
+use Modules\Auth\Models\User;
+
+Gate::define('viewHorizon', function (User $user): bool {
+    if (app()->environment('local')) {
+        return true; // always open in local dev
+    }
+
+    return $user->hasRole('admin');
+});
+```
+
+Do **not** use `$user = null` with null-safe operators — the typed parameter handles unauthenticated access automatically.
+

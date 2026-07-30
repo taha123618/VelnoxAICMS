@@ -25,8 +25,10 @@
     "skills": [
         "ai-sdk-development",
         "laravel-best-practices",
+        "configuring-horizon",
         "mcp-development",
         "configure-nightwatch",
+        "octane-development",
         "pest-testing",
         "inertia-vue-development",
         "echo-development",

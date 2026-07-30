@@ -20,8 +20,10 @@
         "inertiaui/modal": "^3.1",
         "laravel/ai": "^0.10.1",
         "laravel/framework": "13.21.1",
+        "laravel/horizon": "^5.48",
         "laravel/mcp": "^0.9.1",
         "laravel/nightwatch": "^1.10",
+        "laravel/octane": "^2.18",
         "laravel/reverb": "^1.10",
         "laravel/sanctum": "^4.0",
         "laravel/tinker": "^3.0",
@@ -84,7 +86,7 @@
         ],
         "dev": [
             "Composer\\Config::disableProcessTimeout",
-            "npx concurrently -c \"#93c5fd,#c4b5fd,#fb7185,#fdba74,#86efac\" \"php artisan serve\" \"php artisan queue:listen --tries=1\" \"php artisan pail --timeout=0\" \"npm run dev\" \"php artisan reverb:start\" --names=server,queue,logs,vite,reverb"
+            "npx concurrently -c \"#93c5fd,#c4b5fd,#fb7185,#fdba74,#86efac,#5eead4\" \"php artisan octane:start --workers=4 --watch\" \"php artisan horizon\" \"php artisan queue:listen --tries=1\" \"php artisan pail --timeout=0\" \"php artisan reverb:start --debug\" \"npm run dev\" --names=octane,horizon,queue,pail,reverb,vite"
         ],
         "dev:ssr": [
             "npm run build:ssr",
