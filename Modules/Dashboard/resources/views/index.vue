@@ -88,7 +88,7 @@
                         </UCard>
 
                         <UCard class="bg-error/10 dark:bg-error/20 border border-error/20 dark:border-error/30 shadow-none">
-                            <p class="text-sm text-error-700 dark:text-error-300 font-medium">Pending posts</p>
+                            <p class="text-sm text-error-700 dark:text-error-300 font-medium">Total posts</p>
                             <div class="text-2xl font-bold text-error-900 dark:text-error-50">
                                 {{ data.stats.total_posts }}
                                 <span class="text-xs text-error-600 dark:text-error-400 font-normal">

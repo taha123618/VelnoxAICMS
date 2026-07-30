@@ -59,24 +59,23 @@ class PostController extends Controller
 
     }
 
-    public function edit(Page $page)
+    public function edit(Page $post)
     {
-        Gate::authorize('update_post', $page);
+        Gate::authorize('update_post', $post);
 
         return Inertia::render('Page::posts/edit', [
             'layouts' => resolve(GetLayoutDropdownOptionsAction::class)->handle(),
-            'post' => PostData::fromModel($page),
-            'layout' => LayoutData::fromModel($page->layout),
+            'post' => PostData::fromModel($post),
+            'layout' => $post->layout ? LayoutData::fromModel($post->layout) : null,
             'menus' => MenuData::collect(resolve(GetAllMenusAction::class)->handle()),
         ]);
     }
 
-    public function destroy(Page $page)
+    public function destroy(Page $post)
     {
+        Gate::authorize('delete_post', $post);
 
-        Gate::authorize('delete_post', $page);
-
-        resolve(DeletePostAction::class)->handle($page);
+        resolve(DeletePostAction::class)->handle($post);
 
         return back()->with('success', 'Post deleted!');
     }

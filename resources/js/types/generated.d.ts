@@ -192,7 +192,7 @@ slug: string;
 title: string;
 status: App.Enums.Status;
 statusColor: string;
-url: string;
+url: string | null;
 isPublished: boolean;
 description: string | null;
 excerpt: string | null;
