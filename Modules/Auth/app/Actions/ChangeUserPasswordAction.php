@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Hash;
 
 class ChangeUserPasswordAction
 {
-    public function handle(Request $request)
+    public function handle(Request $request): void
     {
         $request->user()->update([
             'password' => Hash::make($request->password),

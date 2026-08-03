@@ -5,8 +5,7 @@ use Modules\Media\Http\Controllers\DraggableMediaController;
 use Modules\Media\Http\Controllers\FolderController;
 use Modules\Media\Http\Controllers\MediaController;
 
-
-Route::group(['middleware' => ['auth', 'demo.protect', 'verified'], 'as' => 'admin.', 'prefix' => 'cp'], function () {
+Route::group(['middleware' => ['auth', 'demo.protect', 'verified'], 'as' => 'admin.', 'prefix' => 'cp'], function (): void {
     Route::post('files/{folder}', [MediaController::class, 'store'])
         ->name('files.store')
         ->withoutMiddleware(['throttle']);
@@ -24,7 +23,7 @@ Route::group(['middleware' => ['auth', 'demo.protect', 'verified'], 'as' => 'adm
     Route::resource('media', FolderController::class)
         ->except('show')
         ->parameters([
-            'media' => 'folder'
+            'media' => 'folder',
         ])
         ->names('folders');
 });

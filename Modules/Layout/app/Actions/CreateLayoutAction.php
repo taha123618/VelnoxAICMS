@@ -2,17 +2,17 @@
 
 namespace Modules\Layout\Actions;
 
-use Modules\Layout\Models\Layout;
 use Modules\Layout\Http\Requests\CreateLayoutRequest;
+use Modules\Layout\Models\Layout;
 
 class CreateLayoutAction
 {
-    public function handle(CreateLayoutRequest $request)
+    public function handle(CreateLayoutRequest $createLayoutRequest)
     {
 
         return Layout::create([
-            'name' => $request->name,
-            'content' => $request->content
+            'name' => $createLayoutRequest->name,
+            'content' => $createLayoutRequest->content,
         ]);
     }
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Modules\Dashboard\Data;
 
 use Spatie\LaravelData\Data;
@@ -15,6 +17,5 @@ class DashboardStatsData extends Data
         public ?int $pending_posts,
         public ?int $total_pages,
         public ?int $total_posts,
-    ){}
-    
+    ) {}
 }

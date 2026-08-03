@@ -11,14 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('testimonials', function (Blueprint $table) {
-            $table->ulid('id')->primary();
-            $table->string('name');
-            $table->string('avatar')->nullable();
-            $table->string('title')->nullable();
-            $table->string('comment');
-            $table->datetime('published_at')->nullable();
-            $table->timestamps();
+        Schema::create('testimonials', function (Blueprint $blueprint): void {
+            $blueprint->ulid('id')->primary();
+            $blueprint->string('name');
+            $blueprint->string('avatar')->nullable();
+            $blueprint->string('title')->nullable();
+            $blueprint->text('comment');
+            $blueprint->datetime('published_at')->nullable();
+            $blueprint->timestamps();
         });
     }
 

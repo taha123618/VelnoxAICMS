@@ -2,8 +2,8 @@
 
 namespace Modules\Category\Policies;
 
-use Modules\Auth\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
+use Modules\Auth\Models\User;
 use Modules\Category\Models\Category;
 
 class CategoryPolicy

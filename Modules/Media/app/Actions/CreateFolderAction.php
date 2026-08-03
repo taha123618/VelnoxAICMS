@@ -7,13 +7,13 @@ use Modules\Media\Http\Requests\CreateFolderRequest;
 
 class CreateFolderAction
 {
-    public function handle(CreateFolderRequest $request)
+    public function handle(CreateFolderRequest $createFolderRequest)
     {
 
         return Auth::user()->folders()->create([
-            'name' => $request->name,
-            'parent_id' => $request->parent ?? null
+            'name' => $createFolderRequest->name,
+            'parent_id' => $createFolderRequest->parent ?? null,
         ]);
-        
+
     }
 }

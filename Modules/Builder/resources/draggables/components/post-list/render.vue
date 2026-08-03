@@ -15,7 +15,7 @@
 </template>
 
 <script setup lang="ts">
-import ZioraElement from '@modules/Builder/resources/scripts/ziora-element';
+import VelnoxAIElement from '@modules/Builder/resources/scripts/VelnoxAI-element';
 import { cn } from '@modules/Builder/resources/scripts/utils';
 import { useElement } from '@modules/Builder/resources/scripts/use-element';
 import { useHead } from '@unhead/vue';
@@ -23,7 +23,7 @@ import { usePostList } from '@modules/Builder/resources/draggables/components/po
 import PostCard from '@modules/Builder/resources/draggables/components/post-list/components/post-card.vue';
 
 const { element } = defineProps<{
-    element: ZioraElement;
+    element: VelnoxAIElement;
 }>();
 
 const { customClassNames, animationClass, className } = useElement(element);

@@ -5,12 +5,12 @@ namespace Modules\Auth\Database\Factories;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
-
+use Modules\Auth\Models\User;
 
 class UserFactory extends Factory
 {
-
-    protected $model = \Modules\Auth\Models\User::class;
+    #[\Override]
+    protected $model = User::class;
 
     /**
      * The current password being used by the factory.
@@ -39,7 +39,7 @@ class UserFactory extends Factory
      */
     public function unverified(): static
     {
-        return $this->state(fn (array $attributes) => [
+        return $this->state(fn (array $attributes): array => [
             'email_verified_at' => null,
         ]);
     }

@@ -3,13 +3,14 @@ export type Status = 'Published' | 'Draft';
 }
 declare namespace Modules.Auth.Data {
 export type AuthenticatedUserData = {
-id: string;
+id: string | number;
 first_name: string;
 last_name: string;
 name: string;
 email: string;
 isVerified: boolean;
 avatar: string | null;
+isAdmin: boolean;
 can: Modules.Auth.Data.AuthorizationData;
 };
 export type AuthorizationData = {
@@ -43,7 +44,7 @@ permissions: any | Array<any>;
 can?: Array<any>;
 };
 export type UserData = {
-id: string;
+id: string | number;
 first_name: string;
 last_name: string;
 name: string;
@@ -61,11 +62,11 @@ export type LinkType = 'page' | 'post' | 'external' | 'category';
 }
 declare namespace Modules.Category.Data {
 export type CategoryData = {
-id: string;
+id: string | number;
 name: string;
 slug: string;
 totalPosts: number;
-parentId: string | null;
+parentId: string | number | null;
 parentName: string | null;
 description: string | null;
 children?: any | null;
@@ -74,7 +75,7 @@ can?: Array<any>;
 }
 declare namespace Modules.Contacts.Data {
 export type ContactData = {
-id: string;
+id: string | number;
 name: string;
 email: string;
 subject: string;
@@ -106,7 +107,7 @@ id: string;
 }
 declare namespace Modules.Layout.Data {
 export type LayoutData = {
-id: string;
+id: string | number;
 name: string;
 totalPages: string;
 totalPosts: string;
@@ -119,12 +120,12 @@ can?: Array<any>;
 }
 declare namespace Modules.Media.Data {
 export type FolderData = {
-id: string;
+id: string | number;
 name: string;
 can?: Array<any>;
 };
 export type MediaData = {
-id: string;
+id: string | number;
 uuid: string;
 name: string;
 size: string;
@@ -135,7 +136,7 @@ thumbnail?: string;
 }
 declare namespace Modules.Menu.Data {
 export type MenuData = {
-id: string;
+id: string | number;
 name: string;
 items?: any;
 totalItems: number;
@@ -143,10 +144,10 @@ created_at: string;
 can?: Array<any>;
 };
 export type MenuItemData = {
-id: string;
+id: string | number;
 isRecent: boolean;
 menuId: string;
-parentId: string | null;
+parentId: string | number | null;
 type: Modules.Menu.Enums.MenuItemType;
 label: string;
 path: string;
@@ -162,9 +163,9 @@ export type MenuItemType = 'page' | 'post' | 'category' | 'custom';
 }
 declare namespace Modules.Page.Data {
 export type PageData = {
-id: string;
+id: string | number;
 type?: string;
-layoutId: string;
+layoutId: string | number;
 layoutName: string;
 slug: string;
 title: string;
@@ -182,17 +183,17 @@ updated_at: string;
 isDifferentFromPublishedVersion: boolean;
 };
 export type PostData = {
-id: string;
+id: string | number;
 type?: string;
-layoutId: string;
-layoutName: string;
-categoryName: string;
-categoryId: string;
+layoutId: string | number | null;
+layoutName: string | null;
+categoryName: string | null;
+categoryId: string | number | null;
 slug: string;
 title: string;
 status: App.Enums.Status;
 statusColor: string;
-url: string;
+url: string | null;
 isPublished: boolean;
 description: string | null;
 excerpt: string | null;
@@ -209,7 +210,7 @@ export type PageType = 'page' | 'post';
 }
 declare namespace Modules.Testimonial.Data {
 export type TestimonialData = {
-id: string;
+id: string | number;
 name: string;
 avatar: string | null;
 title: string | null;

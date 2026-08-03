@@ -27,14 +27,14 @@
 </template>
 
 <script setup lang="ts">
-import ZioraElement from '@modules/Builder/resources/scripts/ziora-element';
+import VelnoxAIElement from '@modules/Builder/resources/scripts/VelnoxAI-element';
 import { useElement } from '@modules/Builder/resources/scripts/use-element';
 import { useHead } from '@unhead/vue';
 import { cn } from '@modules/Builder/resources/scripts/utils';
 import { useCarousel } from '@modules/Builder/resources/draggables/media/image-carousel/use-carousel';
 
 const { element } = defineProps<{
-    element: ZioraElement;
+    element: VelnoxAIElement;
 }>();
 
 const { className, customClassNames, animationClass } = useElement(element);

@@ -3,8 +3,8 @@
 namespace Modules\Testimonial\Data;
 
 use App\Enums\Status;
-use Spatie\LaravelData\Data;
 use Modules\Testimonial\Models\Testimonial;
+use Spatie\LaravelData\Data;
 use Spatie\LaravelData\Optional;
 use Spatie\TypeScriptTransformer\Attributes\TypeScript;
 
@@ -12,17 +12,17 @@ use Spatie\TypeScriptTransformer\Attributes\TypeScript;
 class TestimonialData extends Data
 {
     public function __construct(
-        public string $id,
+        public int|string $id,
         public string $name,
-        public string|null $avatar,
-        public string|null $title,
+        public ?string $avatar,
+        public ?string $title,
         public string $comment,
         public Status $status,
         public string $statusColor,
         public string $created_at,
         public bool $isPublished,
         public array|Optional $can
-    ){}
+    ) {}
 
     public static function fromModel(Testimonial $testimonial): self
     {

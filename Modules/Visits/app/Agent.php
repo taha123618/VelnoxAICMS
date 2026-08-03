@@ -2,7 +2,6 @@
 
 namespace Modules\Visits;
 
-
 use BadMethodCallException;
 use Closure;
 use Detection\Exception\MobileDetectException;
@@ -12,7 +11,6 @@ use Random\RandomException;
 
 class Agent extends MobileDetect
 {
-
     /**
      * List of desktop devices.
      *
@@ -21,6 +19,7 @@ class Agent extends MobileDetect
     protected static array $desktopDevices = [
         'Macintosh' => 'Macintosh',
     ];
+
     /**
      * List of additional operating systems.
      *
@@ -37,6 +36,7 @@ class Agent extends MobileDetect
         'Linux' => 'Linux',
         'ChromeOS' => 'CrOS',
     ];
+
     /**
      * List of additional browsers.
      *
@@ -58,7 +58,7 @@ class Agent extends MobileDetect
         'WeChat' => 'MicroMessenger',
     ];
 
-    protected static CrawlerDetect $crawlerDetect;
+    protected static ?CrawlerDetect $crawlerDetect = null;
 
     /**
      * Key value store for resolved strings.
@@ -67,11 +67,12 @@ class Agent extends MobileDetect
      */
     protected array $store = [];
 
+    #[\Override]
     public function getRules(): array
     {
         static $rules;
 
-        if (!$rules) {
+        if (! $rules) {
             $rules = array_merge(
                 static::$browsers,
                 static::$operatingSystems,
@@ -88,16 +89,14 @@ class Agent extends MobileDetect
 
     /**
      * Get accept languages.
-     * @param string|null $acceptLanguage
-     * @return array
      */
-    public function languages(string|null $acceptLanguage = null): array
+    public function languages(?string $acceptLanguage = null): array
     {
         if ($acceptLanguage === null) {
             $acceptLanguage = $this->getHttpHeader('HTTP_ACCEPT_LANGUAGE');
         }
 
-        if (!$acceptLanguage) {
+        if (! $acceptLanguage) {
             return [];
         }
 
@@ -107,7 +106,7 @@ class Agent extends MobileDetect
         foreach (explode(',', $acceptLanguage) as $piece) {
             $parts = explode(';', $piece);
             $language = strtolower($parts[0]);
-            $priority = empty($parts[1]) ? 1. : (float)str_replace('q=', '', $parts[1]);
+            $priority = empty($parts[1]) ? 1. : (float) str_replace('q=', '', $parts[1]);
 
             $languages[$language] = $priority;
         }
@@ -120,33 +119,28 @@ class Agent extends MobileDetect
 
     /**
      * Get the browser name.
-     * @return string|bool
      */
     public function browser(): bool|string
     {
-        return $this->retrieveUsingCacheOrResolve('visitor.browser', function () {
-            return $this->findDetectionRulesAgainstUserAgent(
-                $this->mergeRules(static::$additionalBrowsers, MobileDetect::getBrowsers())
-            );
-        });
+        return $this->retrieveUsingCacheOrResolve('visitor.browser', fn (): ?string => $this->findDetectionRulesAgainstUserAgent(
+            $this->mergeRules(static::$additionalBrowsers, MobileDetect::getBrowsers())
+        ));
     }
 
     /**
      * Retrieve from the given key from the cache or resolve the value.
      *
-     * @param string $key
-     * @param \Closure():mixed $callback
-     * @return mixed
+     * @param  Closure():mixed  $callback
      */
     protected function retrieveUsingCacheOrResolve(string $key, Closure $callback): mixed
     {
         $cacheKey = $this->createCacheKey($key);
 
-        if (!is_null($cacheItem = $this->store[$cacheKey] ?? null)) {
+        if (! is_null($cacheItem = $this->store[$cacheKey] ?? null)) {
             return $cacheItem;
         }
 
-        return tap($callback(), function ($result) use ($cacheKey) {
+        return tap($callback(), function ($result) use ($cacheKey): void {
             $this->store[$cacheKey] = $result;
         });
     }
@@ -154,6 +148,7 @@ class Agent extends MobileDetect
     /**
      * @throws RandomException
      */
+    #[\Override]
     protected function createCacheKey(string $key): string
     {
         $userAgentKey = $this->hasUserAgent() ? $this->userAgent : '';
@@ -165,9 +160,6 @@ class Agent extends MobileDetect
 
     /**
      * Match a detection rule and return the matched key.
-     *
-     * @param array $rules
-     * @return string|null
      */
     protected function findDetectionRulesAgainstUserAgent(array $rules): ?string
     {
@@ -185,18 +177,18 @@ class Agent extends MobileDetect
                         return $key ?: reset($this->matchesArray);
                     }
                 }
-            } else if ($this->match($regex, $userAgent)) {
+            } elseif ($this->match($regex, $userAgent)) {
                 return $key ?: reset($this->matchesArray);
             }
         }
 
-        return false;
+        return null;
     }
 
     /**
      * Merge multiple rules into one array.
      *
-     * @param array $all
+     * @param  array  $all
      * @return array<string, string>
      */
     protected function mergeRules(...$all): array
@@ -210,7 +202,7 @@ class Agent extends MobileDetect
                 } elseif (is_array($merged[$key])) {
                     $merged[$key][] = $value;
                 } else {
-                    $merged[$key] .= '|' . $value;
+                    $merged[$key] .= '|'.$value;
                 }
             }
         }
@@ -220,21 +212,16 @@ class Agent extends MobileDetect
 
     /**
      * Get the platform name.
-     *
-     * @return string|bool
      */
     public function platform(): bool|string
     {
-        return $this->retrieveUsingCacheOrResolve('visitor.platform', function () {
-            return $this->findDetectionRulesAgainstUserAgent(
-                $this->mergeRules(static::$additionalOperatingSystems, MobileDetect::getOperatingSystems())
-            );
-        });
+        return $this->retrieveUsingCacheOrResolve('visitor.platform', fn (): ?string => $this->findDetectionRulesAgainstUserAgent(
+            $this->mergeRules(static::$additionalOperatingSystems, MobileDetect::getOperatingSystems())
+        ));
     }
 
     /**
      * Get the device name.
-     * @return string|bool
      */
     public function device(): bool|string
     {
@@ -259,26 +246,22 @@ class Agent extends MobileDetect
 
     /**
      * Get the robot name.
-     * @return string|bool
      */
     public function robot(): bool|string
     {
         $userAgent = $this->getUserAgent();
 
         if ($this->getCrawlerDetect()->isCrawler($userAgent ?: $this->userAgent)) {
-            return ucfirst($this->getCrawlerDetect()->getMatches());
+            return ucfirst((string) $this->getCrawlerDetect()->getMatches());
         }
 
         return false;
     }
 
-    /**
-     * @return CrawlerDetect
-     */
     public function getCrawlerDetect(): CrawlerDetect
     {
-        if (static::$crawlerDetect === null) {
-            static::$crawlerDetect = new CrawlerDetect();
+        if (! static::$crawlerDetect instanceof CrawlerDetect) {
+            static::$crawlerDetect = new CrawlerDetect;
         }
 
         return static::$crawlerDetect;
@@ -286,53 +269,52 @@ class Agent extends MobileDetect
 
     /**
      * Get the device type
-     * @return string
+     *
      * @throws MobileDetectException
      */
     public function deviceType(): string
     {
         if ($this->isDesktop()) {
-            return "desktop";
+            return 'desktop';
         }
 
         if ($this->isPhone()) {
-            return "phone";
+            return 'phone';
         }
 
         if ($this->isTablet()) {
-            return "tablet";
+            return 'tablet';
         }
 
         if ($this->isRobot()) {
-            return "robot";
+            return 'robot';
         }
 
-        return "other";
+        return 'other';
     }
 
     /**
      * Check if the device is a desktop computer.
-     * @return bool
+     *
      * @throws MobileDetectException
      */
     public function isDesktop(): bool
     {
         $userAgent = $this->getUserAgent();
 
-        return $this->retrieveUsingCacheOrResolve('visitor.desktop', function () use ($userAgent) {
+        return $this->retrieveUsingCacheOrResolve('visitor.desktop', function () use ($userAgent): bool {
 
             // Check specifically for cloudfront headers if the useragent === 'Amazon CloudFront'
             if ($userAgent === static::$cloudFrontUA && $this->getHttpHeader('HTTP_CLOUDFRONT_IS_DESKTOP_VIEWER') === 'true') {
                 return true;
             }
 
-            return !$this->isMobile() && !$this->isTablet() && !$this->isRobot($userAgent);
+            return ! $this->isMobile() && ! $this->isTablet() && ! $this->isRobot();
         });
     }
 
     /**
      * Check if device is a robot.
-     * @return bool
      */
     public function isRobot(): bool
     {
@@ -343,21 +325,22 @@ class Agent extends MobileDetect
 
     /**
      * Check if the device is a mobile phone.
-     * @return bool
+     *
      * @throws MobileDetectException
      */
     public function isPhone(): bool
     {
-        return $this->isMobile() && !$this->isTablet();
+        return $this->isMobile() && ! $this->isTablet();
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
+    #[\Override]
     public function __call(string $name, array $arguments): bool
     {
         // Make sure the name starts with 'is', otherwise
-        if (!str_starts_with($name, 'is')) {
+        if (! str_starts_with($name, 'is')) {
             throw new BadMethodCallException("No such method exists: $name");
         }
 

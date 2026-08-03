@@ -2,23 +2,22 @@
 
 namespace Modules\Auth\Data;
 
-use Illuminate\Support\Facades\Gate;
-use Spatie\LaravelData\Data;
 use Modules\Auth\Models\User;
-use Modules\Page\Models\Page;
+use Spatie\LaravelData\Data;
 use Spatie\TypeScriptTransformer\Attributes\TypeScript;
 
 #[TypeScript()]
 class AuthenticatedUserData extends Data
 {
     public function __construct(
-        public string $id,
+        public int|string $id,
         public string $first_name,
         public string $last_name,
         public string $name,
         public string $email,
         public bool $isVerified,
-        public string|null $avatar,
+        public ?string $avatar,
+        public bool $isAdmin,
         public AuthorizationData $can
     ) {}
 
@@ -32,6 +31,7 @@ class AuthenticatedUserData extends Data
             email: $user->email,
             isVerified: $user->hasVerifiedEmail(),
             avatar: null,
+            isAdmin: $user->hasRole('admin'),
             can: AuthorizationData::fromModel($user)
         );
     }

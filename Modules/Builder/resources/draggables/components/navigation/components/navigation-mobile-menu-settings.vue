@@ -140,9 +140,9 @@
 import BuilderSelect from '@modules/Builder/resources/components/form/builder-select.vue';
 import BuilderColorInput from '@modules/Builder/resources/components/form/builder-color-input.vue';
 import BuilderSlider from '@modules/Builder/resources/components/form/builder-slider.vue';
-import ZioraElement from '@modules/Builder/resources/scripts/ziora-element';
+import VelnoxAIElement from '@modules/Builder/resources/scripts/VelnoxAI-element';
 import BuilderInput from '@modules/Builder/resources/components/form/builder-input.vue';
-const { element } = defineProps<{ element: ZioraElement }>();
+const { element } = defineProps<{ element: VelnoxAIElement }>();
 
 const slideOverSideOptions = ['left', 'right'];
 const closeButtonSizes = ['xs', 'sm', 'md', 'lg', 'xl'];

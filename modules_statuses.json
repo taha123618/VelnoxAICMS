@@ -9,5 +9,17 @@
     "Menu": true,
     "Testimonial": true,
     "Contacts": true,
-    "Visits": true
+    "Visits": true,
+    "Content": true,
+    "Ai": true,
+    "Marketplace": true,
+    "Seo": true,
+    "Localization": true,
+    "Automation": true,
+    "Forms": true,
+    "Acl": true,
+    "Workflow": true,
+    "Settings": true,
+    "ApiTokens": true,
+    "AuditLog": true
 }

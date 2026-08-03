@@ -2,12 +2,12 @@
 
 namespace Modules\Auth\Database\Seeders;
 
-use Modules\Auth\Models\Role;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
-use Modules\Auth\Models\Permission;
-use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
+use Modules\Auth\Models\Permission;
+use Modules\Auth\Models\Role;
 use Spatie\Permission\PermissionRegistrar;
 
 class RoleSeeder extends Seeder
@@ -84,7 +84,7 @@ class RoleSeeder extends Seeder
             ['name' => 'create_testimonials', 'label' => 'Create', 'group' => 'Testimonials', 'guard_name' => 'web'],
             ['name' => 'edit_testimonials', 'label' => 'Edit', 'group' => 'Testimonials', 'guard_name' => 'web'],
             ['name' => 'view_testimonials', 'label' => 'View', 'group' => 'Testimonials', 'guard_name' => 'web'],
-            ['name' => 'delete_testimonials', 'label' => 'Delete', 'group' => 'Testimonials', 'guard_name' => 'web']
+            ['name' => 'delete_testimonials', 'label' => 'Delete', 'group' => 'Testimonials', 'guard_name' => 'web'],
         ];
 
         foreach ($permissions as $permission) {
@@ -115,7 +115,7 @@ class RoleSeeder extends Seeder
             'create_testimonials',
             'edit_testimonials',
             'view_testimonials',
-            'delete_testimonials'
+            'delete_testimonials',
         ];
 
         $authorPermissions = [
@@ -134,14 +134,14 @@ class RoleSeeder extends Seeder
             'create_testimonials',
             'edit_testimonials',
             'view_testimonials',
-            'delete_testimonials'
+            'delete_testimonials',
         ];
 
         $userPermissions = [
             'view_posts',
             'view_pages',
             'view_layouts',
-            'view_menus'
+            'view_menus',
         ];
 
         foreach (Role::all() as $role) {

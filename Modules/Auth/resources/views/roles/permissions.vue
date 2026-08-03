@@ -18,7 +18,7 @@
                 <UButton
                     @click="submit"
                     :loading="form.processing"
-                    :disabled="!form.isDirty || role.can.super"
+                    :disabled="!form.isDirty || Boolean((role as any)?.can?.super)"
                     label="Save changes"
                 />
             </div>

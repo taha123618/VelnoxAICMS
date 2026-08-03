@@ -16,23 +16,33 @@
                 />
             </template>
             <template #actions>
-                <UButton
-                    v-if="authUser.can.create_testimonials"
-                    color="primary"
-                    variant="solid"
-                    as-child
-                >
-                    <ModalLink :href="route('admin.testimonials.create')">
-                        <UIcon name="ph:plus-circle" />
-                        New Testimonial
-                    </ModalLink>
-                </UButton>
+                <div class="flex gap-2">
+                    <UButton
+                        color="primary"
+                        variant="soft"
+                        icon="ph:sparkle"
+                        @click.prevent="showAiModal = true"
+                    >
+                        Generate with AI
+                    </UButton>
+                    <UButton
+                        v-if="authUser.can.create_testimonials"
+                        color="primary"
+                        variant="solid"
+                        as-child
+                    >
+                        <ModalLink :href="route('admin.testimonials.create')">
+                            <UIcon name="ph:plus-circle" />
+                            New Testimonial
+                        </ModalLink>
+                    </UButton>
+                </div>
             </template>
             <UTable
                 ref="tableRef"
                 sticky
                 :columns="columns"
-                :data="data.data"
+                :data="testimonialList"
                 class="flex-1"
                 :loading="isLoading"
                 :sorting="sortingOptions"
@@ -84,10 +94,23 @@
             @cancel="cancel"
             @confirm="confirm"
         />
+
+        <AiPromptModal
+            v-model:isOpen="showAiModal"
+            title="AI Testimonial Generator"
+            description="Generate realistic, high-conversion customer testimonials using AI."
+            endpoint="/api/testimonial/generate-testimonial"
+            placeholder="Generate a 5-star customer review for our SaaS CMS platform..."
+            :suggestions="['5-Star SaaS Review', 'E-commerce Customer Feedback', 'Agency Client Case Study']"
+            @success="handleAiSuccess"
+        />
     </AdminLayout>
 </template>
 
 <script setup lang="ts">
+import { ref } from 'vue';
+import AiPromptModal from '@/components/AiPromptModal.vue';
+import { useToast } from '@nuxt/ui/runtime/composables/useToast.js';
 import BasePagination from '@/components/BasePagination.vue';
 import BaseTableWrapper from '@/components/BaseTableWrapper.vue';
 import { useDatatable } from '@/composables/use-datatable';
@@ -99,8 +122,8 @@ import { useAuth } from '@modules/Auth/resources/composables/use-auth';
 import type { BreadcrumbItem, DropdownMenuItem } from '@nuxt/ui';
 
 const UBadge = resolveComponent('UBadge');
-const UButton = resolveComponent('UButton')
-const authUser = useAuth()
+const UButton = resolveComponent('UButton');
+const authUser = useAuth();
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -111,12 +134,26 @@ const breadcrumbs: BreadcrumbItem[] = [
 
 const { data, filters } = defineProps<{
     data: ITableData;
-    filters: Record<string, any>
+    filters: Record<string, any>;
 }>();
 
-const { getSortableHeader, form, handleSort, sortingOptions, isLoading } = useDatatable(filters, data)
-
+const { getSortableHeader, form, handleSort, sortingOptions, isLoading } = useDatatable(filters, data);
 const { isRevealed, cancel, confirm, reveal } = useConfirmDialog();
+
+const showAiModal = ref(false);
+const testimonialList = ref<any[]>([...(data?.data ?? [])]);
+
+function handleAiSuccess(result: any) {
+    const testimonial = result.testimonial || result;
+    if (testimonial) {
+        useToast().add({
+            title: 'Testimonial Generated!',
+            description: `Generated testimonial from "${testimonial.name || 'Customer'}"`,
+            color: 'success',
+        });
+        router.reload();
+    }
+}
 
 
 function getDropdownItems(rowData: Record<string, any>): DropdownMenuItem[] {
@@ -177,7 +214,7 @@ const columns = [
     {
         accessorKey: 'status',
         header: 'Status',
-        cell: ({ row }) => {
+        cell: ({ row }: { row: any }) => {
             return h(
                 UBadge,
                 {

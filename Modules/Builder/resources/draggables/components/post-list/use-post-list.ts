@@ -1,12 +1,12 @@
 import { useElement } from '@modules/Builder/resources/scripts/use-element';
-import ZioraElement from '@modules/Builder/resources/scripts/ziora-element';
+import VelnoxAIElement from '@modules/Builder/resources/scripts/VelnoxAI-element';
 import axios from 'axios';
 
-export const usePostList = (element: ZioraElement) => {
+export const usePostList = (element: VelnoxAIElement) => {
     const { className } = useElement(element);
 
     const posts = ref<Modules.Page.Data.PostData[]>([]);
-    
+
 
     function fetchPosts() {
         axios

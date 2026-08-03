@@ -24,7 +24,7 @@
 
     <UFormField
       :ui="{
-        label: 'block font-normal ziora-label',
+        label: 'block font-normal VelnoxAI-label',
       }"
       label="Text shadow"
       class="grid grid-cols-2 items-center"
@@ -76,7 +76,7 @@
     <UFormField
       label="Typography"
       :ui="{
-        label: 'block font-normal ziora-label',
+        label: 'block font-normal VelnoxAI-label',
       }"
       class="grid grid-cols-2 items-center"
     >
@@ -235,9 +235,9 @@ import BuilderSlider from "@modules/Builder/resources/components/form/builder-sl
 import BuilderToggleGroup from "@modules/Builder/resources/components/form/builder-toggle-group.vue";
 import { useElement } from "@modules/Builder/resources/scripts/use-element";
 import { FONTS, fontWeights, textTransforms } from "@modules/Builder/resources/scripts/constants";
-import ZioraElement from "@modules/Builder/resources/scripts/ziora-element";
+import VelnoxAIElement from "@modules/Builder/resources/scripts/VelnoxAI-element";
 
-const { element } = defineProps<{ element: ZioraElement }>();
+const { element } = defineProps<{ element: VelnoxAIElement }>();
 
 const { getStyle, deleteHoverStyle, hasChanged, setStyle } = useElement(element);
 

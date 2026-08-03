@@ -1,8 +1,8 @@
 import { useElement } from '@modules/Builder/resources/scripts/use-element';
-import ZioraElement from '@modules/Builder/resources/scripts/ziora-element';
+import VelnoxAIElement from '@modules/Builder/resources/scripts/VelnoxAI-element';
 import axios from 'axios';
 
-export const useTestimonials = (element: ZioraElement) => {
+export const useTestimonials = (element: VelnoxAIElement) => {
     const active = ref(0);
     const items = ref<Modules.Testimonial.Data.TestimonialData[]>([]);
     const { className } = useElement(element);

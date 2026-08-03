@@ -4,8 +4,8 @@ namespace Modules\Auth\Actions;
 
 use Illuminate\Http\Request;
 use Modules\Auth\Models\Role;
-use Spatie\QueryBuilder\QueryBuilder;
 use Spatie\QueryBuilder\AllowedFilter;
+use Spatie\QueryBuilder\QueryBuilder;
 
 class SearchRolesAction
 {

@@ -1,16 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 110 97">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 110 97" width="110" height="97">
   <defs>
-    <style>
-      .cls-1 {
-        fill: #7d85ff;
-      }
-    </style>
+    <linearGradient id="fav-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#6366F1"/>
+      <stop offset="100%" stop-color="#A855F7"/>
+    </linearGradient>
   </defs>
-  <g id="icon_only" data-name="icon only">
+  <g id="icon_only">
     <g>
-      <path class="cls-1" d="M105.87,24.71l-21.2,54.85c-2.23,5.76-8.71,8.63-14.47,6.4l-40.34-15.59"/>
-      <path class="cls-1" d="M4.13,74.29L25.32,19.44c2.23-5.76,8.71-8.63,14.47-6.4l40.34,15.59"/>
+      <path fill="url(#fav-grad)" d="M105.87,24.71l-21.2,54.85c-2.23,5.76-8.71,8.63-14.47,6.4l-40.34-15.59Z"/>
+      <path fill="url(#fav-grad)" opacity="0.85" d="M4.13,74.29L25.32,19.44c2.23-5.76,8.71-8.63,14.47-6.4l40.34,15.59Z"/>
     </g>
   </g>
 </svg>

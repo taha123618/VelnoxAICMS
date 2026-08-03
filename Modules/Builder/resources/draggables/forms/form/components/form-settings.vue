@@ -21,7 +21,7 @@
       <div>
         <UFormField
           :ui="{
-            label: 'block font-normal ziora-label',
+            label: 'block font-normal VelnoxAI-label',
           }"
           label="Redirect to"
         >
@@ -57,13 +57,13 @@
 </template>
 
 <script setup lang="ts">
-import ZioraElement from '@modules/Builder/resources/scripts/ziora-element';
+import VelnoxAIElement from '@modules/Builder/resources/scripts/VelnoxAI-element';
 import BuilderInput from '@modules/Builder/resources/components/form/builder-input.vue';
 import BuilderSelect from '@modules/Builder/resources/components/form/builder-select.vue';
 import { visitModal } from '@inertiaui/modal-vue'
 import BuilderTextarea from '@modules/Builder/resources/components/form/builder-textarea.vue';
 
-const { element } = defineProps<{ element: ZioraElement }>();
+const { element } = defineProps<{ element: VelnoxAIElement }>();
 
 const afterSubmitOptions = [
   { label: 'Show toast message', value: 'toast' },

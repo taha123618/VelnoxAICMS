@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Modules\Media\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
@@ -14,8 +16,8 @@ class CreateFolderRequest extends FormRequest
         return [
             'name' => [
                 'required',
-                'unique:folders,name'
-            ]
+                'unique:folders,name',
+            ],
         ];
     }
 

@@ -1,25 +1,25 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Providers;
 
 use Carbon\CarbonImmutable;
-use Laravel\Sanctum\Sanctum;
-use Modules\Auth\Models\User;
-use Illuminate\Support\Facades\App;
-use Illuminate\Support\Facades\URL;
-use Illuminate\Support\Facades\Date;
-use Illuminate\Support\Facades\Gate;
-use Illuminate\Support\Facades\Vite;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\ServiceProvider;
 use Illuminate\Auth\Notifications\ResetPassword;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\Date;
+use Illuminate\Support\Facades\URL;
+use Illuminate\Support\Facades\Vite;
+use Illuminate\Support\ServiceProvider;
+use Modules\Auth\Models\User;
 
 class AppServiceProvider extends ServiceProvider
 {
     /**
      * Register any application services.
      */
+    #[\Override]
     public function register(): void
     {
         //
@@ -35,14 +35,12 @@ class AppServiceProvider extends ServiceProvider
         Model::automaticallyEagerLoadRelationships();
 
         Model::unguard();
-        
+
         JsonResource::withoutWrapping();
-        
+
         Vite::useAggressivePrefetching();
-        
-        ResetPassword::createUrlUsing(function (User $user, string $token) {
-            return URL::route('admin.password.reset', ['token' => $token, 'email' => $user->getEmailForPasswordReset()]);
-        });
+
+        ResetPassword::createUrlUsing(fn (User $user, string $token) => URL::route('admin.password.reset', ['token' => $token, 'email' => $user->getEmailForPasswordReset()]));
 
     }
 }

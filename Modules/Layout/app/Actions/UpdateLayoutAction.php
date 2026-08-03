@@ -2,17 +2,17 @@
 
 namespace Modules\Layout\Actions;
 
-use Modules\Layout\Models\Layout;
 use Modules\Layout\Http\Requests\UpdateLayoutRequest;
+use Modules\Layout\Models\Layout;
 
 class UpdateLayoutAction
 {
-    public function handle(UpdateLayoutRequest $request, Layout $layout)
+    public function handle(UpdateLayoutRequest $updateLayoutRequest, Layout $layout)
     {
 
         return tap($layout)->update([
-            'content' => $request->content
+            'content' => $updateLayoutRequest->content,
         ]);
-        
+
     }
 }

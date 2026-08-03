@@ -1,8 +1,8 @@
 import { useElement } from '@modules/Builder/resources/scripts/use-element';
-import ZioraElement from '@modules/Builder/resources/scripts/ziora-element';
+import VelnoxAIElement from '@modules/Builder/resources/scripts/VelnoxAI-element';
 import type { AccordionItem as TAccordionItem } from '@nuxt/ui';
 
-export const useAccordion = (element: ZioraElement) => {
+export const useAccordion = (element: VelnoxAIElement) => {
     const { className } = useElement(element);
 
     const items = computed<TAccordionItem[]>(

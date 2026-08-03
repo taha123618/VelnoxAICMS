@@ -1,11 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Modules\Builder\Enums;
 
 use Spatie\TypeScriptTransformer\Attributes\TypeScript;
 
 #[TypeScript()]
-enum LinkType: string {
+enum LinkType: string
+{
     case Page = 'page';
     case Post = 'post';
     case External = 'external';

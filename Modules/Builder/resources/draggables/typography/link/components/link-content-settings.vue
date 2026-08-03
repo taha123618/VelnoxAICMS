@@ -10,7 +10,7 @@
         <div>
             <UFormField
                 :ui="{
-                    label: 'block font-normal ziora-label',
+                    label: 'block font-normal VelnoxAI-label',
                 }"
                 label="Pick link"
                 class="grid grid-cols-3 gap-1 items-center"
@@ -58,7 +58,7 @@
 import BuilderInput from '@modules/Builder/resources/components/form/builder-input.vue';
 import BuilderSelect from '@modules/Builder/resources/components/form/builder-select.vue';
 import VisibilitySettings from '@modules/Builder/resources/components/settings/visibility-settings.vue';
-import ZioraElement from '@modules/Builder/resources/scripts/ziora-element';
+import VelnoxAIElement from '@modules/Builder/resources/scripts/VelnoxAI-element';
 import { visitModal } from '@inertiaui/modal-vue'
 
 function launchLinkPicker() {
@@ -78,7 +78,7 @@ function launchLinkPicker() {
 
 
 const { element } = defineProps<{
-    element: ZioraElement;
+    element: VelnoxAIElement;
 }>();
 
 const linkTargets = [

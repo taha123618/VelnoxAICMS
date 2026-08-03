@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Modules\Layout\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
@@ -13,7 +15,7 @@ class CreateLayoutRequest extends FormRequest
     {
         return [
             'name' => ['required', 'unique:layouts,name'],
-            'content' => ['required']
+            'content' => ['required'],
         ];
     }
 

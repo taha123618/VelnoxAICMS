@@ -1,5 +1,5 @@
 import { TElement } from '@modules/Builder/resources/scripts/types';
-import ZioraElement from '@modules/Builder/resources/scripts/ziora-element';
+import VelnoxAIElement from '@modules/Builder/resources/scripts/VelnoxAI-element';
 import contentElement from '@modules/Builder/resources/draggables/static/content/config';
 
 const config: TElement = {
@@ -9,7 +9,7 @@ const config: TElement = {
     isLayoutElement: true,
     type: 'body',
     icon: 'ph:square',
-    children: [new ZioraElement(contentElement)],
+    children: [new VelnoxAIElement(contentElement)],
     props: {
         tag: 'div',
         styles: {

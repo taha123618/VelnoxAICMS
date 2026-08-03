@@ -24,10 +24,10 @@
 <script setup lang="ts">
 import BuilderImagePicker from '@modules/Builder/resources/components/form/builder-image-picker.vue';
 import BuilderInput from '@modules/Builder/resources/components/form/builder-input.vue';
-import ZioraElement from '@modules/Builder/resources/scripts/ziora-element';
+import VelnoxAIElement from '@modules/Builder/resources/scripts/VelnoxAI-element';
 
 const { element } = defineProps<{
-    element: ZioraElement;
+    element: VelnoxAIElement;
 }>();
 
 </script>

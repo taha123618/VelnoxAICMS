@@ -2,7 +2,7 @@
     <UFormField
         :label="label"
         :ui="{
-            label: 'block font-normal ziora-label',
+            label: 'block font-normal VelnoxAI-label',
         }"
         class="flex flex-col gap-1 text-xs"
     >
@@ -25,8 +25,8 @@
         </template>
         <template #hint>
             <USelect
-                v-if="inputValue.hasUnit"
-                :model-value="inputValue.unit"
+                v-if="safeInputValue.hasUnit"
+                :model-value="safeInputValue.unit"
                 :items="unitOptions"
                 size="xs"
                 arrow
@@ -63,7 +63,7 @@
                 >
                     <USelect
                         v-if="inputType == 'select'"
-                        :model-value="inputValue[position]"
+                        :model-value="safeInputValue[position]"
                         @update:model-value="handleChange(position, $event)"
                         :items="options"
                         size="xs"
@@ -86,7 +86,7 @@
                         v-else-if="inputType == 'color'"
                         :show-label="false"
                         @change="handleChange(position, $event)"
-                        :value="inputValue[position]"
+                        :value="safeInputValue[position]"
                     />
 
                     <UInput
@@ -96,7 +96,7 @@
                         variant="subtle"
                         class="dark w-20"
                         placeholder="1px"
-                        :model-value="inputValue[position]"
+                        :model-value="safeInputValue[position]"
                         @update:model-value="handleChange(position, $event)"
                         :disabled="disabled"
                     />
@@ -109,7 +109,7 @@
                         :disabled="disabled"
                         orientation="horizontal"
                         :format-options="format"
-                        :model-value="inputValue[position]"
+                        :model-value="safeInputValue[position]"
                         @update:model-value="handleChange(position, $event)"
                         size="xs"
                         variant="subtle"
@@ -137,13 +137,14 @@
 </template>
 
 <script setup lang="ts">
+import { computed, watch } from 'vue';
 import { getId } from '@/helpers';
 import BaseTooltip from '@modules/Builder/resources/components/base-tooltip.vue';
 import BuilderColorInput from '@modules/Builder/resources/components/form/builder-color-input.vue';
 
 interface Props {
     inputType?: 'text' | 'select' | 'color';
-    inputValue: Record<string, any>;
+    inputValue?: Record<string, any>;
     label?: string;
     labelField?: string;
     valueField?: string;
@@ -187,15 +188,27 @@ const props = withDefaults(defineProps<Props>(), {
 
 const id = getId();
 
-const isLinked = computed<boolean>(() => props.inputValue.isLinked || false)
+const safeInputValue = computed<Record<string, any>>(() => {
+    return props.inputValue || {
+        top: 0,
+        right: 0,
+        bottom: 0,
+        left: 0,
+        unit: 'px',
+        isLinked: false,
+        hasUnit: false,
+    };
+});
+
+const isLinked = computed<boolean>(() => safeInputValue.value.isLinked || false)
 
 const emit = defineEmits(['change', 'clear:hover']);
 
 function getEmittableValue(key: string) {
-    if (isNaN(props.inputValue[key])) {
+    if (safeInputValue.value[key] === undefined || isNaN(safeInputValue.value[key])) {
         return 0;
     }
-    return props.inputValue[key];
+    return safeInputValue.value[key];
 }
 
 function handleChange(key: string, event: any) {
@@ -204,7 +217,7 @@ function handleChange(key: string, event: any) {
     } else {
         if (key == 'unit' && event != 'custom') {
             emit('change', {
-                ...props.inputValue,
+                ...safeInputValue.value,
                 top: getEmittableValue('top'),
                 right: getEmittableValue('right'),
                 bottom: getEmittableValue('bottom'),
@@ -212,12 +225,12 @@ function handleChange(key: string, event: any) {
                 [key]: event,
             });
         } else {
-            emit('change', { ...props.inputValue, [key]: event });
+            emit('change', { ...safeInputValue.value, [key]: event });
         }
     }
 }
 
-const isCustom = computed<boolean>(() => props.inputValue.unit == 'custom');
+const isCustom = computed<boolean>(() => safeInputValue.value.unit == 'custom');
 
 const format = computed(() => {
     let fmt = {};
@@ -238,20 +251,20 @@ const step = computed(() => {
 });
 
 
-watch(() => props.inputValue.isLinked, (newValue) => {
+watch(() => safeInputValue.value.isLinked, (newValue) => {
     if(newValue == true){
-        emitAll(props.inputValue.top);
+        emitAll(safeInputValue.value.top);
     }
 })
 
 async function toggleLinked() {
-    const currentlyUnLinked = !props.inputValue.isLinked || props.inputValue.isLinked == undefined
-    emit('change', { ...props.inputValue, isLinked: currentlyUnLinked ? true : false });
+    const currentlyUnLinked = !safeInputValue.value.isLinked || safeInputValue.value.isLinked == undefined
+    emit('change', { ...safeInputValue.value, isLinked: currentlyUnLinked ? true : false });
 }
 
 function emitAll(value: any) {
     emit('change', {
-        ...props.inputValue,
+        ...safeInputValue.value,
         top: value,
         right: value,
         bottom: value,

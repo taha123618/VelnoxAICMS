@@ -13,12 +13,12 @@
                         <img
                             class="h-14 w-auto dark:hidden"
                             src="/assets/images/logo-full-black.svg"
-                            alt="Ziora CMS"
+                            alt="VelnoxAI CMS"
                         />
                         <img
                             class="h-14 w-auto hidden dark:block"
                             src="/assets/images/logo-full-white.svg"
-                            alt="Ziora CMS"
+                            alt="VelnoxAI CMS"
                         />
                     </div>
                     <div class="space-y-2 text-center">

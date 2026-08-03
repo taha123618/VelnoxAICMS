@@ -1,18 +1,20 @@
 <?php
 
+declare(strict_types=1);
+
 use Illuminate\Foundation\Http\Middleware\HandlePrecognitiveRequests;
 use Illuminate\Support\Facades\Route;
 use Modules\Page\Http\Controllers\FrontpageController;
-use Modules\Page\Http\Controllers\PageController;
-use Modules\Page\Http\Controllers\PostController;
-use Modules\Page\Http\Controllers\PageMetaController;
-use Modules\Page\Http\Controllers\PostMetaController;
 use Modules\Page\Http\Controllers\PageContentController;
+use Modules\Page\Http\Controllers\PageController;
 use Modules\Page\Http\Controllers\PageDuplicationController;
+use Modules\Page\Http\Controllers\PageMetaController;
 use Modules\Page\Http\Controllers\PageStatusController;
 use Modules\Page\Http\Controllers\PostContentController;
+use Modules\Page\Http\Controllers\PostController;
+use Modules\Page\Http\Controllers\PostMetaController;
 
-Route::group(['middleware' => ['auth', 'demo.protect', 'verified'], 'as' => 'admin.', 'prefix' => 'cp'], function () {
+Route::group(['middleware' => ['auth', 'demo.protect', 'verified'], 'as' => 'admin.', 'prefix' => 'cp'], function (): void {
     Route::resource('pages', PageController::class)
         ->except('update')
         ->names('pages');

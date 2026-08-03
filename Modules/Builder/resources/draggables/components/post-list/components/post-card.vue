@@ -46,10 +46,10 @@
 </template>
 
 <script setup lang="ts">
-import ZioraElement from '@modules/Builder/resources/scripts/ziora-element';
+import VelnoxAIElement from '@modules/Builder/resources/scripts/VelnoxAI-element';
 
 defineProps<{
-    element: ZioraElement,
+    element: VelnoxAIElement,
     post: Modules.Page.Data.PostData
 }>()
 </script>

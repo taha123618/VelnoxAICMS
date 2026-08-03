@@ -48,11 +48,11 @@
 <script setup lang="ts">
 import BuilderSelect from '@modules/Builder/resources/components/form/builder-select.vue';
 import { elementSettings } from '@modules/Builder/resources/draggables';
-import { useZiora } from '@modules/Builder/resources/scripts/use-ziora';
+import { useVelnoxAI } from '@modules/Builder/resources/scripts/use-VelnoxAI';
 import type { AccordionItem } from '@nuxt/ui';
 import { computed } from 'vue';
 
-const store = useZiora();
+const store = useVelnoxAI();
 
 
 const settingsList = computed<Record<string, any>>(() => {

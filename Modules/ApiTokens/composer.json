@@ -1,0 +1,30 @@
+{
+    "name": "velnoxaicms/apitokens",
+    "description": "",
+    "authors": [
+        {
+            "name": "Taha Ahmed",
+            "email": "tahaahmedanees2@gmail.com"
+        }
+    ],
+    "extra": {
+        "laravel": {
+            "providers": [],
+            "aliases": {
+
+            }
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Modules\\ApiTokens\\": "app/",
+            "Modules\\ApiTokens\\Database\\Factories\\": "database/factories/",
+            "Modules\\ApiTokens\\Database\\Seeders\\": "database/seeders/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Modules\\ApiTokens\\Tests\\": "tests/"
+        }
+    }
+}

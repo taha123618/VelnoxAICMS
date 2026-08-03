@@ -2,20 +2,20 @@
 
 namespace Modules\Page\Actions;
 
-use Modules\Page\Models\Page;
 use Modules\Page\Enums\PageType;
 use Modules\Page\Http\Requests\CreatePostRequest;
+use Modules\Page\Models\Page;
 
 class CreatePostAction
 {
-    public function handle(CreatePostRequest $request)
+    public function handle(CreatePostRequest $createPostRequest)
     {
         return Page::create([
-            'title' => $request->title,
-            'category_id' => $request->category,
-            'layout_id' => $request->layout,
-            'content' => $request->content,
-            'type' => PageType::Post
+            'title' => $createPostRequest->title,
+            'category_id' => $createPostRequest->category,
+            'layout_id' => $createPostRequest->layout,
+            'content' => $createPostRequest->content,
+            'type' => PageType::Post,
         ]);
     }
 }

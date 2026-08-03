@@ -2,7 +2,7 @@
     <UFormField
         :label="label"
         :ui="{
-            label: 'block font-normal ziora-label',
+            label: 'block font-normal VelnoxAI-label',
             container: labelPosition == 'left' ? 'col-span-2 mt-0' : 'relative',
         }"
         :class="[

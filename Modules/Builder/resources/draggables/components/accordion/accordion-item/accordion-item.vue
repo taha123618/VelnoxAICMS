@@ -36,22 +36,22 @@
 
 <script setup lang="ts">
 import BaseRecursiveElement from '@modules/Builder/resources/components/base-recursive-element.vue';
-import ZioraElement from '@modules/Builder/resources/scripts/ziora-element';
+import VelnoxAIElement from '@modules/Builder/resources/scripts/VelnoxAI-element';
 import { unrefElement } from '@vueuse/core';
 import { useDnD } from '@modules/Builder/resources/scripts/use-dnd';
-import { useZiora } from '@modules/Builder/resources/scripts/use-ziora';
+import { useVelnoxAI } from '@modules/Builder/resources/scripts/use-VelnoxAI';
 
 import { getId } from '@/helpers';
 
 const { element } = defineProps<{
-    element: ZioraElement;
+    element: VelnoxAIElement;
 }>();
 
 const id = getId();
 
 const { elRef, dropCall, isDraggedOver } = useDnD(element);
 
-const store = useZiora()
+const store = useVelnoxAI()
 
 let cleanup = () => { };
 

@@ -77,21 +77,21 @@ import {
 import { pointerOutsideOfPreview } from '@atlaskit/pragmatic-drag-and-drop/element/pointer-outside-of-preview';
 import { setCustomNativeDragPreview } from '@atlaskit/pragmatic-drag-and-drop/element/set-custom-native-drag-preview';
 import { unrefElement } from '@vueuse/core';
-import ZioraElement from '@modules/Builder/resources/scripts/ziora-element';
-import { useZiora } from '@modules/Builder/resources/scripts/use-ziora';
+import VelnoxAIElement from '@modules/Builder/resources/scripts/VelnoxAI-element';
+import { useVelnoxAI } from '@modules/Builder/resources/scripts/use-VelnoxAI';
 import { render } from 'vue';
 
 const { element, expanded, parentItem, index, level } = defineProps<{
-    element: ZioraElement;
+    element: VelnoxAIElement;
     expanded: boolean;
     selected: boolean;
     index: number;
     level: number;
-    parentItem?: ZioraElement;
+    parentItem?: VelnoxAIElement;
 }>();
 
 const elRef = ref();
-const store = useZiora();
+const store = useVelnoxAI();
 const isSelected = computed(() => store.selectedElement?.id == element.id);
 const expandedItems = defineModel<string[]>();
 const isDragging = ref(false);

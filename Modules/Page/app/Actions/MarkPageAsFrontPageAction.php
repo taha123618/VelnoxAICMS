@@ -6,11 +6,11 @@ use Modules\Page\Models\Page;
 
 class MarkPageAsFrontPageAction
 {
-    public function handle(Page $page)
+    public function handle(Page $page): void
     {
         Page::where('id', '!=', $page->id)
             ->frontpage()->update([
-                'is_frontpage' => false
+                'is_frontpage' => false,
             ]);
 
         if (! $page->is_frontpage) {

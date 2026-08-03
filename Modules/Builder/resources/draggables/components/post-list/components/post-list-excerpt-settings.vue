@@ -37,10 +37,10 @@
 import BuilderColorInput from '@modules/Builder/resources/components/form/builder-color-input.vue';
 import BuilderSlider from '@modules/Builder/resources/components/form/builder-slider.vue';
 import BuilderSelect from '@modules/Builder/resources/components/form/builder-select.vue';
-import ZioraElement from '@modules/Builder/resources/scripts/ziora-element';
+import VelnoxAIElement from '@modules/Builder/resources/scripts/VelnoxAI-element';
 import { fontWeights } from '@modules/Builder/resources/scripts/constants';
 const { element } = defineProps<{
-    element: ZioraElement;
+    element: VelnoxAIElement;
 }>();
 </script>
 

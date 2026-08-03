@@ -19,12 +19,12 @@
             <template #item="{ item, index, level, expanded, selected }">
                 <!-- prettier-ignore -->
                 <ElementTreeItem
-                    :element="(item as ZioraElement)"
+                    :element="(item as VelnoxAIElement)"
                     :selected="selected"
                     :index="index"
                     :level="level"
                     v-model="expandedItems"
-                    :parent-item="(findParentFromId(store.elements, item.id) as ZioraElement)"
+                    :parent-item="(findParentFromId(store.elements, item.id) as VelnoxAIElement)"
                     :expanded="expanded"
                 />
             </template>
@@ -43,12 +43,12 @@ import { combine } from '@atlaskit/pragmatic-drag-and-drop/combine';
 import { monitorForElements } from '@atlaskit/pragmatic-drag-and-drop/element/adapter';
 import { TElement } from '@modules/Builder/resources/scripts/types';
 import { useTree } from '@modules/Builder/resources/scripts/use-tree';
-import { useZiora } from '@modules/Builder/resources/scripts/use-ziora';
-import ZioraElement from '@modules/Builder/resources/scripts/ziora-element';
+import { useVelnoxAI } from '@modules/Builder/resources/scripts/use-VelnoxAI';
+import VelnoxAIElement from '@modules/Builder/resources/scripts/VelnoxAI-element';
 
 const { updateTree } = useTree();
 const el = useTemplateRef<HTMLElement>('el');
-const store = useZiora();
+const store = useVelnoxAI();
 
 const expandedItems = ref([store.elements[0]?.id]);
 
@@ -93,7 +93,7 @@ watchEffect((onCleanup) => {
                         }) ?? [];
                     if (updateTree.length > 0) {
                         store.setElements([
-                            ZioraElement.fromObject(
+                            VelnoxAIElement.fromObject(
                                 updatedTree[0] as TElement,
                             ),
                         ]);

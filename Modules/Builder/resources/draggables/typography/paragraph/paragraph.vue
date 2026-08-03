@@ -6,7 +6,7 @@
 
 <script setup lang="ts">
 import BaseElementWrapper from '@modules/Builder/resources/components/base-element-wrapper.vue';
-import ZioraElement from '@modules/Builder/resources/scripts/ziora-element';
+import VelnoxAIElement from '@modules/Builder/resources/scripts/VelnoxAI-element';
 import { Color } from '@tiptap/extension-color';
 import Highlight from '@tiptap/extension-highlight';
 import TextStyle from '@tiptap/extension-text-style';
@@ -20,11 +20,11 @@ import {
     EditorContent,
 } from '@tiptap/vue-3'
 import { useTiptap } from '@modules/Builder/resources/components/form/editor/use-tiptap';
-import { useZiora } from '@modules/Builder/resources/scripts/use-ziora';
+import { useVelnoxAI } from '@modules/Builder/resources/scripts/use-VelnoxAI';
 
 
 const { element } = defineProps<{
-    element: ZioraElement;
+    element: VelnoxAIElement;
 }>();
 
 const content = computed<string>(() => {
@@ -32,7 +32,7 @@ const content = computed<string>(() => {
 });
 
 const { processHtmlContent } = useTiptap()
-const store = useZiora()
+const store = useVelnoxAI()
 const editorRef = ref<Editor>();
 
 watch(content,

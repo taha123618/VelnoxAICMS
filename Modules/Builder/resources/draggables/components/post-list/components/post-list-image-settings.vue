@@ -26,10 +26,10 @@
 
 <script setup lang="ts">
 import BuilderInputGroup from '@modules/Builder/resources/components/form/builder-input-group.vue';
-import ZioraElement from '@modules/Builder/resources/scripts/ziora-element';
+import VelnoxAIElement from '@modules/Builder/resources/scripts/VelnoxAI-element';
 
 const { element } = defineProps<{
-    element: ZioraElement;
+    element: VelnoxAIElement;
 }>();
 
 const heightUnitOptions = ['auto', '%', 'px', 'rem', 'vh', 'em'];

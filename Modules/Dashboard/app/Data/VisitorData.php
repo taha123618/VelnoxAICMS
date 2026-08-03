@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Modules\Dashboard\Data;
 
 use Spatie\LaravelData\Data;
@@ -10,7 +12,7 @@ class VisitorData extends Data
 {
     public function __construct(
         public string $id
-    ){}
+    ) {}
 
     /*
     public static function fromModel(Model $model): self

@@ -1,4 +1,4 @@
-import ZioraElement from '@modules/Builder/resources/scripts/ziora-element';
+import VelnoxAIElement from '@modules/Builder/resources/scripts/VelnoxAI-element';
 import {
     defaultBackgroundStyles,
     defaultDivStyles,
@@ -21,8 +21,8 @@ const config: TElement = {
         orientation: 'horizontal',
         variant: 'link', // pill / link
         size: 'md', // "xs" | "md" | "sm" | "lg" | "xl"
-       
-        trigger:{
+
+        trigger: {
             backgroundColor: '#000000',
             activeColor: '#ffffff',
             color: '#000000',
@@ -30,7 +30,7 @@ const config: TElement = {
             fontWeight: 400,
             fontFamily: 'Inter'
         },
-        indicator:{
+        indicator: {
             backgroundColor: '#000000'
         },
 
@@ -79,12 +79,12 @@ const config: TElement = {
         },
     },
     children: [
-        new ZioraElement({
+        new VelnoxAIElement({
             ...tabsItemElement,
             id: getId(),
             name: 'Item 1',
         }),
-        new ZioraElement({
+        new VelnoxAIElement({
             ...tabsItemElement,
             id: getId(),
             name: 'Item 2',

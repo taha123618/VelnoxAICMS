@@ -2,8 +2,6 @@
 
 namespace Modules\Media\Actions;
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Gate;
 use Modules\Media\Models\Folder;
 
 class GetFolderContentAction
@@ -15,7 +13,7 @@ class GetFolderContentAction
 
         $fileContent = $folder->media;
 
-        $fileContent = $fileContent->map(fn($content) => [
+        $fileContent = $fileContent->map(fn ($content): array => [
             'id' => $content->id,
             'name' => $content->file_name,
             'type' => $content->extension,
@@ -32,7 +30,7 @@ class GetFolderContentAction
             ],
         ]);
 
-        $folderContent = $folderContent->map(fn($content) => [
+        $folderContent = $folderContent->map(fn ($content): array => [
             'id' => $content->id,
             'name' => $content->name,
             'owner' => $content->user?->name,
@@ -42,7 +40,7 @@ class GetFolderContentAction
             'isDirectory' => true,
             'can' => $content->authorization,
             'contentCount' => $content->getTotalChildren(),
-            'size' => '-'
+            'size' => '-',
         ]);
 
         return $folderContent->concat($fileContent);

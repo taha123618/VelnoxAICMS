@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Modules\Page\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
@@ -17,7 +19,7 @@ class CreatePageRequest extends FormRequest
                 // 'unique:pages,title'
             ],
             'layout' => ['required', 'exists:layouts,id'],
-            'content' => ['required']
+            'content' => ['required'],
         ];
     }
 

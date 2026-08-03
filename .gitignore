@@ -28,3 +28,7 @@ components.d.ts
 
 package-lock.json
 composer.lock
+
+**/caddy
+frankenphp
+frankenphp-worker.php

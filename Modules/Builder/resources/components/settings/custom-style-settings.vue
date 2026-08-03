@@ -18,10 +18,10 @@
 <script setup lang="ts">
 import BuilderCodeInput from '@modules/Builder/resources/components/form/builder-code-input.vue';
 import BuilderTagsInput from '@modules/Builder/resources/components/form/builder-tags-input.vue';
-import ZioraElement from '@modules/Builder/resources/scripts/ziora-element';
+import VelnoxAIElement from '@modules/Builder/resources/scripts/VelnoxAI-element';
 
 
-const { element } = defineProps<{ element: ZioraElement }>();
+const { element } = defineProps<{ element: VelnoxAIElement }>();
 
 </script>
 

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Modules\Dashboard\Data;
 
 use Illuminate\Support\Collection;
@@ -15,5 +17,5 @@ class DashboardData extends Data
         public array|Collection $visits_by_browser,
         public array|Collection $visits_by_url,
         public DashboardStatsData $stats
-    ){}
+    ) {}
 }

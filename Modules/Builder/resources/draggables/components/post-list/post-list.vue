@@ -15,14 +15,14 @@
 import BaseElementWrapper from '@modules/Builder/resources/components/base-element-wrapper.vue';
 import PostCard from '@modules/Builder/resources/draggables/components/post-list/components/post-card.vue';
 import { usePostList } from '@modules/Builder/resources/draggables/components/post-list/use-post-list';
-import ZioraElement from '@modules/Builder/resources/scripts/ziora-element';
+import VelnoxAIElement from '@modules/Builder/resources/scripts/VelnoxAI-element';
 import { useHead } from '@unhead/vue';
 
 // https://dribbble.com/shots/10711483-Blog-Listing-Articles-Page
 // https://dribbble.com/shots/17946180-blog-list
 // https://dribbble.com/shots/25761719-Paynext-Blog-Page-Fintech-Website-UI-Figma
 const { element } = defineProps<{
-    element: ZioraElement;
+    element: VelnoxAIElement;
 }>();
 
 const { getStyles, posts } = usePostList(element)

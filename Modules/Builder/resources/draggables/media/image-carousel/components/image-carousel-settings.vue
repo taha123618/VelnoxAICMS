@@ -84,10 +84,10 @@
 import BuilderInputGroup from '@modules/Builder/resources/components/form/builder-input-group.vue';
 import BuilderSlider from '@modules/Builder/resources/components/form/builder-slider.vue';
 import BuilderToggleGroup from '@modules/Builder/resources/components/form/builder-toggle-group.vue';
-import ZioraElement from '@modules/Builder/resources/scripts/ziora-element';
+import VelnoxAIElement from '@modules/Builder/resources/scripts/VelnoxAI-element';
 
 const { element } = defineProps<{
-    element: ZioraElement;
+    element: VelnoxAIElement;
 }>();
 
 const flexAlign = [

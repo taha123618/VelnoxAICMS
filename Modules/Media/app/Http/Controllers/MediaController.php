@@ -2,17 +2,15 @@
 
 namespace Modules\Media\Http\Controllers;
 
-use Illuminate\Http\Request;
-use Modules\Media\Models\Media;
-use Modules\Media\Models\Folder;
-use Modules\Media\Data\MediaData;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Redirect;
+use Illuminate\Http\Request;
 use Modules\Media\Actions\DeleteMediaAction;
+use Modules\Media\Data\MediaData;
+use Modules\Media\Models\Folder;
+use Modules\Media\Models\Media;
 
 class MediaController extends Controller
 {
-    
     public function store(Request $request, Folder $folder)
     {
 
@@ -28,17 +26,17 @@ class MediaController extends Controller
 
         if ($chunkIndex + 1 == $totalChunks) {
             $media = $folder->addMedia($tempFilePath)->toMediaCollection();
+
             return MediaData::fromModel($media);
         }
 
         return response()->noContent();
     }
 
-
-    public function destroy(Request $request, Media $file)
+    public function destroy(Request $request, Media $media)
     {
-        app(DeleteMediaAction::class)->handle($file);
-        
-        return Redirect::back()->with('success', 'File deleted!');
+        resolve(DeleteMediaAction::class)->handle($media);
+
+        return back()->with('success', 'File deleted!');
     }
 }

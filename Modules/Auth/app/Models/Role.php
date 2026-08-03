@@ -2,32 +2,32 @@
 
 namespace Modules\Auth\Models;
 
-use Illuminate\Support\Facades\Gate;
-use Modules\Auth\Policies\RolePolicy;
+use Illuminate\Database\Eloquent\Attributes\UsePolicy;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
-use Illuminate\Database\Eloquent\Attributes\UsePolicy;
+use Illuminate\Support\Facades\Gate;
+use Modules\Auth\Policies\RolePolicy;
 
 #[UsePolicy(RolePolicy::class)]
 class Role extends \Spatie\Permission\Models\Role
 {
     use HasUlids;
 
-    public function getTotalUsersAttribute()
+    protected function getTotalUsersAttribute()
     {
         return $this->users()->count();
     }
 
-    public function getTotalPermissionsAttribute()
+    protected function getTotalPermissionsAttribute()
     {
         return $this->load('permissions')->permissions()->count();
     }
 
-    public function scopeFilter(Builder $query, array $filters)
+    protected function scopeFilter(Builder $builder, array $filters): void
     {
-        $query->when($filters['search'] ?? null, function ($query, $search) {
+        $builder->when($filters['search'] ?? null, function ($query, $search): void {
             $query->whereAny(['name', 'label'], 'like', "%$search%");
-        })->when($filters['trashed'] ?? null, function ($query, $trashed) {
+        })->when($filters['trashed'] ?? null, function ($query, $trashed): void {
             if ($trashed === 'with') {
                 $query->withTrashed();
             } elseif ($trashed === 'only') {
@@ -36,14 +36,12 @@ class Role extends \Spatie\Permission\Models\Role
         });
     }
 
-    public function getAuthorizationAttribute()
+    protected function getAuthorizationAttribute(): array
     {
         return [
             'update' => Gate::allows('update', $this),
             'delete' => Gate::allows('delete', $this),
-            'super' => $this->name == 'administrator'
+            'super' => $this->name == 'administrator',
         ];
     }
-
-    
 }

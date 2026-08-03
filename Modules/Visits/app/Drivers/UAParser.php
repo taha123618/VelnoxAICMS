@@ -1,40 +1,38 @@
 <?php
+
 namespace Modules\Visits\Drivers;
 
-
-use UAParser\Parser;
 use Illuminate\Http\Request;
 use Modules\Visits\Contracts\UserAgentParser;
+use UAParser\Exception\FileNotFoundException;
+use UAParser\Parser;
+use UAParser\Result\Client;
 
 class UAParser implements UserAgentParser
 {
     /**
-     * Request container.
-     */
-    protected Request $request;
-
-    /**
      * Agent parser.
      */
-    protected \UAParser\Result\Client $parser;
+    protected Client $parser;
 
     /**
      * UAParser constructor.
      *
-     * @param Request $request
      *
-     * @throws \UAParser\Exception\FileNotFoundException
+     * @throws FileNotFoundException
      */
-    public function __construct(Request $request)
+    public function __construct(/**
+     * Request container.
+     */
+        protected Request $request)
     {
-        $this->request = $request;
         $this->parser = $this->initParser();
     }
 
     /**
      * Retrieve device's name.
      */
-    public function device() : string
+    public function device(): string
     {
         return $this->parser->device->family;
     }
@@ -42,7 +40,7 @@ class UAParser implements UserAgentParser
     /**
      * Retrieve platform's name.
      */
-    public function platform() : string
+    public function platform(): string
     {
         return $this->parser->os->family;
     }
@@ -50,7 +48,7 @@ class UAParser implements UserAgentParser
     /**
      * Retrieve browser's name.
      */
-    public function browser() : string
+    public function browser(): string
     {
         return $this->parser->ua->family;
     }
@@ -58,12 +56,12 @@ class UAParser implements UserAgentParser
     /**
      * Retrieve languages.
      */
-    public function languages() : array
+    public function languages(): array
     {
         $languages = [];
 
-        if (!empty($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
-            $lang = substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2);
+        if (! empty(\Illuminate\Support\Facades\Request::server('HTTP_ACCEPT_LANGUAGE'))) {
+            $lang = substr(\Illuminate\Support\Facades\Request::server('HTTP_ACCEPT_LANGUAGE'), 0, 2);
             $languages[] = $lang;
         }
 
@@ -73,9 +71,9 @@ class UAParser implements UserAgentParser
     /**
      * Initialize userAgent parser.
      *
-     * @throws \UAParser\Exception\FileNotFoundException
+     * @throws FileNotFoundException
      */
-    protected function initParser(): \UAParser\Result\Client
+    protected function initParser(): Client
     {
         return Parser::create()->parse($this->request->userAgent());
     }

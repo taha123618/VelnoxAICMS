@@ -95,13 +95,13 @@ watchEffect((onCleanup) => {
 
     const expandItem = () => {
         if (expandedItems.value != undefined) {
-            expandedItems.value = [...expandedItems.value, item.id]
+            expandedItems.value = [...expandedItems.value, String(item.id)];
         }
     };
 
     const closeItem = () => {
         if (expandedItems.value != undefined) {
-            expandedItems.value = expandedItems.value!.filter(f => f !== item.id)
+            expandedItems.value = expandedItems.value!.filter(f => f !== String(item.id));
         }
     };
 

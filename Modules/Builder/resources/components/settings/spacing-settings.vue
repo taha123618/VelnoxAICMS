@@ -25,8 +25,8 @@
 <script setup lang="ts">
 import BuilderFourInputGroup from "@modules/Builder/resources/components/form/builder-four-input-group.vue";
 import { useElement } from "@modules/Builder/resources/scripts/use-element";
-import ZioraElement from "@modules/Builder/resources/scripts/ziora-element";
-const { element } = defineProps<{ element: ZioraElement }>();
+import VelnoxAIElement from "@modules/Builder/resources/scripts/VelnoxAI-element";
+const { element } = defineProps<{ element: VelnoxAIElement }>();
 
 const { getStyle, hasChanged, deleteHoverStyle, setStyle } = useElement(element);
 

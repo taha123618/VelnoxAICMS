@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 return [
 
     /*
@@ -27,7 +29,6 @@ return [
     */
 
     'env' => env('APP_ENV', 'production'),
-
 
     'demo' => env('APP_DEMO', false),
 
@@ -104,7 +105,7 @@ return [
 
     'previous_keys' => [
         ...array_filter(
-            explode(',', env('APP_PREVIOUS_KEYS', ''))
+            explode(',', (string) env('APP_PREVIOUS_KEYS', ''))
         ),
     ],
 

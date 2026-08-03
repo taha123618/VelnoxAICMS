@@ -2,37 +2,33 @@
 
 namespace Modules\Visits;
 
-use Carbon\Carbon;
-use Illuminate\Http\Request;
-use Modules\Visits\Models\Visit;
 use Illuminate\Database\Eloquent\Model;
-use Stevebauman\Location\Facades\Location;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Date;
 use Modules\Visits\Contracts\UserAgentParser;
 use Modules\Visits\Exceptions\DriverNotFoundException;
+use Modules\Visits\Models\Visit;
+use Stevebauman\Location\Facades\Location;
 
 class Visitor
 {
     protected $except;
-    protected $config;
+
     protected $driver;
 
     protected $driverInstance;
 
-    protected $request;
     protected $visitor;
 
-    public function __construct(Request $request, $config)
+    public function __construct(protected Request $request, protected $config)
     {
 
-        $this->request = $request;
-        $this->config = $config;
-        $this->except = $config['except'];
+        $this->except = $this->config['except'];
         $this->via($this->config['default']);
-        $this->setVisitor($request->user());
+        $this->setVisitor($this->request->user());
     }
 
-
-    public function via($driver)
+    public function via($driver): static
     {
         $this->driver = $driver;
         $this->validateDriver();
@@ -45,26 +41,25 @@ class Visitor
         return $this->request->all();
     }
 
-    public  function ip(): ?string
+    public function ip(): ?string
     {
         return $this->request->ip();
     }
+
     public function url(): string
     {
         return $this->request->fullUrl();
     }
 
-
     public function referer(): ?string
     {
-        return $_SERVER['HTTP_REFERER'] ?? null;
+        return \Illuminate\Support\Facades\Request::server('HTTP_REFERER') ?? null;
     }
 
     public function method(): string
     {
         return $this->request->getMethod();
     }
-
 
     public function httpHeaders(): array
     {
@@ -96,20 +91,19 @@ class Visitor
         return $this->getDriverInstance()->languages();
     }
 
-    public function setVisitor(?Model $user)
+    public function setVisitor(?Model $model): static
     {
-        $this->visitor = $user;
+        $this->visitor = $model;
 
         return $this;
     }
-
 
     public function getVisitor(): ?Model
     {
         return $this->visitor;
     }
 
-    public function visit(Model|null $model = null)
+    public function visit(?Model $model = null)
     {
         foreach ($this->except as $path) {
             if ($this->request->is($path)) {
@@ -126,47 +120,43 @@ class Visitor
             ->where('device', $this->device())
             ->where('browser', $this->browser())
             ->where('platform', $this->platform())
-            ->where('created_at', '>=', Carbon::now()->subMinutes($this->config['wait_minutes']))
+            ->where('created_at', '>=', Date::now()->subMinutes($this->config['wait_minutes']))
             ->exists()
         ) {
             return;
         }
 
-        if (null !== $model && method_exists($model, 'visitLogs')) {
-            $visit = $model->visitLogs()->create($data);
-        } else {
-            $visit = Visit::create($data);
+        if ($model instanceof Model && method_exists($model, 'visitLogs')) {
+            return $model->visitLogs()->create($data);
         }
 
-        return $visit;
+        return Visit::create($data);
     }
 
     public function onlineVisitors(string $model, $seconds = 180)
     {
-        return app($model)->online()->get();
+        return resolve($model)->online()->get();
     }
 
-
-    public function isOnline(?Model $visitor = null, $seconds = 180)
+    public function isOnline(?Model $model = null, $seconds = 180)
     {
         $time = now()->subSeconds($seconds);
 
-        $visitor = $visitor ?? $this->getVisitor();
+        $model ??= $this->getVisitor();
 
-        if (empty($visitor)) {
+        if (! $model instanceof Model) {
             return false;
         }
 
-        return Visit::whereHasMorph('visitor', get_class($visitor), function ($query) use ($visitor, $time) {
-            $query->where('visitor_id', $visitor->id);
+        return Visit::whereHasMorph('visitor', $model::class, function ($query) use ($model): void {
+            $query->where('visitor_id', $model->id);
         })->whereDate('created_at', '>=', $time)->count() > 0;
     }
 
     protected function prepareLog(): array
     {
 
-
-        $base_data =  [
+        $base_data = [
             'method' => $this->method(),
             'request' => $this->request(),
             'url' => $this->url(),
@@ -177,13 +167,13 @@ class Visitor
             'device' => $this->device(),
             'platform' => $this->platform(),
             'browser' => $this->browser(),
-            'visitor_id' => $this->getVisitor() ? $this->getVisitor()->id : null,
-            'visitor_type' => $this->getVisitor() ? get_class($this->getVisitor()) : null,
-            'request_ip' => $this->ip()
+            'visitor_id' => $this->getVisitor() instanceof Model ? $this->getVisitor()->id : null,
+            'visitor_type' => $this->getVisitor() instanceof Model ? $this->getVisitor()::class : null,
+            'request_ip' => $this->ip(),
         ];
 
         if ($location = Location::get()) {
-            $base_data = [
+            return [
                 ...$base_data,
                 'country_name' => $location->countryName,
                 'country_code' => $location->countryCode,
@@ -194,17 +184,16 @@ class Visitor
                 'latitude' => $location->latitude,
                 'longitude' => $location->longitude,
                 'timezone' => $location->timezone,
-                'location_ip' => $location->ip
+                'location_ip' => $location->ip,
             ];
         }
 
         return $base_data;
     }
 
-
     protected function getDriverInstance()
     {
-        if (!empty($this->driverInstance)) {
+        if (! empty($this->driverInstance)) {
             return $this->driverInstance;
         }
 
@@ -217,7 +206,7 @@ class Visitor
 
         $driverClass = $this->config['drivers'][$this->driver];
 
-        return app($driverClass);
+        return resolve($driverClass);
     }
 
     protected function validateDriver()
@@ -228,13 +217,13 @@ class Visitor
 
         $driverClass = $this->config['drivers'][$this->driver];
 
-        if (empty($driverClass) || !class_exists($driverClass)) {
+        if (empty($driverClass) || ! class_exists($driverClass)) {
             throw new DriverNotFoundException('Driver not found in config file. Try updating the package.');
         }
 
-        $reflect = new \ReflectionClass($driverClass);
+        $reflectionClass = new \ReflectionClass($driverClass);
 
-        if (!$reflect->implementsInterface(UserAgentParser::class)) {
+        if (! $reflectionClass->implementsInterface(UserAgentParser::class)) {
             throw new \Exception("Driver must be an instance of Contracts\Driver.");
         }
     }

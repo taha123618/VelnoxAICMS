@@ -7,19 +7,19 @@ use Modules\Page\Models\Page;
 
 class GetAllPagesWithUnpublishedChangesAction
 {
-    public function handle(PageType $type)
+    public function handle(PageType $pageType)
     {
         $query = Page::query();
 
-        if ($type == PageType::Page) {
+        if ($pageType == PageType::Page) {
             $query->pages();
         }
 
-        if ($type == PageType::Post) {
+        if ($pageType == PageType::Post) {
             $query->posts();
         }
 
-        return $query->whereHas('published_version', function ($query) {
+        return $query->whereHas('published_version', function ($query): void {
             $query->whereColumn('pages.content', '!=', 'published_pages.content')
                 ->orWhereColumn('pages.title', '!=', 'published_pages.title')
                 ->orWhereColumn('pages.description', '!=', 'published_pages.description')

@@ -9,11 +9,11 @@
 
 <script setup lang="ts">
 import BaseElementWrapper from '@modules/Builder/resources/components/base-element-wrapper.vue';
-import ZioraElement from '@modules/Builder/resources/scripts/ziora-element';
+import VelnoxAIElement from '@modules/Builder/resources/scripts/VelnoxAI-element';
 import { PlayerVars, usePlayer } from '@vue-youtube/core';
 
 const { element } = defineProps<{
-    element: ZioraElement;
+    element: VelnoxAIElement;
 }>();
 //OgdH-MMuEUo
 const videoId = computed(() => element.getProp('videoId'));

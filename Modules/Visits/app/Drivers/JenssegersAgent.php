@@ -1,18 +1,13 @@
 <?php
+
 namespace Modules\Visits\Drivers;
 
-
-use Modules\Visits\Agent;
 use Illuminate\Http\Request;
+use Modules\Visits\Agent;
 use Modules\Visits\Contracts\UserAgentParser;
 
 class JenssegersAgent implements UserAgentParser
 {
-    /**
-     * Request container.
-     */
-    protected Request $request;
-
     /**
      * Agent parser.
      */
@@ -20,19 +15,19 @@ class JenssegersAgent implements UserAgentParser
 
     /**
      * Parser constructor.
-     *
-     * @param Request $request
      */
-    public function __construct(Request $request)
+    public function __construct(/**
+     * Request container.
+     */
+        protected Request $request)
     {
-        $this->request = $request;
         $this->parser = $this->initParser();
     }
 
     /**
      * Retrieve device's name.
      */
-    public function device() : string
+    public function device(): string
     {
         return $this->parser->device();
     }
@@ -40,7 +35,7 @@ class JenssegersAgent implements UserAgentParser
     /**
      * Retrieve platform's name.
      */
-    public function platform() : string
+    public function platform(): string
     {
         return $this->parser->platform();
     }
@@ -48,7 +43,7 @@ class JenssegersAgent implements UserAgentParser
     /**
      * Retrieve browser's name.
      */
-    public function browser() : string
+    public function browser(): string
     {
         return $this->parser->browser();
     }
@@ -56,7 +51,7 @@ class JenssegersAgent implements UserAgentParser
     /**
      * Retrieve languages.
      */
-    public function languages() : array
+    public function languages(): array
     {
         return $this->parser->languages();
     }
@@ -66,12 +61,12 @@ class JenssegersAgent implements UserAgentParser
      */
     protected function initParser(): Agent
     {
-        $parser = new Agent();
+        $agent = new Agent;
         $userAgent = $this->request->userAgent() ?? '';
-        
-        $parser->setUserAgent($userAgent);
-        $parser->setHttpHeaders((array)$this->request->headers);    
-        
-        return $parser;
+
+        $agent->setUserAgent($userAgent);
+        $agent->setHttpHeaders((array) $this->request->headers);
+
+        return $agent;
     }
 }

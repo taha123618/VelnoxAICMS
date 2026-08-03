@@ -122,11 +122,11 @@
 
 <script setup lang="ts">
 import { useTestimonials } from '@modules/Builder/resources/draggables/components/testimonials/use-testimonials';
-import ZioraElement from '@modules/Builder/resources/scripts/ziora-element';
+import VelnoxAIElement from '@modules/Builder/resources/scripts/VelnoxAI-element';
 import { Motion, AnimatePresence } from "motion-v";
 
 const { element } = defineProps<{
-    element: ZioraElement;
+    element: VelnoxAIElement;
 }>();
 
 

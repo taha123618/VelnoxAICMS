@@ -143,10 +143,10 @@
 import BaseElementWrapper from '@modules/Builder/resources/components/base-element-wrapper.vue';
 import { useFormInput } from '@modules/Builder/resources/draggables/forms/forminput/use-form-input';
 import { InputTypes } from '@modules/Builder/resources/scripts/enums';
-import ZioraElement from '@modules/Builder/resources/scripts/ziora-element';
+import VelnoxAIElement from '@modules/Builder/resources/scripts/VelnoxAI-element';
 
 const { element } = defineProps<{
-    element: ZioraElement;
+    element: VelnoxAIElement;
 }>();
 
 const { options } = useFormInput(element)

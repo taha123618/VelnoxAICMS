@@ -68,13 +68,13 @@
 
 <script setup lang="ts">
 import { useElement } from '@modules/Builder/resources/scripts/use-element';
-import ZioraElement from '@modules/Builder/resources/scripts/ziora-element';
+import VelnoxAIElement from '@modules/Builder/resources/scripts/VelnoxAI-element';
 import VisibilitySettings from '@modules/Builder/resources/components/settings/visibility-settings.vue';
 import BuilderNumberInput from '@modules/Builder/resources/components/form/builder-number-input.vue';
 import BuilderToggleGroup from '@modules/Builder/resources/components/form/builder-toggle-group.vue';
 import { gridLayout } from '@modules/Builder/resources/scripts/constants';
 
-const { element } = defineProps<{ element: ZioraElement }>();
+const { element } = defineProps<{ element: VelnoxAIElement }>();
 
 const { getStyle, hasChanged, deleteHoverStyle, setStyle } = useElement(element);
 

@@ -1,5 +1,5 @@
 import { CurrentState, DeviceType } from "@modules/Builder/resources/scripts/enums";
-import ZioraElement from "@modules/Builder/resources/scripts/ziora-element";
+import VelnoxAIElement from "@modules/Builder/resources/scripts/VelnoxAI-element";
 import type { Component } from "vue";
 
 export type TDeviceStyles = {
@@ -21,14 +21,14 @@ export type TTab = {
 };
 
 export type TEditor = {
-    selectedElement: ZioraElement | null;
-    cutOrCopiedElement: ZioraElement | null;
-    cutOrCopyAction: TCutOrCopyAction | null;
-    device: DeviceType;
-    state: CurrentState;
-    isEnabled: boolean;
-    showOutline: boolean;
-    isPreviewing: boolean;
+  selectedElement: VelnoxAIElement | null;
+  cutOrCopiedElement: VelnoxAIElement | null;
+  cutOrCopyAction: TCutOrCopyAction | null;
+  device: DeviceType;
+  state: CurrentState;
+  isEnabled: boolean;
+  showOutline: boolean;
+  isPreviewing: boolean;
 };
 
 export type TElement = {
@@ -41,7 +41,7 @@ export type TElement = {
   type: string;
   name: string;
   icon: string;
-  children: ZioraElement[];
+  children: VelnoxAIElement[];
   props: Record<string, any>;
 };
 export type TCutOrCopyAction = "cut" | "copy" | null;

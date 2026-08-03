@@ -11,7 +11,7 @@ use Spatie\TypeScriptTransformer\Attributes\TypeScript;
 class UserData extends Data
 {
     public function __construct(
-        public string $id,
+        public int|string $id,
         public string $first_name,
         public string $last_name,
         public string $name,
@@ -24,20 +24,20 @@ class UserData extends Data
         public array|Optional $can
     ) {}
 
-    public static function fromModel(User $model): self
+    public static function fromModel(User $user): self
     {
         return new self(
-            id: $model->id,
-            first_name: $model->first_name,
-            last_name: $model->last_name,
-            name: $model->name,
+            id: $user->id,
+            first_name: $user->first_name,
+            last_name: $user->last_name,
+            name: $user->name,
+            role_name: $user->getMainRole()?->name,
+            role_label: $user->getMainRole()?->label,
+            role_id: $user->getMainRole()?->id,
             avatar: null,
-            role_name: $model->getMainRole()?->name,
-            role_label: $model->getMainRole()?->label,
-            role_id: $model->getMainRole()?->id,
-            email: $model->email,
-            created_at: $model->created_at,
-            can: $model->authorization
+            email: $user->email,
+            created_at: $user->created_at,
+            can: $user->authorization
         );
     }
 }

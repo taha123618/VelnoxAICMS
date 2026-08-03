@@ -7,14 +7,14 @@
 
 <script lang="ts" setup>
 import { elementSettings } from '@modules/Builder/resources/draggables';
-import { useZiora } from '@modules/Builder/resources/scripts/use-ziora';
-import ZioraElement from '@modules/Builder/resources/scripts/ziora-element';
+import { useVelnoxAI } from '@modules/Builder/resources/scripts/use-VelnoxAI';
+import VelnoxAIElement from '@modules/Builder/resources/scripts/VelnoxAI-element';
 
 const { element } = defineProps<{
-  element: ZioraElement;
+  element: VelnoxAIElement;
 }>();
 
-const store = useZiora()
+const store = useVelnoxAI()
 
 const resolvedComponent = computed(() => {
   const resolvedElement = elementSettings.find(

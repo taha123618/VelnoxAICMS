@@ -8,12 +8,12 @@
 </template>
 
 <script setup lang="ts">
-import ZioraElement from '@modules/Builder/resources/scripts/ziora-element';
+import VelnoxAIElement from '@modules/Builder/resources/scripts/VelnoxAI-element';
 import { cn } from '@modules/Builder/resources/scripts/utils';
 import { useElement } from '@modules/Builder/resources/scripts/use-element';
 
 const { element } = defineProps<{
-    element: ZioraElement;
+    element: VelnoxAIElement;
 }>();
 
 const content = computed<string>(() => {

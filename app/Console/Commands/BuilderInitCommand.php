@@ -2,26 +2,30 @@
 
 namespace App\Console\Commands;
 
-use Modules\Auth\Models\User;
+use Illuminate\Console\Attributes\Description;
+use Illuminate\Console\Attributes\Signature;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules\Password;
 use Modules\Auth\Database\Seeders\RoleSeeder;
-use function Laravel\Prompts\{text, password, info, confirm};
+use Modules\Auth\Models\User;
 
+use function Laravel\Prompts\confirm;
+use function Laravel\Prompts\info;
+use function Laravel\Prompts\password;
+use function Laravel\Prompts\text;
 
+#[Description('Initialize Builder with roles and an admin user')]
+#[Signature('builder:init')]
 class BuilderInitCommand extends Command
 {
-    protected $signature = 'builder:init';
-    protected $description = 'Initialize Builder with roles and an admin user';
-
-    public function handle()
+    public function handle(): int
     {
-        info("Seeding roles and permissions...");
+        info('Seeding roles and permissions...');
 
         $this->call(RoleSeeder::class);
-        
-        info("Roles and permissions seeded successfully.");
+
+        info('Roles and permissions seeded successfully.');
 
         $firstName = text(
             label: 'First Name',
@@ -44,16 +48,17 @@ class BuilderInitCommand extends Command
 
         $confirmed = confirm('Are you ready to create the admin user?', default: true);
 
-        if (!$confirmed) {
+        if (! $confirmed) {
             info('Cancelled.');
+
             return Command::FAILURE;
         }
 
         $user = User::create([
             'first_name' => $firstName,
-            'last_name'  => $lastName,
-            'email'      => $email,
-            'password'   => Hash::make($password)
+            'last_name' => $lastName,
+            'email' => $email,
+            'password' => Hash::make($password),
         ]);
 
         $user->assignRole('administrator');

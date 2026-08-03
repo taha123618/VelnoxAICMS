@@ -31,7 +31,7 @@ import { ArrayOrNested, SelectItem } from '@nuxt/ui';
 
 interface Props {
     options: ArrayOrNested<SelectItem> | undefined;
-    labelKey?: string | undefined;
+    labelKey?: any;
     valueKey?: string;
     error?: string;
     label?: string;

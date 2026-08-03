@@ -3,23 +3,24 @@
 namespace Modules\Media\Models;
 
 use App\Models\BaseModel;
-use Modules\Auth\Models\User;
-use Spatie\MediaLibrary\HasMedia;
-use Illuminate\Support\Facades\Gate;
-use Modules\Media\Policies\FolderPolicy;
-use Spatie\MediaLibrary\InteractsWithMedia;
-use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Attributes\UsePolicy;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Gate;
+use Modules\Auth\Models\User;
+use Modules\Media\Policies\FolderPolicy;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Staudenmeir\LaravelAdjacencyList\Eloquent\HasRecursiveRelationships;
+
 // use Modules\Media\Database\Factories\FolderFactory;
 #[UsePolicy(FolderPolicy::class)]
 class Folder extends BaseModel implements HasMedia
 {
     use HasRecursiveRelationships;
-    use SoftDeletes;
     use InteractsWithMedia;
-
+    use SoftDeletes;
 
     public function user(): BelongsTo
     {
@@ -30,9 +31,9 @@ class Folder extends BaseModel implements HasMedia
     {
         $folder = Folder::isRoot()->first();
 
-        if (!$folder) {
-            $folder = Folder::create([
-                "name" => "Home"
+        if (! $folder) {
+            return Folder::create([
+                'name' => 'Home',
             ]);
         }
 
@@ -44,20 +45,19 @@ class Folder extends BaseModel implements HasMedia
         return $this->ancestorsAndSelf()->get()
             ->sortBy('depth')
             ->values()
-            ->map(fn($item) => [
+            ->map(fn ($item): array => [
                 'id' => $item->id,
                 'icon' => is_null($item->parent_id) ? 'ph:house' : null,
                 'label' => $item->name,
                 'type' => 'breadcrumb',
-                'isLast' => $item->is($this)
+                'isLast' => $item->is($this),
             ]);
     }
 
-    public function getTotalChildren()
+    public function getTotalChildren(): int
     {
         return count($this->media) + count($this->children);
     }
-
 
     public function registerMediaCollections(): void
     {
@@ -67,7 +67,7 @@ class Folder extends BaseModel implements HasMedia
         // ->useFallbackUrl(url('/storage/no-product-image.png'));
     }
 
-    public function registerAllMediaConversions(?\Spatie\MediaLibrary\MediaCollections\Models\Media $media = null): void
+    public function registerAllMediaConversions(?Media $media = null): void
     {
         ini_set('memory_limit', '4048M');
         $this
@@ -78,13 +78,11 @@ class Folder extends BaseModel implements HasMedia
             ->sharpen(10);
     }
 
-    public function getAuthorizationAttribute()
+    protected function getAuthorizationAttribute(): array
     {
         return [
             'update' => Gate::allows('update', $this),
-            'delete' => Gate::allows('delete', $this)
+            'delete' => Gate::allows('delete', $this),
         ];
     }
-
-
 }

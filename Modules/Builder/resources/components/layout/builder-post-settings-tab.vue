@@ -97,26 +97,26 @@ const post = computed<Modules.Page.Data.PostData>(
     () => usePage().props.post as Modules.Page.Data.PostData,
 );
 
-const layouts = computed<Modules.Layout.Data.LayoutData[]>(
+const layouts = computed<any[]>(
     () =>
-        (usePage().props.layouts as Modules.Layout.Data.LayoutData[]).map(
-            (layout: Modules.Layout.Data.LayoutData) => {
+        ((usePage().props.layouts as any[]) || []).map(
+            (layout: any) => {
                 return {
                     id: layout.id,
                     name: layout.name,
                 };
             },
-        ) satisfies Modules.Layout.Data.LayoutData[],
+        ),
 );
 
-const form = useForm<App.Data.Posts.PostUpdateRequest>({
-    title: post.value.title,
-    status: post.value.status,
-    description: post.value.description,
-    excerpt: post.value.excerpt,
-    featuredImage: post.value.featuredImage,
-    layout: post.value.layoutId,
-    keywords: post.value.keywords || [],
+const form = useForm({
+    title: post.value?.title || '',
+    status: post.value?.status || 'draft',
+    description: post.value?.description || '',
+    excerpt: post.value?.excerpt || '',
+    featuredImage: post.value?.featuredImage || '',
+    layout: post.value?.layoutId || '',
+    keywords: post.value?.keywords || [],
 });
 
 const statuses: App.Enums.Status[] = ['Published', 'Draft'];

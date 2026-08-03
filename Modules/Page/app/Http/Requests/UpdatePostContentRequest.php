@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Modules\Page\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
@@ -12,7 +14,7 @@ class UpdatePostContentRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'content' => ['required']
+            'content' => ['required'],
         ];
     }
 

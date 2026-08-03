@@ -2,23 +2,24 @@
 
 namespace Modules\Page\Http\Controllers;
 
-use Illuminate\Http\Request;
-use Modules\Page\Models\Page;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Gate;
-use Illuminate\Support\Facades\Redirect;
 use Modules\Page\Actions\UpdatePostContentAction;
+use Modules\Page\Events\PageContentUpdated;
 use Modules\Page\Http\Requests\UpdatePostContentRequest;
+use Modules\Page\Models\Page;
 
 class PostContentController extends Controller
 {
-    public function __invoke(UpdatePostContentRequest $request, Page $post)
+    public function __invoke(UpdatePostContentRequest $updatePostContentRequest, Page $page)
     {
 
-        Gate::authorize('update_post', $post);
-        
-        app(UpdatePostContentAction::class)->handle($request, $post);
-        
-        return Redirect::back()->with('success', 'Post updated!');
+        Gate::authorize('update_post', $page);
+
+        resolve(UpdatePostContentAction::class)->handle($updatePostContentRequest, $page);
+
+        broadcast(new PageContentUpdated($page->id, $updatePostContentRequest->input('content', []), auth()->id()))->toOthers();
+
+        return back()->with('success', 'Post updated!');
     }
 }

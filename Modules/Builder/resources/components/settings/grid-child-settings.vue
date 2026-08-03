@@ -23,9 +23,9 @@
 <script setup lang="ts">
 import BuilderSlider from '@modules/Builder/resources/components/form/builder-slider.vue';
 import { useElement } from '@modules/Builder/resources/scripts/use-element';
-import ZioraElement from '@modules/Builder/resources/scripts/ziora-element';
+import VelnoxAIElement from '@modules/Builder/resources/scripts/VelnoxAI-element';
 
-const { element } = defineProps<{ element: ZioraElement }>();
+const { element } = defineProps<{ element: VelnoxAIElement }>();
 
 const { getStyle, hasChanged, deleteHoverStyle, parentIsGrid, setStyle } = useElement(element);
 </script>

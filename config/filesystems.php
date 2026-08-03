@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 return [
 
     /*
@@ -61,8 +63,8 @@ return [
         ],
         'media' => [
             'driver' => 'local',
-            'root'   => storage_path('app/public/media'),
-            'url'    => '/storage/media',
+            'root' => storage_path('app/public/media'),
+            'url' => '/storage/media',
             // 'url'    => env('APP_URL').'/storage/media',
             'visibility' => 'public',
             'throw' => false,

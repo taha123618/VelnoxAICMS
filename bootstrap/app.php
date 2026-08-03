@@ -1,22 +1,25 @@
 <?php
 
-use Illuminate\Http\Request;
-use Illuminate\Foundation\Application;
-use App\Http\Middleware\HandleAppearance;
+declare(strict_types=1);
+
 use App\Http\Middleware\HandleInertiaRequests;
 use App\Http\Middleware\PreventDemoActions;
+use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 use Illuminate\Http\Middleware\AddLinkHeadersForPreloadedAssets;
+use Illuminate\Http\Request;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
-        web: __DIR__ . '/../routes/web.php',
-        commands: __DIR__ . '/../routes/console.php',
+        web: __DIR__.'/../routes/web.php',
+        api: __DIR__.'/../routes/api.php',
+        commands: __DIR__.'/../routes/console.php',
+        channels: __DIR__.'/../routes/channels.php',
         health: '/up',
     )
-    ->withMiddleware(function (Middleware $middleware) {
-        $middleware->redirectGuestsTo(fn(Request $request) => route('admin.login'));
+    ->withMiddleware(function (Middleware $middleware): void {
+        $middleware->redirectGuestsTo(fn (Request $request): string => route('admin.login'));
         $middleware->encryptCookies();
 
         $middleware->web(append: [
@@ -24,14 +27,16 @@ return Application::configure(basePath: dirname(__DIR__))
             AddLinkHeadersForPreloadedAssets::class,
         ]);
 
+        $middleware->statefulApi();
+
         $middleware->alias([
-            'demo.protect' => PreventDemoActions::class
+            'demo.protect' => PreventDemoActions::class,
         ]);
 
         if (env('APP_ENV') == 'local') {
             $middleware->trustProxies(at: '*');
         }
     })
-    ->withExceptions(function (Exceptions $exceptions) {
+    ->withExceptions(function (Exceptions $exceptions): void {
         //
     })->create();

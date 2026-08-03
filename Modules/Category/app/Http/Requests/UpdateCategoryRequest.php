@@ -17,13 +17,13 @@ class UpdateCategoryRequest extends FormRequest
                 'required',
                 'string',
                 'max:100',
-                Rule::unique('categories', 'name')->ignoreModel($this->category)
+                Rule::unique('categories', 'name')->ignoreModel($this->category),
             ],
             'parent' => [
                 'nullable',
-                'exists:categories,id'
+                'exists:categories,id',
             ],
-            'description' => ['nullable']
+            'description' => ['nullable'],
         ];
     }
 

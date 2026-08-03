@@ -2,36 +2,36 @@
 
 namespace Modules\Menu\Actions;
 
+use Modules\Menu\Http\Requests\UpdateMenuRequest;
 use Modules\Menu\Models\Menu;
 use Modules\Menu\Models\MenuItem;
-use Modules\Menu\Http\Requests\UpdateMenuRequest;
 
 class UpdateMenuAction
 {
-    public function handle(UpdateMenuRequest $request, Menu $menu)
+    public function handle(UpdateMenuRequest $updateMenuRequest, Menu $menu): void
     {
         $menu->update([
-            'name' => $request->name
+            'name' => $updateMenuRequest->name,
         ]);
 
-        if (empty($request->items)) {
+        if (empty($updateMenuRequest->items)) {
             $menu->items()->delete();
+
             return;
         }
 
-        if (is_array($request->deleted) && count($request->deleted)) {
-            MenuItem::whereIn('id', $request->deleted)->delete();
+        if (is_array($updateMenuRequest->deleted) && count($updateMenuRequest->deleted)) {
+            MenuItem::whereIn('id', $updateMenuRequest->deleted)->delete();
         }
 
         $idMap = [];
 
-        foreach ($request->items as $index => $item) {
+        foreach ($updateMenuRequest->items as $index => $item) {
             $this->processMenuItem($item, null, $idMap, $index);
         }
     }
 
-
-    private function processMenuItem(array $item, ?string $parentId, array &$idMap, int $sortOrder)
+    private function processMenuItem(array $item, ?string $parentId, array &$idMap, int $sortOrder): void
     {
         // If parentId is in the map, use the actual DB ID
         if ($parentId && isset($idMap[$parentId])) {

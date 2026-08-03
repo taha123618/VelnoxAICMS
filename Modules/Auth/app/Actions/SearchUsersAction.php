@@ -4,12 +4,13 @@ namespace Modules\Auth\Actions;
 
 use Illuminate\Http\Request;
 use Modules\Auth\Models\User;
-use Spatie\QueryBuilder\QueryBuilder;
 use Spatie\QueryBuilder\AllowedFilter;
+use Spatie\QueryBuilder\QueryBuilder;
 
 class SearchUsersAction
 {
-    public function handle(Request $request) {
+    public function handle(Request $request)
+    {
 
         return QueryBuilder::for(subject: User::class)
             ->defaultSort('first_name', 'last_name', '-created_at')

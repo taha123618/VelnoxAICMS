@@ -16,11 +16,11 @@ import BaseElementWrapper from '@modules/Builder/resources/components/base-eleme
 import TestimonialHorizontalItem from '@modules/Builder/resources/draggables/components/testimonials/components/testimonial-horizontal-item.vue';
 import TestimonialVerticalItem from '@modules/Builder/resources/draggables/components/testimonials/components/testimonial-vertical-item.vue';
 import { useTestimonials } from '@modules/Builder/resources/draggables/components/testimonials/use-testimonials';
-import ZioraElement from '@modules/Builder/resources/scripts/ziora-element';
+import VelnoxAIElement from '@modules/Builder/resources/scripts/VelnoxAI-element';
 import { useHead } from '@unhead/vue';
 
 const { element } = defineProps<{
-    element: ZioraElement;
+    element: VelnoxAIElement;
 }>();
 
 const { getStyles } = useTestimonials(element)

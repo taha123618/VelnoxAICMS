@@ -1,16 +1,18 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Modules\Page\Actions;
 
-use Modules\Page\Models\Page;
 use Modules\Page\Http\Requests\UpdatePageContentRequest;
+use Modules\Page\Models\Page;
 
 class UpdatePageContentAction
 {
-    public function handle(UpdatePageContentRequest $request, Page $page)
+    public function handle(UpdatePageContentRequest $updatePageContentRequest, Page $page): void
     {
         $page->update([
-            'content' => $request->content
+            'content' => $updatePageContentRequest->content,
         ]);
     }
 }

@@ -6,14 +6,14 @@ use Modules\Auth\Http\Requests\ProfileUpdateRequest;
 
 class UpdateProfileInformationAction
 {
-    public function handle(ProfileUpdateRequest $request)
+    public function handle(ProfileUpdateRequest $profileUpdateRequest): void
     {
-        $request->user()->fill($request->validated());
+        $profileUpdateRequest->user()->fill($profileUpdateRequest->validated());
 
-        if ($request->user()->isDirty('email')) {
-            $request->user()->email_verified_at = null;
+        if ($profileUpdateRequest->user()->isDirty('email')) {
+            $profileUpdateRequest->user()->email_verified_at = null;
         }
 
-        $request->user()->save();
+        $profileUpdateRequest->user()->save();
     }
 }

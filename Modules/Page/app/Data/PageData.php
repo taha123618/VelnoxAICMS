@@ -3,8 +3,8 @@
 namespace Modules\Page\Data;
 
 use App\Enums\Status;
-use Spatie\LaravelData\Data;
 use Modules\Page\Models\Page;
+use Spatie\LaravelData\Data;
 use Spatie\LaravelData\Optional;
 use Spatie\TypeScriptTransformer\Attributes\TypeScript;
 
@@ -12,16 +12,16 @@ use Spatie\TypeScriptTransformer\Attributes\TypeScript;
 class PageData extends Data
 {
     public function __construct(
-        public string $id,
+        public int|string $id,
         public string|Optional $type,
-        public string $layoutId,
+        public int|string $layoutId,
         public string $layoutName,
         public string $slug,
         public string $title,
         public Status $status,
         public string $statusColor,
         public string $url,
-        public string|null $description,
+        public ?string $description,
         public array $content,
         public bool $isFrontpage,
         public bool $isPublished,
@@ -49,10 +49,10 @@ class PageData extends Data
             isFrontpage: $page->is_frontpage,
             isPublished: $page->is_published,
             keywords: $page->data['keywords'] ?? [],
+            can: $page->page_authorization,
             created_at: $page->created_at,
             updated_at: $page->updated_at,
             isDifferentFromPublishedVersion: $page->isDifferentFromPublishedVersion(),
-            can: $page->page_authorization,
         );
     }
 }

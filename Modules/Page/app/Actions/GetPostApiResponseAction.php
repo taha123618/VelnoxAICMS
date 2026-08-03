@@ -13,7 +13,7 @@ class GetPostApiResponseAction
             ->published()
             ->posts();
 
-        if ($request->fromCategories == 1 && $request->categories &&  count($request->categories) > 0) {
+        if ($request->fromCategories == 1 && $request->categories && count($request->categories) > 0) {
             $posts->whereIn('category_id', $request->categories);
         }
 

@@ -22,8 +22,8 @@ class UpdateUserRequest extends FormRequest
                 'lowercase',
                 'email',
                 'max:100',
-                Rule::unique('users', 'email')->ignoreModel($this->user)
-            ]
+                Rule::unique('users', 'email')->ignoreModel($this->user),
+            ],
         ];
     }
 

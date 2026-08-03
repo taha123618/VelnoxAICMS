@@ -1,12 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Modules\Auth\Http\Controllers;
 
-use Inertia\Inertia;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Password;
-use Illuminate\Support\Facades\Redirect;
 use Modules\Auth\Models\User;
 
 class UserSendPasswordResetLinkController extends Controller
@@ -14,12 +15,12 @@ class UserSendPasswordResetLinkController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function __invoke(Request $request, User $user)
+    public function __invoke(Request $request, User $user): RedirectResponse
     {
         Password::sendResetLink([
-            'email' => $user->email
+            'email' => $user->email,
         ]);
 
-        return Redirect::back();
+        return back();
     }
 }

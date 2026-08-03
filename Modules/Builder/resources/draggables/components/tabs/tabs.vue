@@ -16,7 +16,7 @@
             </template>
             <template #content="{ item }">
                 <!-- prettier-ignore -->
-                <TabsItem :element="(item as ZioraElement)" />
+                <TabsItem :element="(item as VelnoxAIElement)" />
             </template>
         </UTabs>
     </BaseElementWrapper>
@@ -24,14 +24,14 @@
 
 <script setup lang="ts">
 import BaseElementWrapper from '@modules/Builder/resources/components/base-element-wrapper.vue';
-import ZioraElement from '@modules/Builder/resources/scripts/ziora-element';
+import VelnoxAIElement from '@modules/Builder/resources/scripts/VelnoxAI-element';
 import TabsItem from '@modules/Builder/resources/draggables/components/tabs/tabs-item/tabs-item.vue';
 import type { TabsItem as TTabsItem } from '@nuxt/ui';
 import { useHead } from '@unhead/vue';
 import { useTabs } from '@modules/Builder/resources/draggables/components/tabs/use-tabs';
 
 const { element } = defineProps<{
-    element: ZioraElement;
+    element: VelnoxAIElement;
 }>();
 
 const items = computed<TTabsItem[]>(

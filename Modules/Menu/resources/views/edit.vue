@@ -126,7 +126,7 @@
                                 :item="item"
                                 :index="index"
                                 :level="level"
-                                :parent-item="(findParentFromId(form.items, item.id) as Modules.Menu.Data.MenuItemData)"
+                                :parent-item="(findParentFromId(form.items, String(item.id)) as Modules.Menu.Data.MenuItemData)"
                                 v-model="expandedItems"
                                 :expanded="expanded"
                                 :selected="selected"
@@ -190,7 +190,7 @@ type TForm = {
 };
 
 const form = useForm<TForm>({
-    id: menu.id,
+    id: String(menu.id),
     name: menu.name,
     deleted: [],
     items: menu.items,
@@ -229,9 +229,9 @@ function submit() {
 function handleRemove(event: Modules.Menu.Data.MenuItemData) {
     if (!event) return;
     if (!event.isRecent) {
-        form.deleted.push(event.id);
+        form.deleted.push(String(event.id));
     }
-    const updated = removeElement(form.items, event.id);
+    const updated = removeElement(form.items, String(event.id));
     form.items = updated as Modules.Menu.Data.MenuItemData[];
 }
 
@@ -245,9 +245,9 @@ function addPageToMenu(
             id: getId(),
             isRecent: true,
             parentId: null,
-            menuId: menu.id,
+            menuId: String(menu.id),
             type: type,
-            path: page.id,
+            path: String(page.id),
             label: page.title,
             target: '_self',
             defaultOpen: true,
@@ -265,7 +265,7 @@ function addCustomLinkToMenu() {
             id: getId(),
             isRecent: true,
             parentId: null,
-            menuId: menu.id,
+            menuId: String(menu.id),
             type: 'custom',
             path: customLinkForm.url,
             label: customLinkForm.label,

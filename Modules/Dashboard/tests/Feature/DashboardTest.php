@@ -1,18 +1,17 @@
 <?php
 
-uses(Tests\TestCase::class);
-
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Modules\Auth\Models\User;
+use Tests\TestCase;
 
+uses(TestCase::class, RefreshDatabase::class);
 
-uses(\Illuminate\Foundation\Testing\RefreshDatabase::class);
-
-test('guests are redirected to the login page', function () {
+test('guests are redirected to the login page', function (): void {
     $response = $this->get('/cp/dashboard');
     $response->assertRedirect('/cp/login');
 });
 
-test('authenticated users can visit the dashboard', function () {
+test('authenticated users can visit the dashboard', function (): void {
     $user = User::factory()->create();
     $this->actingAs($user);
 

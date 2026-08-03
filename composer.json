@@ -15,35 +15,45 @@
         }
     ],
     "require": {
-        "php": "^8.2",
-        "inertiajs/inertia-laravel": "^2.0",
-        "inertiaui/modal": "^0.19.4",
-        "laravel/ai": "^0.9.1",
-        "laravel/framework": "^12.0",
-        "laravel/mcp": "^0.7.0",
+        "php": "^8.5",
+        "inertiajs/inertia-laravel": "^3.1",
+        "inertiaui/modal": "^3.1",
+        "laravel/ai": "^0.10.1",
+        "laravel/framework": "13.21.1",
+        "laravel/horizon": "^5.48",
+        "laravel/mcp": "^0.9.1",
         "laravel/nightwatch": "^1.10",
-        "laravel/tinker": "^2.10.1",
-        "nwidart/laravel-modules": "^12.0",
+        "laravel/octane": "^2.18",
+        "laravel/reverb": "^1.10",
+        "laravel/sanctum": "^4.0",
+        "laravel/tinker": "^3.0",
+        "nwidart/laravel-modules": "^13.0",
+        "promptphp/intercept": "^0.1.7",
+        "spatie/laravel-activitylog": "^5.0",
         "spatie/laravel-data": "^4.15",
         "spatie/laravel-medialibrary": "^11.12",
-        "spatie/laravel-permission": "^6.19",
+        "spatie/laravel-permission": "^8.3",
         "spatie/laravel-query-builder": "^6.3",
         "spatie/laravel-sluggable": "^3.7",
+        "spatie/laravel-translatable": "^6.14",
         "spatie/laravel-typescript-transformer": "^2.5",
         "spatie/typescript-transformer": "^2.5",
         "staudenmeir/laravel-adjacency-list": "^1.25",
         "tightenco/ziggy": "^2.4"
     },
     "require-dev": {
+        "driftingly/rector-laravel": "^2.5",
         "fakerphp/faker": "^1.23",
+        "larastan/larastan": "^3.10",
         "laravel/boost": "^2.4",
         "laravel/pail": "^1.2.2",
         "laravel/pint": "^1.18",
         "laravel/sail": "^1.41",
         "mockery/mockery": "^1.6",
         "nunomaduro/collision": "^8.6",
-        "pestphp/pest": "^3.8",
-        "pestphp/pest-plugin-laravel": "^3.2"
+        "pestphp/pest": "^4.4",
+        "pestphp/pest-plugin-laravel": "^4.1",
+        "rector/rector": "^2.5"
     },
     "autoload": {
         "psr-4": {
@@ -63,7 +73,8 @@
             "@php artisan package:discover --ansi"
         ],
         "post-update-cmd": [
-            "@php artisan vendor:publish --tag=laravel-assets --ansi --force"
+            "@php artisan vendor:publish --tag=laravel-assets --ansi --force",
+            "@php artisan boost:update --discover --ansi"
         ],
         "post-root-package-install": [
             "@php -r \"file_exists('.env') || copy('.env.example', '.env');\""
@@ -75,7 +86,7 @@
         ],
         "dev": [
             "Composer\\Config::disableProcessTimeout",
-            "npx concurrently -c \"#93c5fd,#c4b5fd,#fb7185,#fdba74\" \"php artisan serve\" \"php artisan queue:listen --tries=1\" \"php artisan pail --timeout=0\" \"npm run dev\" --names=server,queue,logs,vite"
+            "npx concurrently -c \"#93c5fd,#c4b5fd,#fb7185,#fdba74,#86efac,#5eead4\" \"php artisan octane:start --workers=4 --watch\" \"php artisan horizon\" \"php artisan queue:listen --tries=1\" \"php artisan pail --timeout=0\" \"php artisan reverb:start --debug\" \"npm run dev\" --names=octane,horizon,queue,pail,reverb,vite"
         ],
         "dev:ssr": [
             "npm run build:ssr",
@@ -85,6 +96,12 @@
         "test": [
             "@php artisan config:clear --ansi",
             "@php artisan test"
+        ],
+        "phpstan": "phpstan analyse --memory-limit=2G",
+        "rector": "rector process",
+        "analyse": [
+            "@phpstan",
+            "@rector"
         ]
     },
     "extra": {

@@ -2,22 +2,22 @@
 
 namespace Modules\Page\Actions;
 
-use Modules\Page\Models\Page;
 use Modules\Page\Http\Requests\UpdatePostRequest;
+use Modules\Page\Models\Page;
 
 class UpdatePostMetadataAction
 {
-    public function handle(UpdatePostRequest $request, Page $post)
+    public function handle(UpdatePostRequest $updatePostRequest, Page $page)
     {
-        return tap($post)->update([
-            'title' => $request->title,
-            'category_id' => $request->category,
-            'featured_image' => $request->featuredImage,
-            'layout_id' => $request->layout,
-            'slug' => $request->slug,
-            'excerpt' => $request->excerpt,
-            'description' => $request->description,
-            'data->keywords' => $request->keywords
+        return tap($page)->update([
+            'title' => $updatePostRequest->title,
+            'category_id' => $updatePostRequest->category,
+            'featured_image' => $updatePostRequest->featuredImage,
+            'layout_id' => $updatePostRequest->layout,
+            'slug' => $updatePostRequest->slug,
+            'excerpt' => $updatePostRequest->excerpt,
+            'description' => $updatePostRequest->description,
+            'data->keywords' => $updatePostRequest->keywords,
         ]);
     }
 }

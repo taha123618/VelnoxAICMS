@@ -20,14 +20,14 @@
 import { getId } from '@/helpers';
 import { draggable } from '@atlaskit/pragmatic-drag-and-drop/element/adapter';
 import { TElement } from '@modules/Builder/resources/scripts/types';
-import { useZiora } from '@modules/Builder/resources/scripts/use-ziora';
-import ZioraElement from '@modules/Builder/resources/scripts/ziora-element';
+import { useVelnoxAI } from '@modules/Builder/resources/scripts/use-VelnoxAI';
+import VelnoxAIElement from '@modules/Builder/resources/scripts/VelnoxAI-element';
 
 const { element } = defineProps<{
     element: TElement;
 }>();
 
-const store = useZiora();
+const store = useVelnoxAI();
 
 const elRef = ref<HTMLElement | null>(null);
 
@@ -39,7 +39,7 @@ onMounted(() => {
     cleanupFn = draggable({
         element: elRef.value as HTMLElement,
         getInitialData() {
-            const el = new ZioraElement({
+            const el = new VelnoxAIElement({
                 ...element,
                 id: getId(),
                 isLayoutElement: store.builderType == 'layout',

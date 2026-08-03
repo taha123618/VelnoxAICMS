@@ -38,18 +38,18 @@
 
 <script setup lang="ts">
 import BaseTooltip from '@modules/Builder/resources/components/base-tooltip.vue';
-import ZioraElement from '@modules/Builder/resources/scripts/ziora-element';
+import VelnoxAIElement from '@modules/Builder/resources/scripts/VelnoxAI-element';
 import accordionItemElement from '@modules/Builder/resources/draggables/components/accordion/accordion-item/config';
 
 import { getId } from '@/helpers';
 
 const { element } = defineProps<{
-    element: ZioraElement;
+    element: VelnoxAIElement;
 }>();
 
 function addAccordionItem() {
     element.addChild(
-        new ZioraElement({
+        new VelnoxAIElement({
             ...accordionItemElement,
             id: getId(),
             name: 'New item',

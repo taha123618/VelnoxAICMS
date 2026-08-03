@@ -1,9 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers;
 
 use Inertia\Inertia;
-use Illuminate\Http\Request;
 use Modules\Category\Data\CategoryData;
 use Modules\Category\Models\Category;
 
@@ -13,8 +14,8 @@ class CategoryController extends Controller
     {
 
         return Inertia::render('category', [
-            'category' => CategoryData::fromModel($category)
+            'category' => CategoryData::fromModel($category),
         ]);
-        
+
     }
 }

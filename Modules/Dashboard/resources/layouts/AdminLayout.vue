@@ -217,6 +217,90 @@ const mainNavItems = computed<NavigationMenuItem[]>(() => [
             },
         ],
     },
+    {
+        label: 'Automation & Workflows',
+        type: 'label',
+        trailingIcon: 'ph:minus',
+        icon: 'ph:lightning',
+        open: true,
+        children: [
+            {
+                label: 'Workflows',
+                icon: 'ph:git-fork',
+                active: route().current('admin.workflows*'),
+                onSelect: () => router.visit(route('admin.workflows.index')),
+            },
+            {
+                label: 'Webhooks & Automation',
+                icon: 'ph:plugs-connected',
+                active: route().current('admin.webhooks*'),
+                onSelect: () => router.visit(route('admin.webhooks.index')),
+            },
+        ],
+    },
+    {
+        label: 'Marketplace',
+        icon: 'ph:storefront',
+        active: route().current('marketplace.*'),
+        onSelect: () => router.visit(route('marketplace.index')),
+    },
+    {
+        label: 'Headless CMS',
+        type: 'label',
+        icon: 'ph:database',
+        trailingIcon: 'ph:minus',
+        open: true,
+        children: [
+            {
+                label: 'Collections',
+                active: route().current('admin.collections*'),
+                onSelect: () => router.visit(route('admin.collections.index')),
+            },
+        ],
+    },
+    {
+        label: 'Platform Settings',
+        type: 'label',
+        icon: 'ph:gear',
+        trailingIcon: 'ph:minus',
+        open: true,
+        children: [
+            {
+                label: 'General Settings',
+                active: route().current('settings.*'),
+                onSelect: () => router.visit(route('settings.index')),
+            },
+            {
+                label: 'API Tokens',
+                active: route().current('api-tokens.*'),
+                onSelect: () => router.visit(route('api-tokens.index')),
+            },
+            {
+                label: 'Audit Log',
+                active: route().current('audit-log.*'),
+                onSelect: () => router.visit(route('audit-log.index')),
+            },
+            {
+                label: 'Languages',
+                active: route().current('admin.languages*'),
+                onSelect: () => router.visit(route('admin.languages.index')),
+            }
+        ],
+    },
+    ...(user.value.isAdmin ? [{
+        label: 'System',
+        type: 'label' as const,
+        icon: 'ph:terminal-window',
+        trailingIcon: 'ph:minus',
+        open: true,
+        children: [
+            {
+                label: 'Horizon',
+                icon: 'ph:queue',
+                onSelect: () => { window.location.href = '/horizon'; },
+            },
+        ],
+    }] : []),
 ]);
 
 const userMenuItems = ref<DropdownMenuItem[]>([

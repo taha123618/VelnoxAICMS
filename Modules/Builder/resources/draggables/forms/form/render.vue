@@ -49,14 +49,14 @@
 
 <script setup lang="ts">
 import BaseRecursiveElement from '@modules/Builder/resources/components/base-recursive-element.vue';
-import ZioraElement from '@modules/Builder/resources/scripts/ziora-element';
+import VelnoxAIElement from '@modules/Builder/resources/scripts/VelnoxAI-element';
 import { cn } from '@modules/Builder/resources/scripts/utils';
 import { useElement } from '@modules/Builder/resources/scripts/use-element';
 import { useFormStyles } from '@modules/Builder/resources/draggables/forms/form/use-form-styles';
 import { useHead } from '@unhead/vue';
 
 const { element } = defineProps<{
-    element: ZioraElement;
+    element: VelnoxAIElement;
 }>();
 
 const { customClassNames, animationClass, className } = useElement(element);

@@ -52,11 +52,11 @@
 <script setup lang="ts">
 import BuilderNumberInput from '@modules/Builder/resources/components/form/builder-number-input.vue';
 import BuilderSelect from '@modules/Builder/resources/components/form/builder-select.vue';
-import ZioraElement from '@modules/Builder/resources/scripts/ziora-element';
+import VelnoxAIElement from '@modules/Builder/resources/scripts/VelnoxAI-element';
 import { useCategories } from '@modules/Category/resources/scripts/use-categories';
 
 const { element } = defineProps<{
-    element: ZioraElement;
+    element: VelnoxAIElement;
 }>();
 
 const { categories } = useCategories();

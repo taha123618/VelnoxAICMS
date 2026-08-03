@@ -2,31 +2,25 @@
 
 namespace Modules\Visits\Traits;
 
-use Modules\Visits\Visitor;
-use Modules\Visits\Models\Visit;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
+use Modules\Visits\Models\Visit;
+use Modules\Visits\Visitor;
 
 trait Visitable
 {
-
     public function visitLogs()
     {
         return $this->morphMany(Visit::class, 'visitable');
     }
 
-
-    public function scopeWithTotalVisitCount(Builder $query)
+    protected function scopeWithTotalVisitCount(Builder $builder): void
     {
-        $query->withCount('visits as visit_count_total');
+        $builder->withCount('visits as visit_count_total');
     }
 
-
-    public function createVisitLog(?Model $visitor)
+    public function createVisitLog(?Model $model)
     {
-        return app(Visitor::class)->setVisitor($visitor)->visit($this);
+        return resolve(Visitor::class)->setVisitor($model)->visit($this);
     }
-
-
-
 }

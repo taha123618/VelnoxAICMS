@@ -73,16 +73,16 @@ import BaseDraggableHandle from '@modules/Builder/resources/components/base-drag
 import { combine } from '@atlaskit/pragmatic-drag-and-drop/combine';
 import { useDnD } from '@modules/Builder/resources/scripts/use-dnd';
 import { useElement } from '@modules/Builder/resources/scripts/use-element';
-import { useZiora } from '@modules/Builder/resources/scripts/use-ziora';
-import ZioraElement from '@modules/Builder/resources/scripts/ziora-element';
+import { useVelnoxAI } from '@modules/Builder/resources/scripts/use-VelnoxAI';
+import VelnoxAIElement from '@modules/Builder/resources/scripts/VelnoxAI-element';
 import { unrefElement } from '@vueuse/core';
 
 const { element, tag = 'div' } = defineProps<{
     tag?: string;
-    element: ZioraElement;
+    element: VelnoxAIElement;
 }>();
 
-const store = useZiora();
+const store = useVelnoxAI();
 
 const {
     isDraggedOver,

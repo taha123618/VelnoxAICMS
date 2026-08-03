@@ -2,11 +2,10 @@
 
 namespace App\Http\Middleware;
 
-use Inertia\Middleware;
-use Tighten\Ziggy\Ziggy;
 use Illuminate\Http\Request;
-use Illuminate\Foundation\Inspiring;
+use Inertia\Middleware;
 use Modules\Auth\Data\AuthenticatedUserData;
+use Tighten\Ziggy\Ziggy;
 
 class HandleInertiaRequests extends Middleware
 {
@@ -17,6 +16,7 @@ class HandleInertiaRequests extends Middleware
      *
      * @var string
      */
+    #[\Override]
     protected $rootView = 'app';
 
     /**
@@ -24,6 +24,7 @@ class HandleInertiaRequests extends Middleware
      *
      * @see https://inertiajs.com/asset-versioning
      */
+    #[\Override]
     public function version(Request $request): ?string
     {
         return parent::version($request);
@@ -36,6 +37,7 @@ class HandleInertiaRequests extends Middleware
      *
      * @return array<string, mixed>
      */
+    #[\Override]
     public function share(Request $request): array
     {
 
@@ -46,14 +48,14 @@ class HandleInertiaRequests extends Middleware
             'auth' => [
                 'user' => $request->user()
                     ? AuthenticatedUserData::fromModel($request->user())
-                    : null
+                    : null,
             ],
-            'flash' => function () use ($request) {
-                return [
-                    'success' => $request->session()->get('success'),
-                    'error' => $request->session()->get('error'),
-                ];
-            },
+            'flash' => fn (): array => [
+                'success' => $request->session()->get('success'),
+                'error' => $request->session()->get('error'),
+                'token' => $request->session()->get('flash')['token'] ?? $request->session()->get('token'),
+                'message' => $request->session()->get('flash')['message'] ?? null,
+            ],
             'ziggy' => [
                 ...(new Ziggy)->toArray(),
                 'location' => $request->url(),

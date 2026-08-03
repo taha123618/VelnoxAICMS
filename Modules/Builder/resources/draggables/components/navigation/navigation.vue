@@ -100,13 +100,13 @@
 
 <script setup lang="ts">
 import BaseElementWrapper from '@modules/Builder/resources/components/base-element-wrapper.vue';
-import ZioraElement from '@modules/Builder/resources/scripts/ziora-element';
+import VelnoxAIElement from '@modules/Builder/resources/scripts/VelnoxAI-element';
 import { useNavigation } from '@modules/Builder/resources/draggables/components/navigation/use-navigation';
 import { useHead } from '@unhead/vue';
 import { useElement } from '@modules/Builder/resources/scripts/use-element';
 
 const { element } = defineProps<{
-    element: ZioraElement;
+    element: VelnoxAIElement;
 }>();
 
 const { getStyles, mobileMenuSide, mobileMenuCloseButtonSize, mobileMenuCloseButtonVariant, mobileMenuCloseButtonColor, showMobileMenu } = useNavigation(element);

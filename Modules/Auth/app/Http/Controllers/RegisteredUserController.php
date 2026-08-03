@@ -2,16 +2,19 @@
 
 namespace Modules\Auth\Http\Controllers;
 
-use Inertia\Inertia;
-use Inertia\Response;
-use Illuminate\Http\Request;
-use Modules\Auth\Models\User;
-use Illuminate\Validation\Rules;
 use App\Http\Controllers\Controller;
+use App\Models\Tenant;
+use Illuminate\Auth\Events\Registered;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Auth\Events\Registered;
+use Illuminate\Support\Str;
+use Illuminate\Validation\Rules;
+use Illuminate\Validation\ValidationException;
+use Inertia\Inertia;
+use Inertia\Response;
+use Modules\Auth\Models\User;
 
 class RegisteredUserController extends Controller
 {
@@ -26,7 +29,7 @@ class RegisteredUserController extends Controller
     /**
      * Handle an incoming registration request.
      *
-     * @throws \Illuminate\Validation\ValidationException
+     * @throws ValidationException
      */
     public function store(Request $request): RedirectResponse
     {
@@ -43,6 +46,15 @@ class RegisteredUserController extends Controller
             'email' => $request->email,
             'password' => Hash::make($request->password),
         ]);
+
+        // Create a default personal workspace for the new user
+        $tenant = Tenant::create([
+            'name' => $user->first_name.'\'s Workspace',
+            'slug' => Str::slug($user->first_name.'-workspace-'.uniqid()),
+        ]);
+
+        $user->tenants()->attach($tenant);
+        $user->update(['current_tenant_id' => $tenant->id]);
 
         $user->assignRole('administrator');
 

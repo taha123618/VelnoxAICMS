@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Modules\Visits\Models;
 
 use App\Models\BaseModel;
@@ -9,13 +11,14 @@ use Illuminate\Support\Arr;
 
 class Visit extends BaseModel
 {
-
+    #[\Override]
     protected $casts = [
         'data' => 'json',
-        'request'   => 'array',
+        'request' => 'array',
         'languages' => 'array',
-        'headers'   => 'array',
+        'headers' => 'array',
     ];
+
     public function visitable()
     {
         return $this->morphTo('visitable');
@@ -28,9 +31,10 @@ class Visit extends BaseModel
 
     public function getData(string $key)
     {
-        if (!$this->data || !is_array($this->data)) {
+        if (! $this->data || ! is_array($this->data)) {
             return null;
         }
+
         return Arr::get($this->data, $key);
     }
 }

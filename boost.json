@@ -15,18 +15,28 @@
     "mcp": true,
     "nightwatch": true,
     "packages": [
-        "spatie/laravel-medialibrary"
+        "spatie/laravel-medialibrary",
+        "spatie/laravel-activitylog",
+        "spatie/laravel-permission",
+        "spatie/laravel-translatable",
+        "inertiaui/modal"
     ],
     "sail": false,
     "skills": [
         "ai-sdk-development",
         "laravel-best-practices",
+        "configuring-horizon",
         "mcp-development",
         "configure-nightwatch",
+        "octane-development",
         "pest-testing",
         "inertia-vue-development",
+        "echo-development",
         "tailwindcss-development",
+        "inertia-modal-development",
         "medialibrary-development",
+        "laravel-permission-development",
+        "translatable-development",
         "deploying-laravel-cloud"
     ]
 }

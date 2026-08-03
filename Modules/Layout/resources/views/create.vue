@@ -29,14 +29,14 @@
 
 <script setup lang="ts">
 import BodyElement from '@modules/Builder/resources/draggables/static/body/config';
-import ZioraElement from '@modules/Builder/resources/scripts/ziora-element';
+import VelnoxAIElement from '@modules/Builder/resources/scripts/VelnoxAI-element';
 import BaseModalPage from '@/components/BaseModalPage.vue';
 
 const showModal = ref(true);
 
 const form = useForm({
     name: '',
-    content: [new ZioraElement(BodyElement)] as any,
+    content: [new VelnoxAIElement(BodyElement)] as any,
 });
 
 

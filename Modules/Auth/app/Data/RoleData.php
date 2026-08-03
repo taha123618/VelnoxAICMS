@@ -2,9 +2,9 @@
 
 namespace Modules\Auth\Data;
 
-use Spatie\LaravelData\Data;
-use Modules\Auth\Models\Role;
 use Illuminate\Support\Collection;
+use Modules\Auth\Models\Role;
+use Spatie\LaravelData\Data;
 use Spatie\LaravelData\Optional;
 use Spatie\TypeScriptTransformer\Attributes\TypeScript;
 
@@ -22,17 +22,17 @@ class RoleData extends Data
         public array|Optional $can,
     ) {}
 
-    public static function fromModel(Role $model): self
+    public static function fromModel(Role $role): self
     {
         return new self(
-            id: $model->id,
-            name: $model->name,
-            label: $model->label,
-            total_users: $model->total_users,
-            total_permissions: $model->total_permissions,
-            created_at: $model->created_at,
-            permissions: $model->permissions->pluck('id'),
-            can: $model->authorization
+            id: $role->id,
+            name: $role->name,
+            label: $role->label,
+            total_permissions: $role->total_permissions,
+            total_users: $role->total_users,
+            created_at: $role->created_at,
+            permissions: $role->permissions->pluck('id'),
+            can: $role->authorization
         );
     }
 }

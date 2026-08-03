@@ -31,7 +31,7 @@ npm install
 ```bash:no-line-numbers 
 php artisan key:generate
 ```
-* Initialize Ziora CMS by creating roles, permissions and an admin user
+* Initialize VelnoxAI CMS by creating roles, permissions and an admin user
 ```bash:no-line-numbers 
 php artisan builder:init
 ```

@@ -1,7 +1,7 @@
 import { useElement } from '@modules/Builder/resources/scripts/use-element';
-import ZioraElement from '@modules/Builder/resources/scripts/ziora-element';
+import VelnoxAIElement from '@modules/Builder/resources/scripts/VelnoxAI-element';
 
-export const useNavigation = (element: ZioraElement) => {
+export const useNavigation = (element: VelnoxAIElement) => {
     const showMobileMenu = ref(false);
     const { className } = useElement(element);
 
@@ -88,35 +88,35 @@ export const useNavigation = (element: ZioraElement) => {
     const mobileMenuCloseButtonColor = computed(
         () =>
             element.getProp('mobileMenu.closeButtonColor') as
-                | 'error'
-                | 'primary'
-                | 'secondary'
-                | 'success'
-                | 'info'
-                | 'warning'
-                | 'neutral'
-                | undefined,
+            | 'error'
+            | 'primary'
+            | 'secondary'
+            | 'success'
+            | 'info'
+            | 'warning'
+            | 'neutral'
+            | undefined,
     );
     const mobileMenuCloseButtonVariant = computed(
         () =>
             element.getProp('mobileMenu.closeButtonVariant') as
-                | 'link'
-                | 'solid'
-                | 'outline'
-                | 'soft'
-                | 'subtle'
-                | 'ghost'
-                | undefined,
+            | 'link'
+            | 'solid'
+            | 'outline'
+            | 'soft'
+            | 'subtle'
+            | 'ghost'
+            | undefined,
     );
     const mobileMenuCloseButtonSize = computed(
         () =>
             element.getProp('mobileMenu.closeButtonSize') as
-                | 'sm'
-                | 'md'
-                | 'xs'
-                | 'lg'
-                | 'xl'
-                | undefined,
+            | 'sm'
+            | 'md'
+            | 'xs'
+            | 'lg'
+            | 'xl'
+            | undefined,
     );
 
     return {

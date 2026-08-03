@@ -80,9 +80,9 @@ import BuilderSelect from '@modules/Builder/resources/components/form/builder-se
 import { textTransforms, fontWeights, FONTS } from '@modules/Builder/resources/scripts/constants';
 import BuilderColorInput from '@modules/Builder/resources/components/form/builder-color-input.vue';
 import BuilderSlider from '@modules/Builder/resources/components/form/builder-slider.vue';
-import ZioraElement from '@modules/Builder/resources/scripts/ziora-element';
+import VelnoxAIElement from '@modules/Builder/resources/scripts/VelnoxAI-element';
 
-const { element } = defineProps<{ element: ZioraElement }>();
+const { element } = defineProps<{ element: VelnoxAIElement }>();
 
 </script>
 

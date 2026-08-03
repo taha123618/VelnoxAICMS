@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Mcp\Servers;
 
 use Laravel\Mcp\Server;
@@ -12,14 +14,17 @@ use Laravel\Mcp\Server\Attributes\Version;
 #[Instructions('Instructions describing how to use the server and its features.')]
 class WeatherServer extends Server
 {
+    #[\Override]
     protected array $tools = [
         //
     ];
 
+    #[\Override]
     protected array $resources = [
         //
     ];
 
+    #[\Override]
     protected array $prompts = [
         //
     ];

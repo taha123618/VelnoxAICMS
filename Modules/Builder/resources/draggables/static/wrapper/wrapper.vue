@@ -41,20 +41,20 @@
 <script setup lang="ts">
 import BaseContextMenu from '@modules/Builder/resources/components/base-context-menu.vue';
 import BaseRecursiveElement from '@modules/Builder/resources/components/base-recursive-element.vue';
-import type ZioraElement from '@modules/Builder/resources/scripts/ziora-element';
+import type VelnoxAIElement from '@modules/Builder/resources/scripts/VelnoxAI-element';
 import { cn } from '@modules/Builder/resources/scripts/utils';
 import { useDnD } from '@modules/Builder/resources/scripts/use-dnd';
 import { useElement } from '@modules/Builder/resources/scripts/use-element';
-import { useZiora } from '@modules/Builder/resources/scripts/use-ziora';
+import { useVelnoxAI } from '@modules/Builder/resources/scripts/use-VelnoxAI';
 import { unrefElement } from '@vueuse/core';
 import { onMounted, onUnmounted } from 'vue';
 
 const { element } = defineProps<{
-    element: ZioraElement;
+    element: VelnoxAIElement;
 }>();
 
 const { elRef, dropCall, isDraggedOver } = useDnD(element);
-const store = useZiora();
+const store = useVelnoxAI();
 const { animationClass, className, customClassNames } = useElement(element);
 
 let cleanup = () => { };

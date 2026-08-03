@@ -167,14 +167,14 @@
 </template>
 
 <script setup lang="ts">
-import ZioraElement from '@modules/Builder/resources/scripts/ziora-element';
+import VelnoxAIElement from '@modules/Builder/resources/scripts/VelnoxAI-element';
 import { cn } from '@modules/Builder/resources/scripts/utils';
 import { useElement } from '@modules/Builder/resources/scripts/use-element';
 import { InputTypes } from '@modules/Builder/resources/scripts/enums';
 import { useFormInput } from '@modules/Builder/resources/draggables/forms/forminput/use-form-input';
 
 const { element } = defineProps<{
-    element: ZioraElement;
+    element: VelnoxAIElement;
     error?: string;
 }>();
 
