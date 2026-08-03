@@ -1,9 +1,9 @@
 import { useElement } from '@modules/Builder/resources/scripts/use-element';
-import ZioraElement from '@modules/Builder/resources/scripts/ziora-element';
+import VelnoxAIElement from '@modules/Builder/resources/scripts/VelnoxAI-element';
 
-export const useCarousel = (element: ZioraElement) => {
+export const useCarousel = (element: VelnoxAIElement) => {
     const { className } = useElement(element);
-    
+
     const items = computed(() => element.getProp('items'));
 
     function getStyles() {

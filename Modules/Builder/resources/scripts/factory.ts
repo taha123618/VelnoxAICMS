@@ -2,7 +2,7 @@ import {
     CurrentState,
     DeviceType,
 } from '@modules/Builder/resources/scripts/enums';
-import ZioraElement from '@modules/Builder/resources/scripts/ziora-element';
+import VelnoxAIElement from '@modules/Builder/resources/scripts/VelnoxAI-element';
 
 export function hasChildren(element: Record<string, any>): boolean {
     return (element.children ?? []).length > 0;
@@ -232,7 +232,7 @@ export function getNestedProperty(obj: Record<string, any>, path: string) {
 }
 
 export function extractStyles(
-    elementsArray: ZioraElement[],
+    elementsArray: VelnoxAIElement[],
     stylesMap: Record<string, any> = {},
 ) {
     if (!stylesMap.hasOwnProperty(DeviceType.Desktop))

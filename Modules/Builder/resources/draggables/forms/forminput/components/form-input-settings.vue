@@ -104,14 +104,14 @@
 
 <script setup lang="ts">
 import BuilderInput from '@modules/Builder/resources/components/form/builder-input.vue';
-import ZioraElement from '@modules/Builder/resources/scripts/ziora-element';
+import VelnoxAIElement from '@modules/Builder/resources/scripts/VelnoxAI-element';
 import BuilderNumberInput from '@modules/Builder/resources/components/form/builder-number-input.vue';
 import { formInputTypes } from '@modules/Builder/resources/scripts/constants';
 import BuilderSelect from '@modules/Builder/resources/components/form/builder-select.vue';
 import { InputTypes } from '@modules/Builder/resources/scripts/enums';
 import BuilderTextarea from '@modules/Builder/resources/components/form/builder-textarea.vue';
 
-const { element } = defineProps<{ element: ZioraElement }>();
+const { element } = defineProps<{ element: VelnoxAIElement }>();
 
 </script>
 

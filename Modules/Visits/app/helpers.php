@@ -12,6 +12,6 @@ if (! function_exists('visitor')) {
      */
     function visitor()
     {
-        return resolve('ziora-visitor');
+        return resolve('VelnoxAI-visitor');
     }
 }

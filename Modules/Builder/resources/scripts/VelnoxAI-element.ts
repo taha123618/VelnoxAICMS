@@ -14,14 +14,14 @@ import {
 } from '@modules/Builder/resources/scripts/utils';
 import { Case } from 'change-case-all';
 
-export default class ZioraElement {
+export default class VelnoxAIElement {
     id: string;
     type: string;
     canDrop: boolean;
     isLayoutElement: boolean;
     name: string;
     icon: string;
-    children: ZioraElement[];
+    children: VelnoxAIElement[];
     props: Record<string, any>;
 
     constructor(args: TElement) {
@@ -35,7 +35,7 @@ export default class ZioraElement {
         this.props = deepCopy(args.props) || {};
         if (!this.props.styles) this.props.styles = {};
         if (!this.props.styles.custom) this.props.styles.custom = {};
-        
+
         ['desktop', 'tablet', 'mobile'].forEach((device) => {
             if (!this.props.styles[device]) this.props.styles[device] = {};
             ['default', 'hover', 'active'].forEach((state) => {
@@ -50,11 +50,11 @@ export default class ZioraElement {
         this.name = name;
     }
 
-    appendContentElements(injectable: ZioraElement[]) {
+    appendContentElements(injectable: VelnoxAIElement[]) {
         this.children = injectable;
     }
 
-    addChild(element: ZioraElement) {
+    addChild(element: VelnoxAIElement) {
         if (Array.isArray(this.children)) {
             this.children.push(element);
         }
@@ -489,7 +489,7 @@ export default class ZioraElement {
 
         return fields;
     }
-    
+
     getFormElementInitialValue() {
         if (this.type !== 'forminput') {
             return;
@@ -519,13 +519,13 @@ export default class ZioraElement {
     static newFromObject(obj: TElement): any {
         if (!obj || typeof obj !== 'object') return obj;
 
-        return new ZioraElement({
+        return new VelnoxAIElement({
             ...obj,
             id: getId(),
             children: Array.isArray(obj.children)
                 ? obj.children.map(
-                      ZioraElement.newFromObject.bind(ZioraElement),
-                  )
+                    VelnoxAIElement.newFromObject.bind(VelnoxAIElement),
+                )
                 : obj.children,
         });
     }
@@ -548,10 +548,10 @@ export default class ZioraElement {
     static fromObject(obj: TElement): any {
         if (!obj || typeof obj !== 'object') return obj;
 
-        return new ZioraElement({
+        return new VelnoxAIElement({
             ...obj,
             children: Array.isArray(obj.children)
-                ? obj.children.map(ZioraElement.fromObject.bind(ZioraElement))
+                ? obj.children.map(VelnoxAIElement.fromObject.bind(VelnoxAIElement))
                 : obj.children,
         });
     }

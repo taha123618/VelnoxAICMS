@@ -1,7 +1,7 @@
 import { useElement } from '@modules/Builder/resources/scripts/use-element';
-import ZioraElement from '@modules/Builder/resources/scripts/ziora-element';
+import VelnoxAIElement from '@modules/Builder/resources/scripts/VelnoxAI-element';
 
-export const useFormStyles = (element: ZioraElement) => {
+export const useFormStyles = (element: VelnoxAIElement) => {
     const { className } = useElement(element);
 
     function getStyles() {

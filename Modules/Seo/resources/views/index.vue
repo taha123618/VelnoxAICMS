@@ -139,14 +139,14 @@ const selectedItem = ref<any>(null);
 const pageSeoItems = ref<any[]>([
     {
         id: 1,
-        title: 'Home - ZioraCMS AI Drag & Drop Builder',
+        title: 'Home - VelnoxAICMS AI Drag & Drop Builder',
         description: 'Build stunning high-conversion web applications with AI and Vue.',
         keywords: ['cms', 'vue', 'laravel', 'ai builder'],
     },
     {
         id: 2,
         title: 'Marketplace Plugins & Extension Hub',
-        description: 'Browse themes, plugins, and workflow extensions for ZioraCMS.',
+        description: 'Browse themes, plugins, and workflow extensions for VelnoxAICMS.',
         keywords: ['marketplace', 'plugins', 'themes'],
     },
     {

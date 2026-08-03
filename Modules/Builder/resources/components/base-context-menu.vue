@@ -12,17 +12,17 @@
 
 <script setup lang="ts">
 
-import { useZiora } from '@modules/Builder/resources/scripts/use-ziora';
-import ZioraElement from '@modules/Builder/resources/scripts/ziora-element';
+import { useVelnoxAI } from '@modules/Builder/resources/scripts/use-VelnoxAI';
+import VelnoxAIElement from '@modules/Builder/resources/scripts/VelnoxAI-element';
 import type { ContextMenuItem } from '@nuxt/ui';
 import { computed } from 'vue';
 
 const { element, disabled = false } = defineProps<{
-    element: ZioraElement;
+    element: VelnoxAIElement;
     disabled?: boolean;
 }>();
 
-const store = useZiora();
+const store = useVelnoxAI();
 
 const disablePaste = computed<boolean>(() => {
     return !store.cutOrCopiedElement || store.cutOrCopiedElement?.id == element.id || !element.canDrop;

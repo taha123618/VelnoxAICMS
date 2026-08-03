@@ -149,10 +149,10 @@
 import BuilderSelect from '@modules/Builder/resources/components/form/builder-select.vue';
 import BuilderColorInput from '@modules/Builder/resources/components/form/builder-color-input.vue';
 import BuilderSlider from '@modules/Builder/resources/components/form/builder-slider.vue';
-import ZioraElement from '@modules/Builder/resources/scripts/ziora-element';
+import VelnoxAIElement from '@modules/Builder/resources/scripts/VelnoxAI-element';
 import { FONTS, textTransforms, fontWeights } from "@modules/Builder/resources/scripts/constants";
 import BuilderCombo from '@modules/Builder/resources/components/form/builder-combo.vue';
-const { element } = defineProps<{ element: ZioraElement }>();
+const { element } = defineProps<{ element: VelnoxAIElement }>();
 
 const borderStyles = ["none", "solid", "dashed", "dotted", "groove", "inset"];
 </script>

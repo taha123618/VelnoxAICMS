@@ -25,7 +25,7 @@ class FormSchemaGenerator implements Agent, HasStructuredOutput
 
     public function instructions(): string
     {
-        return 'You are a Form Design and UX Expert for ZioraCMS.
+        return 'You are a Form Design and UX Expert for VelnoxAICMS.
 Generate a form configuration schema including form title, description, submit button text, and field inputs array.';
     }
 

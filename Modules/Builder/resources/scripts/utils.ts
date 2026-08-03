@@ -1,4 +1,4 @@
-import ZioraElement from '@modules/Builder/resources/scripts/ziora-element';
+import VelnoxAIElement from '@modules/Builder/resources/scripts/VelnoxAI-element';
 import { type ClassValue, clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 
@@ -68,7 +68,7 @@ export function deepCopy<T>(obj: T): T {
 }
 
 export function parseElements(item: any) {
-    return [ZioraElement.fromObject(item[0])];
+    return [VelnoxAIElement.fromObject(item[0])];
 }
 
 /**

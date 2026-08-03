@@ -25,7 +25,7 @@ class MarketplaceGenerator implements Agent, HasStructuredOutput
 
     public function instructions(): string
     {
-        return 'You are an expert Marketplace Product & Listing Strategist for ZioraCMS.
+        return 'You are an expert Marketplace Product & Listing Strategist for VelnoxAICMS.
 Analyze the user prompt to generate a complete, professional marketplace plugin, theme, or extension listing.
 Generate a compelling title, short excerpt, full feature list (array of strings), search tags, and recommended pricing tiers.';
     }

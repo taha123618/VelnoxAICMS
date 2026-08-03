@@ -29,11 +29,11 @@
 <script setup lang="ts">
 import BaseElementWrapper from '@modules/Builder/resources/components/base-element-wrapper.vue';
 import { useCarousel } from '@modules/Builder/resources/draggables/media/image-carousel/use-carousel';
-import ZioraElement from '@modules/Builder/resources/scripts/ziora-element';
+import VelnoxAIElement from '@modules/Builder/resources/scripts/VelnoxAI-element';
 import { useHead } from '@unhead/vue';
 
 const { element } = defineProps<{
-    element: ZioraElement;
+    element: VelnoxAIElement;
 }>();
 
 const { getStyles, items } = useCarousel(element)

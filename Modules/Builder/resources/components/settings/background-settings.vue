@@ -99,14 +99,14 @@
 <script setup lang="ts">
 import { BackgroundType } from '@modules/Builder/resources/scripts/enums';
 import { useElement } from '@modules/Builder/resources/scripts/use-element';
-import ZioraElement from '@modules/Builder/resources/scripts/ziora-element';
+import VelnoxAIElement from '@modules/Builder/resources/scripts/VelnoxAI-element';
 import BuilderImagePicker from '@modules/Builder/resources/components/form/builder-image-picker.vue';
 import BuilderColorInput from '@modules/Builder/resources/components/form/builder-color-input.vue';
 import BuilderInput from '@modules/Builder/resources/components/form/builder-input.vue';
 import BuilderSelect from '@modules/Builder/resources/components/form/builder-select.vue';
 import BuilderToggleGroup from '@modules/Builder/resources/components/form/builder-toggle-group.vue';
 
-const { element } = defineProps<{ element: ZioraElement }>();
+const { element } = defineProps<{ element: VelnoxAIElement }>();
 
 const { getStyle, hasChanged, deleteHoverStyle, setStyle } =
     useElement(element);

@@ -15,7 +15,7 @@ const form = useForm({
 // Initialize form from props
 const initForm = () => {
     const defaultSettings = [
-        { key: 'site_name', group: 'general', type: 'string', value: 'Ziora CMS' },
+        { key: 'site_name', group: 'general', type: 'string', value: 'VelnoxAI CMS' },
         { key: 'site_description', group: 'general', type: 'string', value: '' },
         { key: 'site_logo', group: 'branding', type: 'image', value: '' },
         { key: 'contact_email', group: 'general', type: 'string', value: 'hello@example.com' },

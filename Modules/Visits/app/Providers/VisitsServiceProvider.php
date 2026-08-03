@@ -34,7 +34,7 @@ class VisitsServiceProvider extends ServiceProvider
 
     protected function registerMacroHelpers(): void
     {
-        Request::macro('visitor', fn () => resolve('ziora-visitor'));
+        Request::macro('visitor', fn () => resolve('VelnoxAI-visitor'));
     }
 
     /**
@@ -51,7 +51,7 @@ class VisitsServiceProvider extends ServiceProvider
             'visits'
         );
 
-        $this->app->singleton('ziora-visitor', function (): Visitor {
+        $this->app->singleton('VelnoxAI-visitor', function (): Visitor {
             $request = resolve(Request::class);
 
             return new Visitor($request, config('visits'));

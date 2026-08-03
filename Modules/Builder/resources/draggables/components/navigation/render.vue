@@ -94,14 +94,14 @@
 </template>
 
 <script setup lang="ts">
-import ZioraElement from '@modules/Builder/resources/scripts/ziora-element';
+import VelnoxAIElement from '@modules/Builder/resources/scripts/VelnoxAI-element';
 import { cn } from '@modules/Builder/resources/scripts/utils';
 import { useElement } from '@modules/Builder/resources/scripts/use-element';
 import { useHead } from '@unhead/vue';
 import { useNavigation } from '@modules/Builder/resources/draggables/components/navigation/use-navigation';
 
 const { element } = defineProps<{
-    element: ZioraElement;
+    element: VelnoxAIElement;
 }>();
 
 const { className, customClassNames, animationClass } = useElement(element);

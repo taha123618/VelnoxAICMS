@@ -12,12 +12,12 @@
 
 <script setup lang="ts">
 import { useElement } from '@modules/Builder/resources/scripts/use-element';
-import ZioraElement from '@modules/Builder/resources/scripts/ziora-element';
+import VelnoxAIElement from '@modules/Builder/resources/scripts/VelnoxAI-element';
 import { PlayerVars, usePlayer } from '@vue-youtube/core';
 import { cn } from '@modules/Builder/resources/scripts/utils';
 
 const { element } = defineProps<{
-    element: ZioraElement;
+    element: VelnoxAIElement;
 }>();
 const { customClassNames, animationClass, className } =
     useElement(element);

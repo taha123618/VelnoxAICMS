@@ -42,15 +42,15 @@
 </template>
 
 <script setup lang="ts">
-import { useZiora } from '@modules/Builder/resources/scripts/use-ziora';
-import ZioraElement from '@modules/Builder/resources/scripts/ziora-element';
+import { useVelnoxAI } from '@modules/Builder/resources/scripts/use-VelnoxAI';
+import VelnoxAIElement from '@modules/Builder/resources/scripts/VelnoxAI-element';
 import BaseTooltip from '@modules/Builder/resources/components/base-tooltip.vue';
 
 const { element } = defineProps<{
-  element: ZioraElement;
+  element: VelnoxAIElement;
 }>();
 
-const store = useZiora();
+const store = useVelnoxAI();
 
 const dragHandleRef = useTemplateRef<string>(`handleRef_${element.id}`);
 

@@ -25,7 +25,7 @@ class WorkflowGenerator implements Agent, HasStructuredOutput
 
     public function instructions(): string
     {
-        return 'You are an Automation & Workflow Architect for ZioraCMS.
+        return 'You are an Automation & Workflow Architect for VelnoxAICMS.
 Your task is to generate a visual workflow tree based on the user\'s prompt.
 The workflow consists of a trigger node, condition steps, and action execution steps.';
     }

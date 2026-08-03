@@ -84,7 +84,7 @@ class MarketplaceController extends Controller
         return Inertia::render('Marketplace::index', [
             'plugins' => $formattedPlugins,
             'themes' => $formattedThemes,
-            'activeTheme' => config('ziora.active_theme', 'Default Theme'),
+            'activeTheme' => config('VelnoxAI.active_theme', 'Default Theme'),
         ]);
     }
 

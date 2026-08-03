@@ -25,14 +25,14 @@
 <script setup lang="ts">
 import BaseElementWrapper from '@modules/Builder/resources/components/base-element-wrapper.vue';
 import BaseRecursiveElement from '@modules/Builder/resources/components/base-recursive-element.vue';
-import { useZiora } from '@modules/Builder/resources/scripts/use-ziora';
-import ZioraElement from '@modules/Builder/resources/scripts/ziora-element';
+import { useVelnoxAI } from '@modules/Builder/resources/scripts/use-VelnoxAI';
+import VelnoxAIElement from '@modules/Builder/resources/scripts/VelnoxAI-element';
 
 const { element } = defineProps<{
-    element: ZioraElement;
+    element: VelnoxAIElement;
 }>();
 
-const store = useZiora()
+const store = useVelnoxAI()
 
 const emptyCellCounter = computed(() => element.getEmptyGridCellCount(store.device, store.currentState))
 

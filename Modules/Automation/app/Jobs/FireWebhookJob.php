@@ -32,12 +32,12 @@ class FireWebhookJob implements ShouldQueue
         try {
             $headers = [
                 'Content-Type' => 'application/json',
-                'X-Ziora-Event' => $this->event,
+                'X-VelnoxAI-Event' => $this->event,
             ];
 
             if ($this->webhook->secret) {
                 $signature = hash_hmac('sha256', json_encode($this->payload), $this->webhook->secret);
-                $headers['X-Ziora-Signature'] = $signature;
+                $headers['X-VelnoxAI-Signature'] = $signature;
             }
 
             Http::withHeaders($headers)

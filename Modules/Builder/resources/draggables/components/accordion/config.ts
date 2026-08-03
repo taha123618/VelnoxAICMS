@@ -6,7 +6,7 @@ import {
 } from '@modules/Builder/resources/scripts/base-styles';
 import { TElement } from '@modules/Builder/resources/scripts/types';
 import { deepCopy } from '@modules/Builder/resources/scripts/utils';
-import ZioraElement from '@modules/Builder/resources/scripts/ziora-element';
+import VelnoxAIElement from '@modules/Builder/resources/scripts/VelnoxAI-element';
 
 const config: TElement = {
     id: 'accordion',
@@ -64,12 +64,12 @@ const config: TElement = {
         },
     },
     children: [
-        new ZioraElement({
+        new VelnoxAIElement({
             ...accordionItemElement,
             id: getId(),
             name: 'Item 1',
         }),
-        new ZioraElement({
+        new VelnoxAIElement({
             ...accordionItemElement,
             id: getId(),
             name: 'Item 2',

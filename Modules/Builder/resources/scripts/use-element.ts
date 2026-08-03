@@ -2,15 +2,15 @@ import { defaultDivStyles } from '@modules/Builder/resources/scripts/base-styles
 import { CurrentState } from '@modules/Builder/resources/scripts/enums';
 import { findParentFromId } from '@modules/Builder/resources/scripts/factory';
 import { ElState } from '@modules/Builder/resources/scripts/types';
-import { useZiora } from '@modules/Builder/resources/scripts/use-ziora';
+import { useVelnoxAI } from '@modules/Builder/resources/scripts/use-VelnoxAI';
 import { deepCopy } from '@modules/Builder/resources/scripts/utils';
-import ZioraElement from '@modules/Builder/resources/scripts/ziora-element';
+import VelnoxAIElement from '@modules/Builder/resources/scripts/VelnoxAI-element';
 import { computed, ref } from 'vue';
 
 const idleState: ElState = { type: 'idle' };
 
-export const useElement = (element: ZioraElement) => {
-    const store = useZiora();
+export const useElement = (element: VelnoxAIElement) => {
+    const store = useVelnoxAI();
     const isHovering = ref<boolean>(false);
     const elState = ref<ElState>(idleState);
 
@@ -101,9 +101,9 @@ export const useElement = (element: ZioraElement) => {
         return animation;
     });
 
-    const parentEl = computed<ZioraElement | null>(
+    const parentEl = computed<VelnoxAIElement | null>(
         () =>
-            findParentFromId(store.editorElements, element.id) as ZioraElement,
+            findParentFromId(store.editorElements, element.id) as VelnoxAIElement,
     );
 
     const parentIsGrid = computed<boolean>(

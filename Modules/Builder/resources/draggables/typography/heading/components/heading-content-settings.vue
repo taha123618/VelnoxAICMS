@@ -21,12 +21,12 @@
 </template>
 
 <script setup lang="ts">
-import ZioraElement from '@modules/Builder/resources/scripts/ziora-element';
+import VelnoxAIElement from '@modules/Builder/resources/scripts/VelnoxAI-element';
 import BuilderSelect from '@modules/Builder/resources/components/form/builder-select.vue';
 import BuilderTextarea from '@modules/Builder/resources/components/form/builder-textarea.vue';
 import VisibilitySettings from '@modules/Builder/resources/components/settings/visibility-settings.vue';
 const { element } = defineProps<{
-    element: ZioraElement;
+    element: VelnoxAIElement;
 }>();
 
 const headingTags = [

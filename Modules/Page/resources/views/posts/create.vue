@@ -55,7 +55,7 @@
 import BaseModalPage from '@/components/BaseModalPage.vue';
 import BaseSelect from '@/components/BaseSelect.vue';
 import wrapperElement from '@modules/Builder/resources/draggables/static/wrapper/config';
-import ZioraElement from '@modules/Builder/resources/scripts/ziora-element';
+import VelnoxAIElement from '@modules/Builder/resources/scripts/VelnoxAI-element';
 
 const { layouts } = defineProps<{
     layouts: Record<string, any>[];
@@ -69,7 +69,7 @@ const form = useForm({
     title: '',
     layout: '',
     category: '',
-    content: [new ZioraElement(wrapperElement)] as any,
+    content: [new VelnoxAIElement(wrapperElement)] as any,
 });
 
 function submit() {

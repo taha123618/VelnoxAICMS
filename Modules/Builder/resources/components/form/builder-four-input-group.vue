@@ -2,7 +2,7 @@
     <UFormField
         :label="label"
         :ui="{
-            label: 'block font-normal ziora-label',
+            label: 'block font-normal VelnoxAI-label',
         }"
         class="flex flex-col gap-1 text-xs"
     >

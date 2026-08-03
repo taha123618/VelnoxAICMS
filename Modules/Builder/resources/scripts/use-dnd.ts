@@ -12,12 +12,12 @@ import { autoUpdate, flip, shift, useFloating } from '@floating-ui/vue';
 import { ElState } from '@modules/Builder/resources/scripts/types';
 import { useElement } from '@modules/Builder/resources/scripts/use-element';
 import { cursorIsonEdge } from '@modules/Builder/resources/scripts/utils';
-import ZioraElement from '@modules/Builder/resources/scripts/ziora-element';
+import VelnoxAIElement from '@modules/Builder/resources/scripts/VelnoxAI-element';
 import { computed, ref, useTemplateRef } from 'vue';
 
 const idleState: ElState = { type: 'idle' };
 
-export const useDnD = (element: ZioraElement) => {
+export const useDnD = (element: VelnoxAIElement) => {
     const isDraggedOver = ref<boolean>(false);
     const isDragging = ref<boolean>(false);
     const isDraggingOnEdge = ref<boolean>(false);
@@ -113,7 +113,7 @@ export const useDnD = (element: ZioraElement) => {
             getData: (args) => {
                 const { input, source } = args;
                 const data = {
-                    itemId: (source.data.item as ZioraElement).id,
+                    itemId: (source.data.item as VelnoxAIElement).id,
                     parentId: element.id,
                     canDrop: element.canDrop,
                     showingIndicator: showIndicator.value,

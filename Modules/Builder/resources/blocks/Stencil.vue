@@ -23,14 +23,14 @@
 
 import { draggable } from '@atlaskit/pragmatic-drag-and-drop/element/adapter';
 import { BlockData } from '@modules/Builder/resources/blocks';
-import { useZiora } from '@modules/Builder/resources/scripts/use-ziora';
-import ZioraElement from '@modules/Builder/resources/scripts/ziora-element';
+import { useVelnoxAI } from '@modules/Builder/resources/scripts/use-VelnoxAI';
+import VelnoxAIElement from '@modules/Builder/resources/scripts/VelnoxAI-element';
 
 const { block } = defineProps<{
     block: BlockData;
 }>();
 
-const store = useZiora()
+const store = useVelnoxAI()
 const elRef = ref<HTMLElement | null>(null);
 
 const isDragging = ref<boolean>(false);
@@ -46,10 +46,10 @@ onMounted(() => {
         element: elRef.value as HTMLElement,
         getInitialData() {
             const item = JSON.parse(block.data)
-            ZioraElement.updateIsLayoutProperty(item, store.builderType == 'layout')
+            VelnoxAIElement.updateIsLayoutProperty(item, store.builderType == 'layout')
 
             return {
-                item: ZioraElement.newFromObject(item),
+                item: VelnoxAIElement.newFromObject(item),
                 canDrop: false,
                 action: 'add',
             };

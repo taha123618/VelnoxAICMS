@@ -3,7 +3,7 @@ import { removeElement, insertElementAfter, insertElementBefore, addElementToPar
 import { TBuilderType, TCutOrCopyAction, TEditor, TElement, TTabName } from '@modules/Builder/resources/scripts/types';
 import { deepCopy, parseElements } from '@modules/Builder/resources/scripts/utils';
 import BodyElement from '@modules/Builder/resources/draggables/static/body/config';
-import ZioraElement from '@modules/Builder/resources/scripts/ziora-element';
+import VelnoxAIElement from '@modules/Builder/resources/scripts/VelnoxAI-element';
 import { defineStore } from 'pinia';
 import { computed, ref } from 'vue';
 
@@ -18,12 +18,12 @@ const initialEditor: TEditor = {
     isPreviewing: false,
 };
 
-export const useZiora = defineStore('zioraStore', () => {
-    const layoutElements = ref<ZioraElement[]>([]);
+export const useVelnoxAI = defineStore('VelnoxAIStore', () => {
+    const layoutElements = ref<VelnoxAIElement[]>([]);
     const selectedTab = ref<TTabName>('components');
     const builderType = ref<TBuilderType>('page');
-    const editorElements = ref<ZioraElement[]>([
-        new ZioraElement(BodyElement),
+    const editorElements = ref<VelnoxAIElement[]>([
+        new VelnoxAIElement(BodyElement),
     ]);
     const editor = reactive<TEditor>(initialEditor);
     const history = useRefHistory(editorElements, {
@@ -44,11 +44,11 @@ export const useZiora = defineStore('zioraStore', () => {
     const isMobile = computed<boolean>(
         () => editor.device == DeviceType.Mobile,
     );
-    const selectedElement = computed<ZioraElement | null>(
+    const selectedElement = computed<VelnoxAIElement | null>(
         () => editor.selectedElement,
     );
 
-    const cutOrCopiedElement = computed<ZioraElement | null>(
+    const cutOrCopiedElement = computed<VelnoxAIElement | null>(
         () => editor.cutOrCopiedElement,
     );
 
@@ -56,9 +56,9 @@ export const useZiora = defineStore('zioraStore', () => {
         () => editor.cutOrCopyAction,
     );
     const showOutline = computed<boolean>(() => editor.showOutline);
-    const elements = computed<ZioraElement[]>(() => editorElements.value);
+    const elements = computed<VelnoxAIElement[]>(() => editorElements.value);
 
-    const renderableElements = computed<ZioraElement[]>(() => {
+    const renderableElements = computed<VelnoxAIElement[]>(() => {
         return injectElementsToContentArea(
             layoutElements.value,
             editorElements.value,
@@ -66,7 +66,7 @@ export const useZiora = defineStore('zioraStore', () => {
     });
 
     function setInitialElements(
-        elements: ZioraElement[],
+        elements: VelnoxAIElement[],
         type: TBuilderType,
     ) {
         editorElements.value = elements;
@@ -74,7 +74,7 @@ export const useZiora = defineStore('zioraStore', () => {
         history.clear();
     }
 
-    function setElements(elements: ZioraElement[]) {
+    function setElements(elements: VelnoxAIElement[]) {
         editorElements.value = elements;
     }
 
@@ -86,7 +86,7 @@ export const useZiora = defineStore('zioraStore', () => {
         editor.isEnabled = false;
     }
 
-    function setLayoutElements(elements: ZioraElement[]) {
+    function setLayoutElements(elements: VelnoxAIElement[]) {
         layoutElements.value = elements;
     }
 
@@ -103,14 +103,14 @@ export const useZiora = defineStore('zioraStore', () => {
     }
 
     function cutOrCopyElement(
-        element: ZioraElement,
+        element: VelnoxAIElement,
         action: TCutOrCopyAction,
     ) {
         editor.cutOrCopiedElement = element;
         editor.cutOrCopyAction = action;
     }
 
-    function setSelectedElement(elementDetails: ZioraElement) {
+    function setSelectedElement(elementDetails: VelnoxAIElement) {
         if (!elementDetails) return;
         clearSelectedElement();
         editor.selectedElement = elementDetails;
@@ -123,7 +123,7 @@ export const useZiora = defineStore('zioraStore', () => {
 
     function deleteElement(elementId: string) {
         const results = removeElement(editorElements.value, elementId);
-        editorElements.value = results.map(el => ZioraElement.fromObject(el as TElement));
+        editorElements.value = results.map(el => VelnoxAIElement.fromObject(el as TElement));
         clearSelectedElement();
     }
 
@@ -135,7 +135,7 @@ export const useZiora = defineStore('zioraStore', () => {
         if (!targetParentId || !newItem) {
             return;
         }
-        
+
         const elementsArray = deepCopy(editorElements.value);
 
         if (insertAt == InsertLocation.After) {
@@ -144,14 +144,14 @@ export const useZiora = defineStore('zioraStore', () => {
                 targetParentId,
                 newItem,
             );
-            editorElements.value = result.map(el => ZioraElement.fromObject(el as TElement));
+            editorElements.value = result.map(el => VelnoxAIElement.fromObject(el as TElement));
         } else if (insertAt == InsertLocation.Before) {
             const result = insertElementBefore(
                 elementsArray,
                 targetParentId,
                 newItem,
             );
-            editorElements.value = result.map(el => ZioraElement.fromObject(el as TElement));
+            editorElements.value = result.map(el => VelnoxAIElement.fromObject(el as TElement));
         } else {
             const result = addElementToParent(
                 elementsArray,
@@ -159,7 +159,7 @@ export const useZiora = defineStore('zioraStore', () => {
                 newItem,
             );
 
-            editorElements.value = result.map(el => ZioraElement.fromObject(el as TElement));
+            editorElements.value = result.map(el => VelnoxAIElement.fromObject(el as TElement));
         }
     }
 
@@ -180,31 +180,31 @@ export const useZiora = defineStore('zioraStore', () => {
         if (insertAt == InsertLocation.After) {
             let result = removeElement(editorElements.value, targetElementId);
             result = insertElementAfter(result, targetParentId, item);
-            editorElements.value = result.map(el => ZioraElement.fromObject(el as TElement));
+            editorElements.value = result.map(el => VelnoxAIElement.fromObject(el as TElement));
         } else if (insertAt == InsertLocation.Before) {
             let result = removeElement(editorElements.value, targetElementId);
             result = insertElementBefore(result, targetParentId, item);
-            editorElements.value = result.map(el => ZioraElement.fromObject(el as TElement));
+            editorElements.value = result.map(el => VelnoxAIElement.fromObject(el as TElement));
         } else {
             // make child
             let result = removeElement(editorElements.value, targetElementId);
             result = addElementToParent(result, targetParentId, item);
-            editorElements.value = result.map(el => ZioraElement.fromObject(el as TElement));
+            editorElements.value = result.map(el => VelnoxAIElement.fromObject(el as TElement));
         }
     }
 
-    function duplicateElement(element: ZioraElement) {
+    function duplicateElement(element: VelnoxAIElement) {
         const elementsArray = deepCopy(editorElements.value);
-        const newElement = ZioraElement.newFromObject({ ...element });
+        const newElement = VelnoxAIElement.newFromObject({ ...element });
         const result = insertElementAfter(
             elementsArray,
             element.id,
             newElement,
         );
-        editorElements.value = result.map(el => ZioraElement.fromObject(el as TElement));
+        editorElements.value = result.map(el => VelnoxAIElement.fromObject(el as TElement));
     }
 
-    function pasteElement(targetParent: ZioraElement) {
+    function pasteElement(targetParent: VelnoxAIElement) {
         if (
             !targetParent ||
             !editor.cutOrCopiedElement ||
@@ -221,7 +221,7 @@ export const useZiora = defineStore('zioraStore', () => {
             return;
         }
 
-        const newElement = ZioraElement.newFromObject({
+        const newElement = VelnoxAIElement.newFromObject({
             ...editor.cutOrCopiedElement,
         });
 
@@ -239,16 +239,16 @@ export const useZiora = defineStore('zioraStore', () => {
 
         result = addElementToParent(result, targetParent.id, newElement);
 
-        editorElements.value = result.map(el => ZioraElement.fromObject(el as TElement));
+        editorElements.value = result.map(el => VelnoxAIElement.fromObject(el as TElement));
 
         editor.cutOrCopiedElement = null;
         editor.cutOrCopyAction = null;
     }
 
     function injectElementsToContentArea(
-        elementsArray: ZioraElement[],
-        injectableElements: ZioraElement[],
-    ): ZioraElement[] {
+        elementsArray: VelnoxAIElement[],
+        injectableElements: VelnoxAIElement[],
+    ): VelnoxAIElement[] {
         for (const item of elementsArray) {
             if (item.type === 'content') {
                 item.appendContentElements(injectableElements);

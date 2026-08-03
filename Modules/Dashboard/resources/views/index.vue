@@ -10,7 +10,7 @@
                     title: 'text-3xl'
                 }"
                 :title="`Welcome ${user.first_name}!`"
-                description="Manage your site content with Ziora CMS."
+                description="Manage your site content with VelnoxAI CMS."
                 color="primary"
                 variant="soft"
                 orientation="vertical"

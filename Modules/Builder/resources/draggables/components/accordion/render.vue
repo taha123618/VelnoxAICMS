@@ -15,7 +15,7 @@
             </template>
             <template #content="{ item }">
                 <!-- prettier-ignore -->
-                <AccordionItem :element="(item as ZioraElement)" />
+                <AccordionItem :element="(item as VelnoxAIElement)" />
             </template>
         </UAccordion>
     </div>
@@ -26,11 +26,11 @@ import { cn } from '@modules/Builder/resources/scripts/utils';
 import AccordionItem from '@modules/Builder/resources/draggables/components/accordion/accordion-item/accordion-item.vue';
 import { useAccordion } from '@modules/Builder/resources/draggables/components/accordion/use-accordion';
 import { useElement } from '@modules/Builder/resources/scripts/use-element';
-import ZioraElement from '@modules/Builder/resources/scripts/ziora-element';
+import VelnoxAIElement from '@modules/Builder/resources/scripts/VelnoxAI-element';
 import { useHead } from '@unhead/vue';
 
 const { element } = defineProps<{
-    element: ZioraElement;
+    element: VelnoxAIElement;
 }>();
 
 const { getStyles, items } = useAccordion(element)

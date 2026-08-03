@@ -32,8 +32,8 @@ class DispatchWebhook implements ShouldQueue
 
         try {
             Http::withHeaders([
-                'X-Ziora-Event' => $this->event,
-                'X-Ziora-Signature' => $signature,
+                'X-VelnoxAI-Event' => $this->event,
+                'X-VelnoxAI-Signature' => $signature,
             ])
                 ->timeout(10)
                 ->post($this->webhook->url, $this->payload);

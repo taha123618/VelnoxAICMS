@@ -13,6 +13,6 @@ class Visitor extends Facade
 {
     public static function getFacadeAccessor(): string
     {
-        return 'ziora-visitor';
+        return 'VelnoxAI-visitor';
     }
 }

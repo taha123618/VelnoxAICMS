@@ -12,10 +12,10 @@
 
 <script setup lang="ts">
 import BaseRecursiveElement from '@modules/Builder/resources/components/base-recursive-element.vue';
-import type ZioraElement from '@modules/Builder/resources/scripts/ziora-element';
+import type VelnoxAIElement from '@modules/Builder/resources/scripts/VelnoxAI-element';
 
 const { element } = defineProps<{
-    element: ZioraElement;
+    element: VelnoxAIElement;
 }>();
 </script>
 

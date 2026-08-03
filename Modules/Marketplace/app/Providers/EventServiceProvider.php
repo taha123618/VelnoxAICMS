@@ -26,6 +26,6 @@ class EventServiceProvider extends ServiceProvider
     {
         // Intercept Eloquent events to dispatch webhooks.
         Event::listen('eloquent.*', [DispatchWebhooksListener::class, 'handle']);
-        Event::listen('ziora.*', [DispatchWebhooksListener::class, 'handle']);
+        Event::listen('VelnoxAI.*', [DispatchWebhooksListener::class, 'handle']);
     }
 }

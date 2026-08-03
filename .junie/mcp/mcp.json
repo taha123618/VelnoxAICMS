@@ -3,7 +3,7 @@
         "laravel-boost": {
             "command": "/opt/homebrew/Cellar/php/8.5.8/bin/php",
             "args": [
-                "/Users/taha/projects/zioracms/artisan",
+                "/Users/taha/projects/VelnoxAIcms/artisan",
                 "boost:mcp"
             ]
         },

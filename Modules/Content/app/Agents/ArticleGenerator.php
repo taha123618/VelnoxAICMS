@@ -25,7 +25,7 @@ class ArticleGenerator implements Agent, HasStructuredOutput
 
     public function instructions(): string
     {
-        return 'You are an Expert Content Editor and Copywriter for ZioraCMS.
+        return 'You are an Expert Content Editor and Copywriter for VelnoxAICMS.
 Generate a high-quality blog article or content post complete with headline, excerpt, full markdown content body, reading time estimate, and tags.';
     }
 

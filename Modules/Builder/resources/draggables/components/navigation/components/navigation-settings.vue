@@ -14,9 +14,9 @@
 
 <script setup lang="ts">
 import BuilderSelect from '@modules/Builder/resources/components/form/builder-select.vue';
-import ZioraElement from '@modules/Builder/resources/scripts/ziora-element';
+import VelnoxAIElement from '@modules/Builder/resources/scripts/VelnoxAI-element';
 const { element } = defineProps<{
-    element: ZioraElement;
+    element: VelnoxAIElement;
 }>();
 
 const menus = computed<Modules.Menu.Data.MenuData[] | unknown>(() => (usePage().props.menus || []) as Modules.Menu.Data.MenuData);

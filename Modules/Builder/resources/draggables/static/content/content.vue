@@ -33,18 +33,18 @@
 <script setup lang="ts">
 import { unrefElement } from '@vueuse/core';
 import { combine } from '@atlaskit/pragmatic-drag-and-drop/combine';
-import { useZiora } from '@modules/Builder/resources/scripts/use-ziora';
+import { useVelnoxAI } from '@modules/Builder/resources/scripts/use-VelnoxAI';
 import { useElement } from '@modules/Builder/resources/scripts/use-element';
-import ZioraElement from '@modules/Builder/resources/scripts/ziora-element';
+import VelnoxAIElement from '@modules/Builder/resources/scripts/VelnoxAI-element';
 import BaseRecursiveElement from '@modules/Builder/resources/components/base-recursive-element.vue';
 import BaseDropIndicator from '@modules/Builder/resources/components/base-drop-indicator.vue';
 import { useDnD } from '@modules/Builder/resources/scripts/use-dnd';
 
 const { element } = defineProps<{
-    element: ZioraElement;
+    element: VelnoxAIElement;
 }>();
 
-const store = useZiora();
+const store = useVelnoxAI();
 
 const { dragCall, dropCall, elState, elRef, showIndicator } = useDnD(element);
 

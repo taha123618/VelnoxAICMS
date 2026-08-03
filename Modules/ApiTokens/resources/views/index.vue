@@ -86,7 +86,7 @@ function parseAbilities(abilities: string | string[] | null): string[] {
                 <div>
                     <h1 class="text-2xl font-bold text-white tracking-wide">API Tokens</h1>
                     <p class="mt-1 text-sm text-neutral-400">
-                        Create and manage personal API tokens for programmatic access to the ZioraCMS API.
+                        Create and manage personal API tokens for programmatic access to the VelnoxAICMS API.
                     </p>
                 </div>
                 <div class="mt-4 sm:mt-0">

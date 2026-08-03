@@ -44,10 +44,10 @@
 <script setup lang="ts">
 import BuilderFourInputGroup from '@modules/Builder/resources/components/form/builder-four-input-group.vue';
 import { useElement } from '@modules/Builder/resources/scripts/use-element';
-import ZioraElement from '@modules/Builder/resources/scripts/ziora-element';
+import VelnoxAIElement from '@modules/Builder/resources/scripts/VelnoxAI-element';
 
 
-const { element } = defineProps<{ element: ZioraElement }>();
+const { element } = defineProps<{ element: VelnoxAIElement }>();
 
 const { getStyle, deleteHoverStyle, hasChanged, setStyle } = useElement(element);
 

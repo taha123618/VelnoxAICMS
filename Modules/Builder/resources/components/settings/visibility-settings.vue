@@ -37,12 +37,12 @@
 <script setup lang="ts">
 import BuilderSlider from '@modules/Builder/resources/components/form/builder-slider.vue';
 import BuilderToggleGroup from '@modules/Builder/resources/components/form/builder-toggle-group.vue';
-import ZioraElement from '@modules/Builder/resources/scripts/ziora-element';
+import VelnoxAIElement from '@modules/Builder/resources/scripts/VelnoxAI-element';
 import BuilderSelect from '@modules/Builder/resources/components/form/builder-select.vue';
 import { useElement } from '@modules/Builder/resources/scripts/use-element';
 
 
-const { element } = defineProps<{ element: ZioraElement, options?: Record<string, any> }>();
+const { element } = defineProps<{ element: VelnoxAIElement, options?: Record<string, any> }>();
 
 const { getStyle,hasChanged, deleteHoverStyle, setStyle } = useElement(element);
 

@@ -74,12 +74,12 @@ import BuilderFourInputGroup from '@modules/Builder/resources/components/form/bu
 import BuilderInput from '@modules/Builder/resources/components/form/builder-input.vue';
 import BuilderNumberInput from '@modules/Builder/resources/components/form/builder-number-input.vue';
 import BuilderSlider from '@modules/Builder/resources/components/form/builder-slider.vue';
-import ZioraElement from '@modules/Builder/resources/scripts/ziora-element';
+import VelnoxAIElement from '@modules/Builder/resources/scripts/VelnoxAI-element';
 import { fontWeights } from '@modules/Builder/resources/scripts/constants';
 import BuilderSelect from '@modules/Builder/resources/components/form/builder-select.vue';
 
 const { element } = defineProps<{
-    element: ZioraElement;
+    element: VelnoxAIElement;
 }>();
 
 const paddingUnitOptions = ['px', 'rem', 'em'];

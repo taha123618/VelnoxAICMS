@@ -42,12 +42,12 @@
 import { cn } from '@modules/Builder/resources/scripts/utils';
 import { useDnD } from '@modules/Builder/resources/scripts/use-dnd';
 import { useElement } from '@modules/Builder/resources/scripts/use-element';
-import ZioraElement from '@modules/Builder/resources/scripts/ziora-element';
+import VelnoxAIElement from '@modules/Builder/resources/scripts/VelnoxAI-element';
 import { unrefElement } from '@vueuse/core';
 import BaseRecursiveElement from '@modules/Builder/resources/components/base-recursive-element.vue';
 
 const { element } = defineProps<{
-    element: ZioraElement;
+    element: VelnoxAIElement;
 }>();
 
 

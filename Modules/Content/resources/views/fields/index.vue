@@ -11,7 +11,7 @@
                 
                 <UButton
                     color="primary"
-                    @click="showAddFieldModal = true"
+                    @click.prevent="() => { showAddFieldModal = true; }"
                     icon="ph:plus"
                 >
                     Add Field
@@ -59,42 +59,48 @@
         </div>
         
         <!-- Field Modal -->
-        <UModal v-model="showAddFieldModal" :title="isEditing ? 'Edit Field' : 'Add Field'">
-            <UCard>
-                <template #header>
-                    <h3 class="text-base font-semibold leading-6 text-white">{{ isEditing ? 'Edit Field' : 'Add Field' }}</h3>
-                </template>
-                
-                <form @submit.prevent="submitField" class="space-y-4">
-                    <UFormField required label="Field Name" :error="form.errors.name">
-                        <UInput v-model="form.name" @update:model-value="generateHandle" class="w-full" />
-                    </UFormField>
+        <UModal v-model:open="showAddFieldModal" :title="isEditing ? 'Edit Field' : 'Add Field'" :description="isEditing ? 'Modify schema field parameters' : 'Create a new schema field'">
+            <template #content>
+                <VisuallyHidden>
+                    <DialogTitle>{{ isEditing ? 'Edit Field' : 'Add Field' }}</DialogTitle>
+                    <DialogDescription>{{ isEditing ? 'Modify schema field parameters' : 'Create a new schema field' }}</DialogDescription>
+                </VisuallyHidden>
+                <UCard>
+                    <template #header>
+                        <h3 class="text-base font-semibold leading-6 text-white">{{ isEditing ? 'Edit Field' : 'Add Field' }}</h3>
+                    </template>
                     
-                    <UFormField required label="Handle" :error="form.errors.handle" help="Used in API and code. Must be unique.">
-                        <UInput v-model="form.handle" @input="handleModified = true" class="w-full" :disabled="isEditing" />
-                    </UFormField>
-                    
-                    <UFormField required label="Field Type" :error="form.errors.type">
-                        <BaseSelect 
-                            v-model="form.type" 
-                            :options="fieldTypes" 
-                        />
-                    </UFormField>
-                    
-                    <UFormField label="Validation Rules" :error="form.errors.rules" help="Laravel validation rules (e.g., 'max:255|unique:entries,data->slug')">
-                        <UInput v-model="form.rules" class="w-full" />
-                    </UFormField>
-                    
-                    <UFormField>
-                        <UCheckbox v-model="form.is_required" label="Required Field" />
-                    </UFormField>
-                    
-                    <div class="flex justify-end gap-2 pt-4">
-                        <UButton color="neutral" variant="ghost" @click="showAddFieldModal = false">Cancel</UButton>
-                        <UButton type="submit" color="primary" :loading="form.processing">Save Field</UButton>
-                    </div>
-                </form>
-            </UCard>
+                    <form @submit.prevent="submitField" class="space-y-4">
+                        <UFormField required label="Field Name" :error="form.errors.name">
+                            <UInput v-model="form.name" @update:model-value="generateHandle" class="w-full" />
+                        </UFormField>
+                        
+                        <UFormField required label="Handle" :error="form.errors.handle" help="Used in API and code. Must be unique.">
+                            <UInput v-model="form.handle" @input="handleModified = true" class="w-full" :disabled="isEditing" />
+                        </UFormField>
+                        
+                        <UFormField required label="Field Type" :error="form.errors.type">
+                            <BaseSelect 
+                                v-model="form.type" 
+                                :options="fieldTypes" 
+                            />
+                        </UFormField>
+                        
+                        <UFormField label="Validation Rules" :error="form.errors.rules" help="Laravel validation rules (e.g., 'max:255|unique:entries,data->slug')">
+                            <UInput v-model="form.rules" class="w-full" />
+                        </UFormField>
+                        
+                        <UFormField>
+                            <UCheckbox v-model="form.is_required" label="Required Field" />
+                        </UFormField>
+                        
+                        <div class="flex justify-end gap-2 pt-4">
+                            <UButton color="neutral" variant="ghost" @click.prevent="() => { showAddFieldModal = false; }">Cancel</UButton>
+                            <UButton type="submit" color="primary" :loading="form.processing">Save Field</UButton>
+                        </div>
+                    </form>
+                </UCard>
+            </template>
         </UModal>
     </AdminLayout>
 </template>
@@ -103,6 +109,7 @@
 import AdminLayout from '@modules/Dashboard/resources/layouts/AdminLayout.vue';
 import { useForm, router } from '@inertiajs/vue3';
 import { ref } from 'vue';
+import { DialogTitle, DialogDescription, VisuallyHidden } from 'reka-ui';
 import type { BreadcrumbItem } from '@nuxt/ui';
 import BaseSelect from '@/components/BaseSelect.vue';
 

@@ -34,13 +34,13 @@
 
 <script setup lang="ts">
 import BaseElementWrapper from '@modules/Builder/resources/components/base-element-wrapper.vue';
-import ZioraElement from '@modules/Builder/resources/scripts/ziora-element';
+import VelnoxAIElement from '@modules/Builder/resources/scripts/VelnoxAI-element';
 import BaseRecursiveElement from '@modules/Builder/resources/components/base-recursive-element.vue';
 import { useFormStyles } from '@modules/Builder/resources/draggables/forms/form/use-form-styles';
 import { useHead } from '@unhead/vue';
 
 const { element } = defineProps<{
-    element: ZioraElement;
+    element: VelnoxAIElement;
 }>();
 
 const { getStyles } = useFormStyles(element)

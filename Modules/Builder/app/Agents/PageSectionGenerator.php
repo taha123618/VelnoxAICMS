@@ -35,7 +35,7 @@ class PageSectionGenerator implements Agent, HasMiddleware, HasStructuredOutput
 
     public function instructions(): string
     {
-        return 'You are an expert web UI builder AI. Your task is to generate an array of ZioraCMS page builder elements based on the user\'s prompt. 
+        return 'You are an expert web UI builder AI. Your task is to generate an array of VelnoxAICMS page builder elements based on the user\'s prompt. 
 Each element must follow the TElement schema closely. 
 Available types: "wrapper" (a container, can have children), "grid" (a CSS grid, can have children), "flexbox", "paragraph" (a rich text element), "heading" (a headline element), "link" (use this for both text links AND buttons), "image", "video".
 The root element you generate should usually be a "wrapper" that acts as a section, containing other elements.

@@ -257,73 +257,85 @@
         </UTabs>
 
         <!-- Upload Modal -->
-        <UModal v-model="showUploadModal">
-            <UCard>
-                <template #header>
-                    <h3 class="text-lg font-semibold">Upload Extension</h3>
-                </template>
-                <form @submit.prevent="uploadPlugin">
-                    <div class="space-y-4">
-                        <p class="text-sm text-neutral-400">Upload a ZioraCMS compatible plugin or theme (.zip file).</p>
-                        <UInput type="file" accept=".zip" @change="handleFileChange" required />
-                    </div>
-                    <div class="flex justify-end gap-2 mt-6">
-                        <UButton color="neutral" variant="ghost" @click.prevent="() => { showUploadModal = false; }">Cancel</UButton>
-                        <UButton type="submit" color="primary" :loading="isUploading" :disabled="!selectedFile">Install</UButton>
-                    </div>
-                </form>
-            </UCard>
+        <UModal v-model:open="showUploadModal" title="Upload Extension" description="Upload a VelnoxAICMS compatible plugin or theme (.zip file).">
+            <template #content>
+                <VisuallyHidden>
+                    <DialogTitle>Upload Extension</DialogTitle>
+                    <DialogDescription>Upload a VelnoxAICMS compatible plugin or theme (.zip file).</DialogDescription>
+                </VisuallyHidden>
+                <UCard>
+                    <template #header>
+                        <h3 class="text-lg font-semibold">Upload Extension</h3>
+                    </template>
+                    <form @submit.prevent="uploadPlugin">
+                        <div class="space-y-4">
+                            <p class="text-sm text-neutral-400">Upload a VelnoxAICMS compatible plugin or theme (.zip file).</p>
+                            <UInput type="file" accept=".zip" @change="handleFileChange" required />
+                        </div>
+                        <div class="flex justify-end gap-2 mt-6">
+                            <UButton color="neutral" variant="ghost" @click.prevent="() => { showUploadModal = false; }">Cancel</UButton>
+                            <UButton type="submit" color="primary" :loading="isUploading" :disabled="!selectedFile">Install</UButton>
+                        </div>
+                    </form>
+                </UCard>
+            </template>
         </UModal>
 
         <!-- AI Spec Viewer Modal -->
-        <UModal v-model="showSpecModal">
-            <UCard v-if="selectedSpec" class="sm:max-w-2xl">
-                <template #header>
-                    <div class="flex items-center gap-2">
-                        <span class="i-ph-sparkle text-primary-500 text-lg" />
-                        <h3 class="text-lg font-semibold">{{ selectedSpec.name }} — Full Spec</h3>
-                    </div>
-                </template>
-                <div class="space-y-4 max-h-[60vh] overflow-y-auto pr-1">
-                    <div v-if="selectedSpec.ai_spec?.full_description">
-                        <p class="text-xs font-semibold uppercase tracking-wider text-neutral-400 mb-1">Full Description</p>
-                        <p class="text-sm text-neutral-600 dark:text-neutral-300">{{ selectedSpec.ai_spec.full_description }}</p>
-                    </div>
-                    <div v-if="selectedSpec.ai_spec?.features?.length">
-                        <p class="text-xs font-semibold uppercase tracking-wider text-neutral-400 mb-1">Features</p>
-                        <ul class="space-y-1">
-                            <li v-for="feat in selectedSpec.ai_spec.features" :key="feat" class="flex items-start gap-2 text-sm text-neutral-600 dark:text-neutral-300">
-                                <span class="i-ph-check-circle text-success-500 mt-0.5 shrink-0" />
-                                {{ feat }}
-                            </li>
-                        </ul>
-                    </div>
-                    <div v-if="selectedSpec.ai_spec?.tags?.length">
-                        <p class="text-xs font-semibold uppercase tracking-wider text-neutral-400 mb-1">Tags</p>
-                        <div class="flex flex-wrap gap-1">
-                            <UBadge v-for="tag in selectedSpec.ai_spec.tags" :key="tag" color="neutral" variant="subtle">{{ tag }}</UBadge>
+        <UModal v-model:open="showSpecModal" title="Extension Spec" description="View extension specification details.">
+            <template #content>
+                <VisuallyHidden>
+                    <DialogTitle>{{ selectedSpec?.name || 'Extension Spec' }}</DialogTitle>
+                    <DialogDescription>View extension specification details.</DialogDescription>
+                </VisuallyHidden>
+                <UCard v-if="selectedSpec" class="sm:max-w-2xl">
+                    <template #header>
+                        <div class="flex items-center gap-2">
+                            <span class="i-ph-sparkle text-primary-500 text-lg" />
+                            <h3 class="text-lg font-semibold">{{ selectedSpec.name }} — Full Spec</h3>
+                        </div>
+                    </template>
+                    <div class="space-y-4 max-h-[60vh] overflow-y-auto pr-1">
+                        <div v-if="selectedSpec.ai_spec?.full_description">
+                            <p class="text-xs font-semibold uppercase tracking-wider text-neutral-400 mb-1">Full Description</p>
+                            <p class="text-sm text-neutral-600 dark:text-neutral-300">{{ selectedSpec.ai_spec.full_description }}</p>
+                        </div>
+                        <div v-if="selectedSpec.ai_spec?.features?.length">
+                            <p class="text-xs font-semibold uppercase tracking-wider text-neutral-400 mb-1">Features</p>
+                            <ul class="space-y-1">
+                                <li v-for="feat in selectedSpec.ai_spec.features" :key="feat" class="flex items-start gap-2 text-sm text-neutral-600 dark:text-neutral-300">
+                                    <span class="i-ph-check-circle text-success-500 mt-0.5 shrink-0" />
+                                    {{ feat }}
+                                </li>
+                            </ul>
+                        </div>
+                        <div v-if="selectedSpec.ai_spec?.tags?.length">
+                            <p class="text-xs font-semibold uppercase tracking-wider text-neutral-400 mb-1">Tags</p>
+                            <div class="flex flex-wrap gap-1">
+                                <UBadge v-for="tag in selectedSpec.ai_spec.tags" :key="tag" color="neutral" variant="subtle">{{ tag }}</UBadge>
+                            </div>
+                        </div>
+                        <div v-if="selectedSpec.ai_spec?.suggested_price" class="flex items-center gap-2">
+                            <p class="text-xs font-semibold uppercase tracking-wider text-neutral-400">Suggested Price</p>
+                            <span class="text-sm font-bold text-success-600 dark:text-success-400">${{ selectedSpec.ai_spec.suggested_price }}</span>
+                        </div>
+                        <div v-if="selectedSpec.ai_spec?.category" class="flex items-center gap-2">
+                            <p class="text-xs font-semibold uppercase tracking-wider text-neutral-400">Category</p>
+                            <span class="text-sm text-neutral-600 dark:text-neutral-300">{{ selectedSpec.ai_spec.category }}</span>
+                        </div>
+                        <div v-if="selectedSpec.ai_spec?.generated_at" class="text-xs text-neutral-400">
+                            Generated: {{ new Date(selectedSpec.ai_spec.generated_at).toLocaleString() }}
                         </div>
                     </div>
-                    <div v-if="selectedSpec.ai_spec?.suggested_price" class="flex items-center gap-2">
-                        <p class="text-xs font-semibold uppercase tracking-wider text-neutral-400">Suggested Price</p>
-                        <span class="text-sm font-bold text-success-600 dark:text-success-400">${{ selectedSpec.ai_spec.suggested_price }}</span>
-                    </div>
-                    <div v-if="selectedSpec.ai_spec?.category" class="flex items-center gap-2">
-                        <p class="text-xs font-semibold uppercase tracking-wider text-neutral-400">Category</p>
-                        <span class="text-sm text-neutral-600 dark:text-neutral-300">{{ selectedSpec.ai_spec.category }}</span>
-                    </div>
-                    <div v-if="selectedSpec.ai_spec?.generated_at" class="text-xs text-neutral-400">
-                        Generated: {{ new Date(selectedSpec.ai_spec.generated_at).toLocaleString() }}
-                    </div>
-                </div>
-                <template #footer>
-                    <div class="flex justify-end gap-2">
-                        <UButton color="neutral" variant="ghost" @click.prevent="() => { showSpecModal = false; }">Close</UButton>
-                        <UButton icon="ph:trash" color="error" variant="ghost" @click="deleteItem(selectedSpec!)">Delete Concept</UButton>
-                        <UButton icon="ph:download-simple" color="primary" @click="downloadSpec(selectedSpec!)">Download JSON Spec</UButton>
-                    </div>
-                </template>
-            </UCard>
+                    <template #footer>
+                        <div class="flex justify-end gap-2">
+                            <UButton color="neutral" variant="ghost" @click.prevent="() => { showSpecModal = false; }">Close</UButton>
+                            <UButton icon="ph:trash" color="error" variant="ghost" @click="deleteItem(selectedSpec!)">Delete Concept</UButton>
+                            <UButton icon="ph:download-simple" color="primary" @click="downloadSpec(selectedSpec!)">Download JSON Spec</UButton>
+                        </div>
+                    </template>
+                </UCard>
+            </template>
         </UModal>
 
         <AiPromptModal
@@ -341,6 +353,7 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
 import { router } from '@inertiajs/vue3';
+import { DialogTitle, DialogDescription, VisuallyHidden } from 'reka-ui';
 import AdminLayout from '@modules/Dashboard/resources/layouts/AdminLayout.vue';
 import { useToast } from '@nuxt/ui/runtime/composables/useToast.js';
 import AiPromptModal from '@/components/AiPromptModal.vue';

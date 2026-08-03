@@ -25,7 +25,7 @@ class AutomationRuleGenerator implements Agent, HasStructuredOutput
 
     public function instructions(): string
     {
-        return 'You are an Automation & Lifecycle Marketing Strategist for ZioraCMS.
+        return 'You are an Automation & Lifecycle Marketing Strategist for VelnoxAICMS.
 Generate automation rules including trigger event, delay timing, action type, and email template content if applicable.';
     }
 

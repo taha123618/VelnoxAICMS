@@ -38,8 +38,8 @@
 import BaseRecursiveElement from '@modules/Builder/resources/components/base-recursive-element.vue';
 import { extractStyles } from '@modules/Builder/resources/scripts/factory';
 import { TElement } from '@modules/Builder/resources/scripts/types';
-import { useZiora } from '@modules/Builder/resources/scripts/use-ziora';
-import ZioraElement from '@modules/Builder/resources/scripts/ziora-element';
+import { useVelnoxAI } from '@modules/Builder/resources/scripts/use-VelnoxAI';
+import VelnoxAIElement from '@modules/Builder/resources/scripts/VelnoxAI-element';
 import { useHead } from '@unhead/vue';
 
 const { page, layout } = defineProps<{
@@ -47,7 +47,7 @@ const { page, layout } = defineProps<{
     layout: Modules.Layout.Data.LayoutData;
 }>();
 
-const store = useZiora();
+const store = useVelnoxAI();
 
 const isLoading = ref<boolean>(true);
 
@@ -79,11 +79,11 @@ onMounted(() => {
 onBeforeMount(() => {
     store.disableEditor();
     const pageContent = page.content!.map((item: TElement) =>
-        markRaw(ZioraElement.fromObject(item)),
+        markRaw(VelnoxAIElement.fromObject(item)),
     );
 
     const layoutContent = layout.content!.map((item: TElement) =>
-        markRaw(ZioraElement.fromObject(item)),
+        markRaw(VelnoxAIElement.fromObject(item)),
     );
 
     store.setLayoutElements(layoutContent);

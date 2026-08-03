@@ -13,10 +13,10 @@
 import BuilderTiptap from '@modules/Builder/resources/components/form/editor/builder-tiptap.vue';
 import VisibilitySettings from '@modules/Builder/resources/components/settings/visibility-settings.vue';
 import { useElement } from '@modules/Builder/resources/scripts/use-element';
-import ZioraElement from '@modules/Builder/resources/scripts/ziora-element';
+import VelnoxAIElement from '@modules/Builder/resources/scripts/VelnoxAI-element';
 
 const { element } = defineProps<{
-    element: ZioraElement;
+    element: VelnoxAIElement;
 }>();
 
 const { getStyle } = useElement(element);

@@ -9,7 +9,7 @@
                 <div>
                     <h1 class="text-2xl font-bold text-white tracking-wide">Automation & Webhooks</h1>
                     <p class="mt-1 text-sm text-neutral-400">
-                        Configure HTTP webhook endpoints to receive real-time event notifications from ZioraCMS.
+                        Configure HTTP webhook endpoints to receive real-time event notifications from VelnoxAICMS.
                     </p>
                 </div>
                 <div class="mt-4 sm:mt-0 flex gap-2">
@@ -139,7 +139,7 @@
                         </UFormField>
 
                         <UFormField label="Payload URL" required :error="form.errors.url">
-                            <UInput v-model="form.url" placeholder="https://api.myapp.com/webhooks/ziora" class="w-full" />
+                            <UInput v-model="form.url" placeholder="https://api.myapp.com/webhooks/VelnoxAI" class="w-full" />
                         </UFormField>
 
                         <UFormField label="Subscribed Events" required :error="form.errors.events">

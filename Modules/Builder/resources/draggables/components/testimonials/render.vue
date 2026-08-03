@@ -15,14 +15,14 @@
 <script setup lang="ts">
 import TestimonialHorizontalItem from '@modules/Builder/resources/draggables/components/testimonials/components/testimonial-horizontal-item.vue';
 import TestimonialVerticalItem from '@modules/Builder/resources/draggables/components/testimonials/components/testimonial-vertical-item.vue';
-import ZioraElement from '@modules/Builder/resources/scripts/ziora-element';
+import VelnoxAIElement from '@modules/Builder/resources/scripts/VelnoxAI-element';
 import { useHead } from '@unhead/vue';
 import { cn } from '@modules/Builder/resources/scripts/utils';
 import { useElement } from '@modules/Builder/resources/scripts/use-element';
 import { useTestimonials } from '@modules/Builder/resources/draggables/components/testimonials/use-testimonials';
 
 const { element } = defineProps<{
-    element: ZioraElement;
+    element: VelnoxAIElement;
 }>();
 
 const {

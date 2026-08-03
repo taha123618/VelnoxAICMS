@@ -20,10 +20,10 @@
 <script setup lang="ts">
 import BaseTooltip from '@modules/Builder/resources/components/base-tooltip.vue';
 import { visitModal } from '@inertiaui/modal-vue';
-import ZioraElement from '@modules/Builder/resources/scripts/ziora-element';
+import VelnoxAIElement from '@modules/Builder/resources/scripts/VelnoxAI-element';
 
 const { element } = defineProps<{
-    element: ZioraElement;
+    element: VelnoxAIElement;
 }>();
 
 

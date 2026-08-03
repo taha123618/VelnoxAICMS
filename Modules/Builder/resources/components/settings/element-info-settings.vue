@@ -3,7 +3,7 @@
     <UFormField
       label="ID"
       :ui="{
-        label: 'block font-normal ziora-label',
+        label: 'block font-normal VelnoxAI-label',
       }"
       class="text-xs grid grid-cols-2 items-center"
     >
@@ -29,12 +29,12 @@
 </template>
 
 <script setup lang="ts">
-import ZioraElement from '@modules/Builder/resources/scripts/ziora-element';
+import VelnoxAIElement from '@modules/Builder/resources/scripts/VelnoxAI-element';
 import BaseTooltip from '@modules/Builder/resources/components/base-tooltip.vue';
 import BuilderInput from '@modules/Builder/resources/components/form/builder-input.vue';
 
 const { element } = defineProps<{
-  element: ZioraElement;
+  element: VelnoxAIElement;
 }>();
 
 const toast = useToast();

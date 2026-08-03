@@ -1,7 +1,7 @@
 import { transformOptions } from '@modules/Builder/resources/scripts/utils';
-import ZioraElement from '@modules/Builder/resources/scripts/ziora-element';
+import VelnoxAIElement from '@modules/Builder/resources/scripts/VelnoxAI-element';
 
-export const useFormInput = (element: ZioraElement) => {
+export const useFormInput = (element: VelnoxAIElement) => {
 
     const options = computed(() => {
         if (!element.getProp('options')) {
@@ -10,7 +10,7 @@ export const useFormInput = (element: ZioraElement) => {
         return transformOptions(element.getProp('options'));
     });
 
-    
+
     return {
         options
     };

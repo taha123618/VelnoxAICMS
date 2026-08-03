@@ -30,12 +30,12 @@
 <script setup lang="ts">
 
 import BuilderSlider from '@modules/Builder/resources/components/form/builder-slider.vue';
-import ZioraElement from '@modules/Builder/resources/scripts/ziora-element';
+import VelnoxAIElement from '@modules/Builder/resources/scripts/VelnoxAI-element';
 import { fontWeights } from '@modules/Builder/resources/scripts/constants';
 import BuilderSelect from '@modules/Builder/resources/components/form/builder-select.vue';
 import BuilderColorInput from '@modules/Builder/resources/components/form/builder-color-input.vue';
 
-const { element } = defineProps<{ element: ZioraElement }>();
+const { element } = defineProps<{ element: VelnoxAIElement }>();
 
 </script>
 

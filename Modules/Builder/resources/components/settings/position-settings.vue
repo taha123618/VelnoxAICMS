@@ -49,9 +49,9 @@ import BuilderNumberInput from "@modules/Builder/resources/components/form/build
 import BuilderSelect from "@modules/Builder/resources/components/form/builder-select.vue";
 import { CSSPositions } from "@modules/Builder/resources/scripts/enums";
 import { useElement } from "@modules/Builder/resources/scripts/use-element";
-import ZioraElement from "@modules/Builder/resources/scripts/ziora-element";
+import VelnoxAIElement from "@modules/Builder/resources/scripts/VelnoxAI-element";
 
-const { element } = defineProps<{ element: ZioraElement }>();
+const { element } = defineProps<{ element: VelnoxAIElement }>();
 
 const { getStyle, hasChanged, deleteHoverStyle, setStyle } = useElement(element);
 

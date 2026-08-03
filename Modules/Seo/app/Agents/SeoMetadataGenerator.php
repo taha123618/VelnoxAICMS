@@ -25,7 +25,7 @@ class SeoMetadataGenerator implements Agent, HasStructuredOutput
 
     public function instructions(): string
     {
-        return 'You are a Senior Technical SEO Strategist for ZioraCMS.
+        return 'You are a Senior Technical SEO Strategist for VelnoxAICMS.
 Generate optimized meta title, meta description, OpenGraph tags, target keywords, and JSON-LD schema markup for search engine indexing.';
     }
 

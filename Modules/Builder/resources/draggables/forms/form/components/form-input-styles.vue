@@ -74,11 +74,11 @@
 <script setup lang="ts">
 
 import BuilderSlider from '@modules/Builder/resources/components/form/builder-slider.vue';
-import ZioraElement from '@modules/Builder/resources/scripts/ziora-element';
+import VelnoxAIElement from '@modules/Builder/resources/scripts/VelnoxAI-element';
 import BuilderColorInput from '@modules/Builder/resources/components/form/builder-color-input.vue';
 import { InputTypes } from '@modules/Builder/resources/scripts/enums';
 
-const { element } = defineProps<{ element: ZioraElement }>();
+const { element } = defineProps<{ element: VelnoxAIElement }>();
 
 </script>
 

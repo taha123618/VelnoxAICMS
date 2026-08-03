@@ -358,7 +358,7 @@
                                 class="w-full">
                                 <template #elements>
                                     <div class="px-2">
-                                        <ZioraElementsTab />
+                                        <VelnoxAIElementsTab />
                                     </div>
                                 </template>
                                 <template #blocks>
@@ -557,7 +557,7 @@ import BaseTooltip from '@modules/Builder/resources/components/base-tooltip.vue'
 import ElementTree from '@modules/Builder/resources/components/element-tree/element-tree.vue';
 import BuilderBlocksTab from '@modules/Builder/resources/components/layout/builder-blocks-tab.vue';
 import BuilderElementSettings from '@modules/Builder/resources/components/layout/builder-element-settings-tab.vue';
-import ZioraElementsTab from '@modules/Builder/resources/components/layout/builder-elements-tab.vue';
+import VelnoxAIElementsTab from '@modules/Builder/resources/components/layout/builder-elements-tab.vue';
 import { DEVICES } from '@modules/Builder/resources/scripts/constants';
 import {
     DeviceType,
@@ -568,8 +568,8 @@ import {
     TBuilderType,
     TElement,
 } from '@modules/Builder/resources/scripts/types';
-import { useZiora } from '@modules/Builder/resources/scripts/use-ziora';
-import ZioraElement from '@modules/Builder/resources/scripts/ziora-element';
+import { useVelnoxAI } from '@modules/Builder/resources/scripts/use-VelnoxAI';
+import VelnoxAIElement from '@modules/Builder/resources/scripts/VelnoxAI-element';
 import { TabsItem } from '@nuxt/ui';
 import { useToast } from '@nuxt/ui/runtime/composables/useToast.js';
 import { useHead } from '@unhead/vue';
@@ -600,7 +600,7 @@ const {
 }>();
 
 const isLoading = ref<boolean>(true);
-const store = useZiora();
+const store = useVelnoxAI();
 const toast = useToast();
 const zoomLevel = ref(0.92);
 const panLevel = ref(initialPan);
@@ -628,7 +628,7 @@ function restoreVersion(version: any) {
     if (!version || !version.content) return;
     
     // Parse the AST content from the version
-    const parsedContent = version.content.map((item: any) => ZioraElement.fromObject(item));
+    const parsedContent = version.content.map((item: any) => VelnoxAIElement.fromObject(item));
     store.setElements(parsedContent);
     
     toast.add({ title: 'Version restored!', description: 'Click Save to persist changes.', color: 'success' });
@@ -707,7 +707,7 @@ function handleAiJobUpdate(e: any) {
         
         const rawElements = e.result?.elements || [];
         if (rawElements.length > 0) {
-            const newElements = rawElements.map((el: any) => ZioraElement.newFromObject(transformAiElement(el)));
+            const newElements = rawElements.map((el: any) => VelnoxAIElement.newFromObject(transformAiElement(el)));
             store.setElements([...store.elements, ...newElements]);
             
             toast.add({ title: 'AI generation completed successfully.', color: 'success', icon: 'ph:check-circle' });
@@ -774,7 +774,7 @@ async function generateAiSection() {
             
             const rawElements = response.data.elements || [];
             if (rawElements.length > 0) {
-                const newElements = rawElements.map((el: any) => ZioraElement.newFromObject(transformAiElement(el)));
+                const newElements = rawElements.map((el: any) => VelnoxAIElement.newFromObject(transformAiElement(el)));
                 store.setElements([...store.elements, ...newElements]);
                 
                 toast.add({ title: 'AI generation completed successfully.', color: 'success', icon: 'ph:check-circle' });
@@ -994,14 +994,14 @@ onMounted(() => {
             })
             .listen('.Modules\\Page\\Events\\PageContentUpdated', (e: any) => {
                 if (e.userId !== currentUser.id) {
-                    const parsedContent = e.content.map((item: any) => ZioraElement.fromObject(item));
+                    const parsedContent = e.content.map((item: any) => VelnoxAIElement.fromObject(item));
                     store.setElements(parsedContent);
                     toast.add({ title: 'Page content was updated by another user.', color: 'primary' });
                 }
             })
             .listen('.Modules\\Layout\\Events\\LayoutContentUpdated', (e: any) => {
                 if (e.userId !== currentUser.id) {
-                    const parsedContent = e.content.map((item: any) => ZioraElement.fromObject(item));
+                    const parsedContent = e.content.map((item: any) => VelnoxAIElement.fromObject(item));
                     store.setElements(parsedContent);
                     toast.add({ title: 'Layout content was updated by another user.', color: 'primary' });
                 }
@@ -1011,11 +1011,11 @@ onMounted(() => {
 
 onBeforeMount(() => {
     const pageContent = (editable.content || []).map((item: TElement) =>
-        ZioraElement.fromObject(item),
+        VelnoxAIElement.fromObject(item),
     );
     if (!!layout) {
         const layoutContent = (layout.content || []).map((item: TElement) =>
-            ZioraElement.fromObject(item),
+            VelnoxAIElement.fromObject(item),
         );
         store.setLayoutElements(layoutContent);
     }
@@ -1055,7 +1055,7 @@ watchEffect((onCleanup) => {
 
                 const targetParentId: string = targetData.parentId as string;
                 const action = sourceData?.action || 'move';
-                const item: ZioraElement = sourceData.item as ZioraElement;
+                const item: VelnoxAIElement = sourceData.item as VelnoxAIElement;
 
                 if (action == 'add') {
                     store.addNewElement(targetParentId, item, insertAt);
