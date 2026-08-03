@@ -1,139 +1,182 @@
 # VelnoxAICMS
 
-> **Next-Generation AI-Native Modular CMS & Visual Drag-and-Drop Page Builder**
+<div align="center">
 
-VelnoxAICMS is an enterprise-ready, modular Content Management System and drag-and-drop page builder built on the **VILT** stack (**Vue 3**, **Inertia.js v2**, **Laravel 13**, and **Tailwind CSS v4**). It seamlessly integrates AI content & plugin generation, visual workflow automation, headless CMS capabilities, and high-performance real-time infrastructure.
+![VelnoxAICMS Banner](public/assets/images/logo-full-black.svg#gh-light-mode-only)
+![VelnoxAICMS Banner](public/assets/images/logo-full-white.svg#gh-dark-mode-only)
 
-![Layout Builder](./documentation/images/layout-builder.png)
+### Next-Generation Open-Source AI-Native Modular CMS & Visual Page Builder
 
-## 📌 Quick Access
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![Laravel](https://img.shields.io/badge/Laravel-v13.x-FF2D20?logo=laravel&logoColor=white)](https://laravel.com)
+[![Vue.js](https://img.shields.io/badge/Vue.js-v3.5-4FC08D?logo=vuedotjs&logoColor=white)](https://vuejs.org)
+[![Inertia.js](https://img.shields.io/badge/Inertia.js-v2.x-9553E9?logo=inertia&logoColor=white)](https://inertiajs.com)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind-v4.x-06B6D4?logo=tailwindcss&logoColor=white)](https://tailwindcss.com)
+[![PHP](https://img.shields.io/badge/PHP-8.5%2B-777BB4?logo=php&logoColor=white)](https://php.net)
 
-- 🚀 [Getting Started Guide](documentation/1-get-started.md)
+[Explore Features](#-key-features) • [Quick Start](#-quick-start-guide) • [Documentation](documentation/1-get-started.md) • [Contributing](CONTRIBUTING.md)
+
+</div>
+
+---
+
+## 📖 Overview
+
+**VelnoxAICMS** is a powerful, enterprise-grade, open-source Content Management System and drag-and-drop page builder built on the **VILT** stack (**Vue 3**, **Inertia.js v2**, **Laravel 13**, and **Tailwind CSS v4**). 
+
+Designed for high-performance applications, VelnoxAICMS combines **AI-assisted plugin & content generation**, an interactive **Visual Drag-and-Drop Page Builder**, **Headless CMS collections**, **visual workflow automation**, and real-time infrastructure powered by **Laravel Octane (FrankenPHP)**, **Laravel Reverb (WebSockets)**, and **Laravel Horizon**.
+
+![Layout Builder](documentation/images/layout-builder.png)
+
+---
+
+## 🏷️ GitHub Metadata & Tags
+
+If you are hosting or starring this project on GitHub, here is the suggested repository configuration:
+
+* **Short Description**: Next-Generation Open-Source AI-Native Modular CMS & Visual Drag-and-Drop Page Builder built on Vue 3, Inertia.js v2, Laravel 13, and Tailwind CSS v4.
+* **Topics / Tags**:
+  `laravel`, `laravel13`, `vue3`, `inertiajs`, `cms`, `page-builder`, `ai-cms`, `drag-and-drop`, `tailwind-css`, `frankenphp`, `laravel-octane`, `laravel-reverb`, `laravel-horizon`, `spatie-permissions`, `headless-cms`, `open-source`, `php85`, `typescript`, `modular-architecture`, `ai-generator`
+
+---
+
+## 📌 Quick Access Links
+
+- 📖 [Getting Started Guide](documentation/1-get-started.md)
 - 🎨 [Page Builder Guide](documentation/2-builder.md)
 - 💻 [Developer Architecture Notes](documentation/3-developer.md)
 - ⚙️ [Developer Setup & Workflow Guide](documentation/4-developer-guide.md)
-
-> For a practical setup and development guide, see [documentation/4-developer-guide.md](documentation/4-developer-guide.md).
+- 🤝 [Contribution Guidelines](CONTRIBUTING.md)
+- 📄 [MIT License](LICENSE)
 
 ---
 
 ## 🌟 Key Features
 
-### 🧩 Visual Drag-and-Drop Builder
-* **Pragmatic Drag & Drop Engine**: Smooth, accessible component dragging powered by `@atlaskit/pragmatic-drag-and-drop`.
-* **Rich Text & Inline Editing**: Powered by TipTap editor with full inline formatting, typography, links, and color controls.
-* **Live Layout & Component Customization**: Real-time canvas manipulation with custom CodeMirror CSS editing and custom section ordering.
-* **Responsive Breakpoint Previews**: Desktop, tablet, and mobile previews out-of-the-box.
+### 🧩 Visual Drag-and-Drop Page Builder
+* **Pragmatic Drag & Drop Engine**: Smooth component dragging and nesting powered by `@atlaskit/pragmatic-drag-and-drop`.
+* **Rich Text & Inline Typography**: Built-in TipTap editor for live inline formatting, custom styling, links, and text controls.
+* **Live Layout & CSS Customization**: Real-time canvas editing with embedded CodeMirror custom CSS editor and section re-ordering.
+* **Responsive Breakpoint Previews**: Desktop, tablet, and mobile device viewport previews out-of-the-box.
 
-### 🤖 AI-Generated Marketplace & Engine
-* **AI Plugin Generator**: Generate full modular CMS plugins and concepts on the fly using multi-provider AI (OpenAI, Gemini, Anthropic, DeepSeek).
-* **AI Concept Download & Install**: Inspect generated plugin specs, export downloadable ZIP packages, and install custom modules seamlessly.
-* **Smart Content & Page Generation**: AI assistance for page copywriting, SEO metadata generation, and content creation.
+### 🤖 AI Engine & Modular Marketplace
+* **AI Extension Architect**: Generate modular CMS plugins and themes on-the-fly using multi-provider AI (OpenAI, Gemini, Anthropic, DeepSeek).
+* **AI Spec Export & Installer**: Inspect AI-generated extension specifications, download structured JSON specs, and upload/install ZIP extension packages.
+* **AI Copywriting & SEO**: Integrated AI helpers for page copywriting, SEO metadata generation, and content creation.
 
-### ⚡ Real-Time & High-Performance Stack
-* **Laravel Octane Engine**: Powered by FrankenPHP long-running workers for lightning-fast request performance.
+### ⚡ High-Performance Real-Time Infrastructure
+* **Laravel Octane Engine**: Powered by FrankenPHP long-running workers for ultra-low latency response times.
 * **Laravel Horizon Integration**: Redis queue monitoring, background job tracking, and auto-scaling workers with automated metrics snapshots.
-* **Laravel Reverb WebSockets**: Native, real-time WebSocket broadcasting with Laravel Echo.
-* **Nuxt UI v3 Component System**: Sleek, accessible UI elements styled with Tailwind CSS v4 and dark mode support.
+* **Laravel Reverb WebSockets**: Native, real-time WebSocket broadcasting with Laravel Echo integration.
+* **Nuxt UI v3 Component Library**: Modern, accessible UI elements styled with Tailwind CSS v4 and full dark mode support.
 
 ### ⚙️ Automation & Workflow Engine
 * **Visual Workflow Builder**: Interactive node-based automation workflow editor for event-driven logic.
-* **Webhooks Integration**: Outbound and inbound webhooks for third-party service integration.
+* **Webhooks Integration**: Inbound and outbound webhooks for third-party integrations and API automation.
 
-### 📦 Modular Architecture (23 Modules)
-Built with `nwidart/laravel-modules` into clean, decoupled domain modules:
-* **Builder**: Page & section drag-and-drop builder.
+### 📦 Decoupled Modular Architecture (23 Modules)
+Built with `nwidart/laravel-modules` into clean, maintainable domain modules:
+* **Builder**: Drag-and-drop canvas, blueprints, and draggable UI components.
 * **Marketplace**: AI plugin generator, spec viewer, and module installer.
 * **Workflow & Automation**: Visual workflow engine & webhook integrations.
 * **Page & Content**: Pages, blog posts, categories, and Headless CMS collections.
-* **Media**: Advanced file manager & asset media library (Spatie MediaLibrary).
+* **Media**: File manager & asset media library (Spatie MediaLibrary).
 * **Layout & Menu**: Header/Footer layout builder and hierarchical menu builder.
 * **Acl & Auth**: Spatie Laravel Permission (Roles & Permissions) and user authentication.
 * **Localization**: Multi-language translation management (Spatie Translatable).
 * **AuditLog & Visits**: Activity logging (Spatie Activitylog) and visitor analytics.
-* **ApiTokens & Settings**: API tokens management for headless delivery and platform configuration.
+* **ApiTokens & Settings**: API token management for headless delivery and site configuration.
 
 ---
 
-## 🛠️ Technology Stack
+## 🛠️ Tech Stack & Requirements
 
-| Layer | Technology |
+### System Requirements
+* **PHP**: 8.5+ (Extensions: `redis`, `pdo_mysql` / `pdo_pgsql` / `pdo_sqlite`, `mbstring`, `gd` / `imagick`)
+* **Node.js**: 20.x+ & `npm`
+* **Composer**: 2.6+
+* **Redis**: Server running on `127.0.0.1:6379`
+* **Database**: MySQL 8.0+, PostgreSQL 14+, or SQLite
+
+### Technology Architecture
+
+| Component | Framework / Library |
 |---|---|
-| **Backend Framework** | [Laravel 13](https://laravel.com) (PHP 8.5+) |
-| **Frontend Framework** | [Vue 3.5](https://vuejs.org) (Composition API, `<script setup>`) |
-| **Monolith Bridge** | [Inertia.js v2](https://inertiajs.com) (`@inertiajs/vue3`) |
-| **Styling & UI Components** | [Tailwind CSS v4](https://tailwindcss.com) & [Nuxt UI v3](https://ui.nuxt.com) |
+| **Backend Framework** | [Laravel 13](https://laravel.com) |
+| **Frontend Stack** | [Vue 3.5](https://vuejs.org) + [Inertia.js v2](https://inertiajs.com) |
+| **UI Components & Styling** | [Nuxt UI v3](https://ui.nuxt.com) + [Tailwind CSS v4](https://tailwindcss.com) |
 | **High-Performance Server** | [Laravel Octane](https://laravel.com/docs/octane) (FrankenPHP) |
 | **Queue Management** | [Laravel Horizon](https://laravel.com/docs/horizon) (Redis) |
-| **WebSockets** | [Laravel Reverb](https://laravel.com/docs/reverb) & [Laravel Echo](https://laravel.com/docs/broadcasting) |
-| **State Management** | [Pinia](https://pinia.vuejs.org) & VueUse |
-| **Type Generation** | [Spatie TypeScript Transformer](https://github.com/spatie/laravel-typescript-transformer) |
-| **Package Architecture** | [nwidart/laravel-modules](https://nwidart-modules.com) |
+| **WebSockets** | [Laravel Reverb](https://laravel.com/docs/reverb) + [Laravel Echo](https://laravel.com/docs/broadcasting) |
+| **State & Utilities** | [Pinia](https://pinia.vuejs.org) + [VueUse](https://vueuse.org) |
+| **Type Generator** | [Spatie TypeScript Transformer](https://github.com/spatie/laravel-typescript-transformer) |
+| **Modular Core** | [nwidart/laravel-modules](https://nwidart-modules.com) |
 
 ---
 
 ## 🚀 Quick Start Guide
 
-### Prerequisites
-Ensure your environment meets the following requirements:
-* **PHP**: 8.5+ (with `redis`, `pdo_mysql`, `mbstring`, `gd` or `imagick` extensions)
-* **Node.js**: 20+ and `npm`
-* **Composer**: 2.6+
-* **Redis**: Running on `127.0.0.1:6379`
-* **Database**: MySQL 8.0+ / PostgreSQL / SQLite
-
-### 1. Installation & Setup
-
-Clone the repository and install Composer & NPM dependencies:
+### 1. Clone & Install Dependencies
 
 ```bash
+# Clone the open-source repository
 git clone https://github.com/taha123618/VelnoxAICMS.git
 cd VelnoxAICMS
 
+# Install PHP dependencies
 composer install
+
+# Install Node dependencies
 npm install
 ```
 
-### 2. Environment Configuration
-
-Copy the example environment file and configure your database and Redis settings:
+### 2. Configure Environment
 
 ```bash
+# Copy example environment file
 cp .env.example .env
+
+# Generate application security key
 php artisan key:generate
 ```
 
-Verify the following key `.env` configurations:
+Configure your database and Redis settings in `.env`:
 
 ```env
+APP_NAME=VelnoxAICMS
+APP_URL=http://localhost:8000
+
 DB_CONNECTION=mysql
 DB_HOST=127.0.0.1
 DB_PORT=3306
-DB_DATABASE=VelnoxAIcms
+DB_DATABASE=velnoxaicms
 DB_USERNAME=root
 DB_PASSWORD=
 
 QUEUE_CONNECTION=redis
 CACHE_STORE=redis
-
 REDIS_HOST=127.0.0.1
 REDIS_PORT=6379
 
+REVERB_APP_ID=632013
+REVERB_APP_KEY=5oqftkhfzedrovhonw4h
+REVERB_APP_SECRET=izzjr36m69l5stagq2dz
+REVERB_HOST="localhost"
+REVERB_PORT=8081
+REVERB_SCHEME=http
+
 OCTANE_SERVER=frankenphp
-HORIZON_PREFIX=velnoxaicms_horizon:
 ```
 
-### 3. Database Migration & Seeders
-
-Run database migrations and seed default data:
+### 3. Run Database Migrations & Seeders
 
 ```bash
 php artisan migrate --seed
 ```
 
-### 4. Spatie TypeScript Types Generation
+### 4. Transform TypeScript Types
 
-Generate frontend TypeScript interfaces from PHP Spatie Data DTOs:
+Generate frontend TypeScript interfaces from backend PHP Data Transfer Objects (DTOs):
 
 ```bash
 php artisan typescript:transform
@@ -143,57 +186,34 @@ php artisan typescript:transform
 
 ## 💻 Development Workflow
 
-### Start All-In-One Dev Server
+### Launch All-In-One Dev Server
 
-VelnoxAICMS features a single command development environment that concurrently boots **Octane**, **Horizon**, **Pail** (log tailing), **Reverb** (WebSockets), and **Vite**:
+VelnoxAICMS includes a concurrent development process that boots **Octane (FrankenPHP)**, **Horizon**, **Reverb WebSockets**, **Pail Log Tail**, and **Vite HMR**:
 
 ```bash
 composer run dev
 ```
 
-This starts:
-* **Octane (FrankenPHP)** with hot-reloading (`--watch`)
-* **Horizon** Redis queue worker manager
-* **Reverb** WebSocket server with debug output
-* **Vite** HMR dev server
-* **Pail** real-time log monitoring
-
-### Useful Development Commands
+### Key Development Commands
 
 | Command | Description |
 |---|---|
-| `composer run dev` | Launch Octane, Horizon, Reverb, Pail, and Vite concurrently |
-| `php artisan typescript:transform` | Regenerate `resources/js/types/generated.d.ts` from PHP DTOs |
-| `composer analyse` | Run **PHPStan** static analysis & **Rector** automated refactoring |
-| `vendor/bin/pint --dirty` | Format modified PHP files according to Laravel Pint rules |
-| `composer test` | Run **Pest v4** test suite |
+| `composer run dev` | Boot Octane, Horizon, Reverb, Pail logs, and Vite concurrently |
+| `npm run build` | Compile frontend assets for production |
+| `php artisan typescript:transform` | Regenerate TypeScript interfaces from PHP DTOs |
+| `composer analyse` | Run **PHPStan** static analysis & **Rector** refactoring |
+| `vendor/bin/pint --dirty` | Format modified PHP files using Laravel Pint |
+| `composer test` | Execute the **Pest v4** test suite |
 
 ---
 
-## 🔐 Security & Monitoring
+## 🤝 Contributing
 
-### Horizon Queue Dashboard
-* Access the Horizon queue dashboard at `/horizon`.
-* **Authorization**: Gated to users with the `admin` role in non-local environments (`App\Providers\HorizonServiceProvider`).
-* **Metrics Snapshot**: Metrics automatically snapshot every 5 minutes via `routes/console.php`.
-
-### Role-Based Access Control
-* Powered by `spatie/laravel-permission`.
-* Manage roles, permissions, and user assignments via the **Access Management** panel.
-
----
-
-## 📚 Documentation & References
-
-For detailed guides, explore the [`documentation/`](./documentation) directory:
-* 📖 [Getting Started Guide](./documentation/1-get-started.md)
-* 🎨 [Page Builder Guide](./documentation/2-builder.md)
-* 💻 [Developer Architecture Notes](./documentation/3-developer.md)
-* 🚀 [Developer Setup Guide](./documentation/4-developer-guide.md)
+Contributions are welcome! Whether you are fixing bugs, improving documentation, or proposing new features, please read our [Contributing Guidelines](CONTRIBUTING.md) before submitting a pull request.
 
 ---
 
 ## 📄 License & Credits
 
-* **Author**: [Taha Ahmed](mailto:tahaahmedanees2@gmail.com)
-* **License**: Open-source under the [MIT License](LICENSE).
+- **Author**: [Taha Ahmed](mailto:tahaahmedanees2@gmail.com)
+- **License**: Open-source under the [MIT License](LICENSE).
